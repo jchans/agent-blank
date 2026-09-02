@@ -2,3 +2,6 @@
 .godot/
 *.translation
 export_presets.cfg
+
+# Claude Code local session state (not project config)
+.claude/scheduled_tasks.lock

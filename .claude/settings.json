@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status)",
+      "Bash(git status *)",
+      "Bash(git add *)",
+      "Bash(git commit)",
+      "Bash(git commit *)",
+      "Bash(git push)",
+      "Bash(git push *)",
+      "Bash(git log)",
+      "Bash(git log *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git branch)",
+      "Bash(git branch *)",
+      "Bash(~/.local/bin/godot4 *)",
+      "Bash(/home/laohanj/.local/bin/godot4 *)",
+      "Read(/home/laohanj/claude-projects/agent-blank/**)",
+      "Write(/home/laohanj/claude-projects/agent-blank/**)",
+      "Edit(/home/laohanj/claude-projects/agent-blank/**)",
+      "Glob(/home/laohanj/claude-projects/agent-blank/**)",
+      "Grep(/home/laohanj/claude-projects/agent-blank/**)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push --delete*)",
+      "Bash(git reset --hard*)",
+      "Bash(git branch -D*)",
+      "Bash(git branch --delete --force*)",
+      "Bash(git clean -f*)",
+      "Bash(git clean -fd*)",
+      "Bash(git rebase*)",
+      "Bash(git filter-branch*)"
+    ]
+  }
+}
