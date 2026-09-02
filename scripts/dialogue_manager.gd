@@ -69,4 +69,29 @@ func _show_current_node() -> void:
 	if node.is_empty() or node.get("end", false):
 		end_dialogue()
 		return
-	_dialogue_box.display_node(node)
+
+	var set_flag: String = node.get("set_flag", "")
+	if set_flag != "":
+		GameState.set_flag(set_flag)
+
+	var filtered_node: Dictionary = node.duplicate(true)
+	if filtered_node.has("choices"):
+		var filtered_choices: Array = []
+		for choice in filtered_node["choices"]:
+			if _choice_available(choice):
+				filtered_choices.append(choice)
+		filtered_node["choices"] = filtered_choices
+
+	_dialogue_box.display_node(filtered_node)
+
+
+## A choice can gate itself on story flags: "requires_flag" (must be set) or
+## "requires_not_flag" (must NOT be set). Absent = always available.
+func _choice_available(choice: Dictionary) -> bool:
+	var requires: String = choice.get("requires_flag", "")
+	if requires != "" and not GameState.has_flag(requires):
+		return false
+	var requires_not: String = choice.get("requires_not_flag", "")
+	if requires_not != "" and GameState.has_flag(requires_not):
+		return false
+	return true

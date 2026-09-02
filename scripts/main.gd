@@ -20,6 +20,7 @@ const TILE_COLORS := {
 	".": Color(0.28, 0.42, 0.24),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
+const WALL_GLYPHS := ["#"]
 
 
 func _ready() -> void:
@@ -59,6 +60,20 @@ func _spawn_tile(glyph: String, col: int, row: int) -> void:
 	label.position = Vector2(col * TILE_SIZE, row * TILE_SIZE)
 	label.size = Vector2(TILE_SIZE, TILE_SIZE)
 	add_child(label)
+
+	if glyph in WALL_GLYPHS:
+		_spawn_wall_collider(col, row)
+
+
+func _spawn_wall_collider(col: int, row: int) -> void:
+	var body := StaticBody2D.new()
+	body.position = tile_center(col, row)
+	var shape := CollisionShape2D.new()
+	var rect := RectangleShape2D.new()
+	rect.size = Vector2(TILE_SIZE, TILE_SIZE)
+	shape.shape = rect
+	body.add_child(shape)
+	add_child(body)
 
 
 func _spawn_npcs() -> void:

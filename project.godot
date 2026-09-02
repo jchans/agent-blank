@@ -8,6 +8,7 @@ config/features=PackedStringArray("4.7")
 
 [autoload]
 
+GameState="*res://scripts/game_state.gd"
 DialogueManager="*res://scripts/dialogue_manager.gd"
 
 [display]
