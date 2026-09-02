@@ -81,21 +81,25 @@ bypass-everything mode.
 ## Windows build
 
 `export_presets.cfg` (committed) defines a "Windows Desktop" x86_64
-preset. Build with **`--export-debug`, not `--export-release`**:
+preset. Build with:
 
 ```
-~/.local/bin/godot4 --headless --path . --export-debug "Windows Desktop" build/windows/WanderersVillage.exe
+~/.local/bin/godot4 --headless --path . --export-release "Windows Desktop" build/windows/WanderersVillage.exe
 ```
 
-This is deliberate, not a leftover diagnostic setting: the official
-Godot 4.7.2 **release** export template has a reproducible engine-level
+**Always call `change_scene_to_file` via `.bind(path).call_deferred()`,
+never directly** (see `title_screen.gd`/`dialogue_manager.gd`/`battle.gd`
+for the pattern) — this is load-bearing, not stylistic. The official
+Godot 4.7.2 release export template has a reproducible engine-level
 crash (`STATUS_ACCESS_VIOLATION`, identical faulting offset regardless of
-renderer backend — see PROGRESS.md's 2026-09-03 entries) triggered by
-this project's Title→Main scene transition, matching
-[godotengine/godot#79318](https://github.com/godotengine/godot/issues/79318).
-The **debug** template does not have this bug and is fully standalone —
-if a future Godot patch release fixes #79318-class issues, it's worth
-re-testing `--export-release` again, but until then, debug is correct.
+renderer backend) triggered by calling `change_scene_to_file` directly
+from an input/signal callback during this project's scene transitions —
+see PROGRESS.md's 2026-09-03 entries for the full investigation. Calling
+it deferred instead (so the scene swap happens strictly after the
+current input/signal-processing phase, not racing whatever's still
+pending in the engine's internal call queue) fixed it — confirmed on the
+user's real Windows/NVIDIA hardware with a plain `--export-release`
+build. Any new scene-change call site must follow the same pattern.
 
 `build/` is gitignored — don't commit the binary. It's also irrelevant
 whether you'd want to: at ~100MB it exceeds GitHub's 100MB hard push
