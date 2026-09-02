@@ -14,6 +14,12 @@
       "Bash(git diff *)",
       "Bash(git branch)",
       "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git pull)",
+      "Bash(git pull *)",
+      "Bash(git fetch)",
+      "Bash(git fetch *)",
       "Bash(~/.local/bin/godot4 *)",
       "Bash(/home/laohanj/.local/bin/godot4 *)",
       "Read(/home/laohanj/claude-projects/agent-blank/**)",
@@ -32,7 +38,11 @@
       "Bash(git clean -f*)",
       "Bash(git clean -fd*)",
       "Bash(git rebase*)",
-      "Bash(git filter-branch*)"
+      "Bash(git filter-branch*)",
+      "Bash(git checkout -f*)",
+      "Bash(git checkout -- .*)",
+      "Bash(git checkout .)",
+      "Bash(git clean*)"
     ]
   }
 }
