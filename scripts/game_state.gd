@@ -1,14 +1,21 @@
 extends Node
 
-## Autoload singleton. Tracks story flags (e.g. "met_elder") set by dialogue
-## nodes via "set_flag", checked by choices via "requires_flag" /
-## "requires_not_flag". Persisted immediately on every change — this is a
-## minimal save system covering flags only; player position/inventory/etc.
-## aren't tracked yet (see PROGRESS.md Next up).
+## Autoload singleton. Tracks story flags and basic player battle stats,
+## persisted immediately to user://save.json on every change. Player
+## position/inventory/current map aren't tracked yet (see PROGRESS.md
+## Next up) — keep the save format additive when adding those, don't
+## redesign it.
 
 const SAVE_PATH := "user://save.json"
 
 var flags: Dictionary = {}
+var player_max_hp: int = 20
+var player_hp: int = 20
+var player_attack: int = 5
+
+## Set by whoever triggers a battle (e.g. DialogueManager on a "start_battle"
+## node) right before changing to Battle.tscn; Battle reads it in _ready().
+var pending_battle_enemy: String = ""
 
 
 func _ready() -> void:
@@ -29,7 +36,12 @@ func save_game() -> void:
 	if file == null:
 		push_warning("GameState: could not open save file for writing: %s" % SAVE_PATH)
 		return
-	file.store_string(JSON.stringify({"flags": flags}))
+	file.store_string(JSON.stringify({
+		"flags": flags,
+		"player_hp": player_hp,
+		"player_max_hp": player_max_hp,
+		"player_attack": player_attack,
+	}))
 	file.close()
 
 
@@ -43,3 +55,6 @@ func load_game() -> void:
 	file.close()
 	if typeof(parsed) == TYPE_DICTIONARY:
 		flags = parsed.get("flags", {})
+		player_hp = parsed.get("player_hp", player_hp)
+		player_max_hp = parsed.get("player_max_hp", player_max_hp)
+		player_attack = parsed.get("player_attack", player_attack)

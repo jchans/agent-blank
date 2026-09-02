@@ -1,0 +1,7 @@
+{
+  "id": "slime",
+  "name": "Slime",
+  "glyph": "s",
+  "hp": 10,
+  "attack": 3
+}

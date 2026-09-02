@@ -1,0 +1,23 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Guard",
+      "text": "Want to test your skills? I can summon a training slime.",
+      "choices": [
+        { "text": "Let's spar!", "next": "battle_start" },
+        { "text": "Not now.", "next": "end" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Guard",
+      "text": "Here it comes!",
+      "start_battle": "slime"
+    },
+    "end": {
+      "speaker": "",
+      "text": "",
+      "end": true
+    }
+  }
+}

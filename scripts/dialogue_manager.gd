@@ -70,6 +70,15 @@ func _show_current_node() -> void:
 		end_dialogue()
 		return
 
+	var start_battle: String = node.get("start_battle", "")
+	if start_battle != "":
+		GameState.pending_battle_enemy = start_battle
+		_dialogue_box.display_node(node)
+		await get_tree().create_timer(1.2).timeout
+		end_dialogue()
+		get_tree().change_scene_to_file("res://scenes/Battle.tscn")
+		return
+
 	var set_flag: String = node.get("set_flag", "")
 	if set_flag != "":
 		GameState.set_flag(set_flag)
