@@ -1,7 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 *.translation
-export_presets.cfg
+
+# Build output (regenerate with export_presets.cfg, don't commit binaries)
+build/
 
 # Claude Code local session state (not project config)
 .claude/scheduled_tasks.lock
