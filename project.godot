@@ -1,0 +1,16 @@
+config_version=5
+
+[application]
+
+config/name="Wanderer's Village"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.7")
+
+[autoload]
+
+DialogueManager="*res://scripts/dialogue_manager.gd"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

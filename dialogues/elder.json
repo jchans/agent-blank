@@ -1,0 +1,33 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Elder",
+      "text": "Welcome, traveler. What brings you to our village?",
+      "choices": [
+        { "text": "I'm looking for the ancient sword.", "next": "sword_info" },
+        { "text": "Just passing through.", "next": "passing" }
+      ]
+    },
+    "sword_info": {
+      "speaker": "Elder",
+      "text": "Ah, the ancient sword... it lies deep within the Whispering Caves, north of here.",
+      "next": "warn"
+    },
+    "warn": {
+      "speaker": "Elder",
+      "text": "Be careful. Many who enter do not return.",
+      "next": "end"
+    },
+    "passing": {
+      "speaker": "Elder",
+      "text": "Safe travels, then. The road can be dangerous at night.",
+      "next": "end"
+    },
+    "end": {
+      "speaker": "",
+      "text": "",
+      "end": true
+    }
+  }
+}

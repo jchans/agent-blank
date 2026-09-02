@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Merchant",
+      "text": "Care to see my wares?",
+      "choices": [
+        { "text": "Show me what you have.", "next": "wares" },
+        { "text": "Not right now.", "next": "leave" }
+      ]
+    },
+    "wares": {
+      "speaker": "Merchant",
+      "text": "Potions, antidotes, a rusty old key... take your pick! (Shop system coming soon.)",
+      "next": "end"
+    },
+    "leave": {
+      "speaker": "Merchant",
+      "text": "Come back anytime.",
+      "next": "end"
+    },
+    "end": {
+      "speaker": "",
+      "text": "",
+      "end": true
+    }
+  }
+}
