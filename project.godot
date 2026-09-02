@@ -3,7 +3,7 @@ config_version=5
 [application]
 
 config/name="Wanderer's Village"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="res://scenes/TitleScreen.tscn"
 config/features=PackedStringArray("4.7")
 
 [autoload]
