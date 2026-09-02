@@ -3,5 +3,6 @@
   "name": "Slime",
   "glyph": "s",
   "hp": 10,
-  "attack": 3
+  "attack": 3,
+  "reward_gold": 3
 }

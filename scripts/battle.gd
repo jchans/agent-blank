@@ -16,6 +16,7 @@ var enemy_glyph: String = "?"
 var enemy_hp: int = 10
 var enemy_max_hp: int = 10
 var enemy_attack: int = 3
+var enemy_reward_gold: int = 0
 
 var _battle_over: bool = false
 
@@ -45,6 +46,7 @@ func _load_enemy(enemy_id: String) -> void:
 	enemy_hp = parsed.get("hp", 10)
 	enemy_max_hp = enemy_hp
 	enemy_attack = parsed.get("attack", 3)
+	enemy_reward_gold = parsed.get("reward_gold", 0)
 
 
 func _log(line: String) -> void:
@@ -52,8 +54,8 @@ func _log(line: String) -> void:
 
 
 func _update_status() -> void:
-	status_label.text = "@ You  HP: %d/%d      %s %s  HP: %d/%d" % [
-		GameState.player_hp, GameState.player_max_hp,
+	status_label.text = "@ You  HP: %d/%d  Gold: %d      %s %s  HP: %d/%d" % [
+		GameState.player_hp, GameState.player_max_hp, GameState.gold,
 		enemy_glyph, enemy_name, enemy_hp, enemy_max_hp,
 	]
 
@@ -66,6 +68,9 @@ func _on_attack_button_pressed() -> void:
 	if enemy_hp == 0:
 		_update_status()
 		_log("%s is defeated! You win." % enemy_name)
+		if enemy_reward_gold > 0:
+			GameState.gold += enemy_reward_gold
+			_log("You found %d gold." % enemy_reward_gold)
 		_end_battle()
 		return
 	GameState.player_hp = max(0, GameState.player_hp - enemy_attack)

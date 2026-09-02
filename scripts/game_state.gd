@@ -12,6 +12,7 @@ var flags: Dictionary = {}
 var player_max_hp: int = 20
 var player_hp: int = 20
 var player_attack: int = 5
+var gold: int = 0
 
 ## Set by whoever triggers a battle (e.g. DialogueManager on a "start_battle"
 ## node) right before changing to Battle.tscn; Battle reads it in _ready().
@@ -41,6 +42,7 @@ func save_game() -> void:
 		"player_hp": player_hp,
 		"player_max_hp": player_max_hp,
 		"player_attack": player_attack,
+		"gold": gold,
 	}))
 	file.close()
 
@@ -58,3 +60,4 @@ func load_game() -> void:
 		player_hp = parsed.get("player_hp", player_hp)
 		player_max_hp = parsed.get("player_max_hp", player_max_hp)
 		player_attack = parsed.get("player_attack", player_attack)
+		gold = parsed.get("gold", gold)
