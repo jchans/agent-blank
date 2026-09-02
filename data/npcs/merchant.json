@@ -1,7 +1,8 @@
 {
   "id": "merchant",
   "name": "Merchant",
-  "position": [600, 400],
+  "glyph": "M",
+  "position": [468, 276],
   "color": [0.5, 0.8, 0.6, 1],
   "dialogue": "res://dialogues/merchant.json"
 }

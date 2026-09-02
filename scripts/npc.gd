@@ -7,15 +7,17 @@ extends CharacterBody2D
 @export_file("*.json") var dialogue_path: String = ""
 @export var npc_name: String = "NPC"
 @export var portrait_color: Color = Color(0.9, 0.6, 0.2)
+@export var glyph: String = "N"
 
-@onready var visual: ColorRect = $Visual
+@onready var visual: Label = $Visual
 @onready var prompt: Label = $InteractionPrompt
 
 var _player_in_range: bool = false
 
 
 func _ready() -> void:
-	visual.color = portrait_color
+	visual.text = glyph
+	visual.add_theme_color_override("font_color", portrait_color)
 	prompt.hide()
 
 

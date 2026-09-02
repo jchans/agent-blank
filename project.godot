@@ -10,6 +10,13 @@ config/features=PackedStringArray("4.7")
 
 DialogueManager="*res://scripts/dialogue_manager.gd"
 
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=480
+window/size/mode=0
+window/size/resizable=true
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
