@@ -81,11 +81,21 @@ bypass-everything mode.
 ## Windows build
 
 `export_presets.cfg` (committed) defines a "Windows Desktop" x86_64
-preset. Build with:
+preset. Build with **`--export-debug`, not `--export-release`**:
 
 ```
-~/.local/bin/godot4 --headless --path . --export-release "Windows Desktop" build/windows/WanderersVillage.exe
+~/.local/bin/godot4 --headless --path . --export-debug "Windows Desktop" build/windows/WanderersVillage.exe
 ```
+
+This is deliberate, not a leftover diagnostic setting: the official
+Godot 4.7.2 **release** export template has a reproducible engine-level
+crash (`STATUS_ACCESS_VIOLATION`, identical faulting offset regardless of
+renderer backend — see PROGRESS.md's 2026-09-03 entries) triggered by
+this project's Title→Main scene transition, matching
+[godotengine/godot#79318](https://github.com/godotengine/godot/issues/79318).
+The **debug** template does not have this bug and is fully standalone —
+if a future Godot patch release fixes #79318-class issues, it's worth
+re-testing `--export-release` again, but until then, debug is correct.
 
 `build/` is gitignored — don't commit the binary. It's also irrelevant
 whether you'd want to: at ~100MB it exceeds GitHub's 100MB hard push

@@ -27,11 +27,8 @@ const WALL_GLYPHS := ["#"]
 
 
 func _ready() -> void:
-	var isolate := OS.get_environment("GODOT_ISOLATE")
-	if isolate != "no_map" and isolate != "minimal":
-		_render_map()
-	if isolate != "no_npcs" and isolate != "minimal":
-		_spawn_npcs()
+	_render_map()
+	_spawn_npcs()
 	if GameState.has_saved_position:
 		player.position = GameState.player_position
 
@@ -73,7 +70,7 @@ func _spawn_tile(glyph: String, col: int, row: int) -> void:
 	label.size = Vector2(TILE_SIZE, TILE_SIZE)
 	add_child(label)
 
-	if glyph in WALL_GLYPHS and OS.get_environment("GODOT_ISOLATE") != "no_colliders":
+	if glyph in WALL_GLYPHS:
 		_spawn_wall_collider(col, row)
 
 
