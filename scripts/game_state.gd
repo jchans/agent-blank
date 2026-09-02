@@ -13,6 +13,16 @@ var player_max_hp: int = 20
 var player_hp: int = 20
 var player_attack: int = 5
 
+## Kept in sync from Main._process() while the overworld is loaded; written
+## to save.json whenever save_game() runs (flag change, battle end, pause).
+## Default matches Main.tscn's current spawn point.
+var player_position: Vector2 = Vector2(300, 180)
+## True once a save was actually loaded with a player_position in it —
+## distinguishes "fresh game, use the scene's default spawn" from "resume
+## a save, override the spawn". Only one map exists so far, so there's no
+## current_map field yet; add one additively when a second map exists.
+var has_saved_position: bool = false
+
 ## Set by whoever triggers a battle (e.g. DialogueManager on a "start_battle"
 ## node) right before changing to Battle.tscn; Battle reads it in _ready().
 var pending_battle_enemy: String = ""
@@ -41,6 +51,7 @@ func save_game() -> void:
 		"player_hp": player_hp,
 		"player_max_hp": player_max_hp,
 		"player_attack": player_attack,
+		"player_position": [player_position.x, player_position.y],
 	}))
 	file.close()
 
@@ -58,3 +69,7 @@ func load_game() -> void:
 		player_hp = parsed.get("player_hp", player_hp)
 		player_max_hp = parsed.get("player_max_hp", player_max_hp)
 		player_attack = parsed.get("player_attack", player_attack)
+		var pos: Array = parsed.get("player_position", [])
+		if pos.size() == 2:
+			player_position = Vector2(pos[0], pos[1])
+			has_saved_position = true

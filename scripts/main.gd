@@ -23,9 +23,18 @@ const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
 const WALL_GLYPHS := ["#"]
 
 
+@onready var player: CharacterBody2D = $Player
+
+
 func _ready() -> void:
 	_render_map()
 	_spawn_npcs()
+	if GameState.has_saved_position:
+		player.position = GameState.player_position
+
+
+func _process(_delta: float) -> void:
+	GameState.player_position = player.position
 
 
 ## World-space center of tile (col, row), for positioning player/NPCs.

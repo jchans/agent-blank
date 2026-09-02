@@ -30,6 +30,7 @@ func _toggle_pause() -> void:
 
 func _pause() -> void:
 	get_tree().paused = true
+	GameState.save_game()
 	show()
 
 
