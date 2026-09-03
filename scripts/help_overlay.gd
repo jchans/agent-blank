@@ -6,7 +6,11 @@ extends CanvasLayer
 ## surviving scene changes. H toggles it; Esc closes it and consumes the
 ## event so pause doesn't also open on the same press. While open,
 ## Controls.is_help_open gates player movement/NPC interact/pause-menu
-## input, the same way scripts already gate on DialogueManager.is_active.
+## input, the same way scripts already gate on DialogueManager.is_active
+## — and Controls.suspend_ui_keys()/restore_ui_keys() additionally pull
+## Z/X out of the built-in ui_accept/ui_cancel actions for the duration,
+## so a focused Button underneath (a dialogue choice, a pause-menu
+## button) can't still be "pressed" via Z while this is drawn on top.
 
 @onready var panel: Control = $Panel
 @onready var box: Panel = $Panel/Box
@@ -50,8 +54,10 @@ func _toggle() -> void:
 func _open() -> void:
 	panel.show()
 	Controls.is_help_open = true
+	Controls.suspend_ui_keys()
 
 
 func _close() -> void:
 	panel.hide()
 	Controls.is_help_open = false
+	Controls.restore_ui_keys()
