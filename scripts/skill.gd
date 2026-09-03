@@ -28,6 +28,11 @@ var half_on_save: bool = true ## only used when kind == SAVE
 var rp_cost: int = 0
 var kaomoji_key: String = "attack_special"
 var targets_ally: bool = false ## true for heal/support skills
+## Party-only (see combatant_stats.gd's apply_level): a skill isn't
+## available until the combatant reaches this level. Defaults to 1 so
+## every existing skill (all of which predate leveling) stays available
+## from the start with no data-file changes needed.
+var unlock_level: int = 1
 
 ## `field`/`field_zh` mirrors this project's dialogue-JSON localization
 ## convention (see Localization.text_for) — English is the canonical key,
@@ -46,6 +51,7 @@ static func from_dict(data: Dictionary) -> Skill:
 	s.rp_cost = data.get("rp_cost", 0)
 	s.kaomoji_key = data.get("kaomoji_key", "attack_special")
 	s.targets_ally = data.get("targets_ally", false)
+	s.unlock_level = data.get("unlock_level", 1)
 	return s
 
 ## Localized skill name — same field/field_zh fallback rule as

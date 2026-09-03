@@ -19,6 +19,7 @@
   "weapon_symbol": "杖",
   "weapon_dice": "1d4",
   "weapon_ability": "int",
+  "primary_ability": "int",
   "max_rp": 3,
   "skills": [
     {
@@ -30,7 +31,8 @@
       "ability": "int",
       "damage_dice": "1d10",
       "rp_cost": 1,
-      "kaomoji_key": "cast"
+      "kaomoji_key": "cast",
+      "unlock_level": 1
     },
     {
       "skill_name": "Ice Burst",
@@ -43,7 +45,48 @@
       "damage_dice": "2d6",
       "half_on_save": true,
       "rp_cost": 2,
-      "kaomoji_key": "cast"
+      "kaomoji_key": "cast",
+      "unlock_level": 1
+    },
+    {
+      "skill_name": "Lightning Lance",
+      "skill_name_zh": "雷霆之矛",
+      "description": "A crackling spear of lightning that punches clean through its target.",
+      "description_zh": "凝聚成矛的雷電，貫穿目標。",
+      "kind": "attack_roll",
+      "ability": "int",
+      "damage_dice": "3d6",
+      "rp_cost": 2,
+      "kaomoji_key": "cast",
+      "unlock_level": 4
+    },
+    {
+      "skill_name": "Frost Nova",
+      "skill_name_zh": "冰霜新星",
+      "description": "A ring of killing cold bursts outward, punishing anything too slow to brace against it.",
+      "description_zh": "致命寒冷向外爆發成環狀，來不及抵禦者將承受重創。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "con",
+      "damage_dice": "4d6",
+      "half_on_save": true,
+      "rp_cost": 3,
+      "kaomoji_key": "cast",
+      "unlock_level": 7
+    },
+    {
+      "skill_name": "Meteor Swarm",
+      "skill_name_zh": "隕石亂舞",
+      "description": "The mage's ultimate working — searing stone falls from an unseen sky.",
+      "description_zh": "法師的終極法術——不見天日之處，烈焰隕石仍轟然墜落。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "dex",
+      "damage_dice": "6d6",
+      "half_on_save": true,
+      "rp_cost": 4,
+      "kaomoji_key": "cast",
+      "unlock_level": 10
     }
   ]
 }

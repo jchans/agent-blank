@@ -5,7 +5,13 @@
   "char_class": "Guardian",
   "char_class_zh": "守護者",
   "is_player": false,
-  "log_color": [0.75, 0.6, 0.35, 1.0],
+  "xp": 150,
+  "log_color": [
+    0.75,
+    0.6,
+    0.35,
+    1.0
+  ],
   "str_score": 17,
   "dex_score": 10,
   "con_score": 16,

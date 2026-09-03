@@ -19,6 +19,7 @@
   "weapon_symbol": "劍",
   "weapon_dice": "1d8",
   "weapon_ability": "str",
+  "primary_ability": "str",
   "max_rp": 2,
   "skills": [
     {
@@ -30,7 +31,46 @@
       "ability": "str",
       "damage_dice": "2d8",
       "rp_cost": 1,
-      "kaomoji_key": "attack_special"
+      "kaomoji_key": "attack_special",
+      "unlock_level": 1
+    },
+    {
+      "skill_name": "Cleaving Blow",
+      "skill_name_zh": "橫掃斬",
+      "description": "A wide, weighted swing that hits harder than Power Strike, at the cost of more stamina.",
+      "description_zh": "沉重而寬闊的一揮，比強力打擊更強，但更為耗力。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "3d8",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special",
+      "unlock_level": 4
+    },
+    {
+      "skill_name": "Sunder Armor",
+      "skill_name_zh": "破甲擊",
+      "description": "A blow aimed to crack armor and bone alike — even a foe braced for it still feels the impact.",
+      "description_zh": "瞄準鎧甲與骨骼的一擊，即使有所防備也難以完全卸力。",
+      "kind": "save",
+      "ability": "str",
+      "save_ability": "con",
+      "damage_dice": "3d10",
+      "half_on_save": true,
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special",
+      "unlock_level": 7
+    },
+    {
+      "skill_name": "Heaven-Piercing Blow",
+      "skill_name_zh": "貫天一擊",
+      "description": "Everything you are, in a single strike.",
+      "description_zh": "傾注全身所學於這一擊。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "5d8",
+      "rp_cost": 3,
+      "kaomoji_key": "attack_special",
+      "unlock_level": 10
     }
   ]
 }

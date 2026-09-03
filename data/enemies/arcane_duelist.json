@@ -5,7 +5,13 @@
   "char_class": "Battlemage",
   "char_class_zh": "戰鬥法師",
   "is_player": false,
-  "log_color": [0.6, 0.4, 0.85, 1.0],
+  "xp": 60,
+  "log_color": [
+    0.6,
+    0.4,
+    0.85,
+    1.0
+  ],
   "str_score": 10,
   "dex_score": 14,
   "con_score": 13,

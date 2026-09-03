@@ -92,6 +92,7 @@ func _load_party() -> Array[CombatantStats]:
 			var c := _load_combatant(PARTY_DATA_DIR + file_name)
 			if c != null:
 				_apply_equipment(c)
+				c.apply_level(GameState.party_level.get(c.id, 1))
 				if GameState.party_hp.has(c.id):
 					c.current_hp = GameState.party_hp[c.id]
 					c.current_rp = GameState.party_rp.get(c.id, c.max_rp)
@@ -477,6 +478,37 @@ func _sync_party_to_game_state() -> void:
 		GameState.party_rp[c.id] = c.current_rp
 
 
+## Silent leveling (user request: no XP number or "level up" message ever
+## shown — see PROGRESS.md's Leveling entry) — every defeated enemy's
+## "xp" (data/enemies/*.json) is summed and given in full to every party
+## member (not divided by party size the way SRD 5.1 does for a fluid
+## adventuring party; this project's party is always exactly these same
+## 3 people, so full-XP-each reads as normal per-kill JRPG XP instead of
+## a fraction, and still uses the SRD's own level thresholds/pacing
+## unchanged). Called only on victory (not flee/defeat) — a loss already
+## fully heals the party for free, awarding XP for it too would be an
+## unearned double reward. A member who levels up also has their current
+## HP raised by the same amount their max HP just grew by, matching
+## SRD 5.1's own "leveling heals you" rule rather than silently making
+## them proportionally more hurt relative to a higher cap.
+func _award_xp() -> void:
+	var encounter_xp := 0
+	for e in enemies:
+		encounter_xp += e.xp
+	if encounter_xp <= 0:
+		return
+	for c in party:
+		var old_level: int = GameState.party_level.get(c.id, 1)
+		var new_xp: int = GameState.party_xp.get(c.id, 0) + encounter_xp
+		GameState.party_xp[c.id] = new_xp
+		var new_level: int = CombatantStats.level_for_xp(new_xp)
+		if new_level > old_level:
+			var hp_per_level := int(c.hit_die / 2.0) + 1 + c.get_modifier("con")
+			var hp_gain := hp_per_level * (new_level - old_level)
+			GameState.party_hp[c.id] = GameState.party_hp.get(c.id, c.current_hp) + hp_gain
+			GameState.party_level[c.id] = new_level
+
+
 func _end_battle() -> void:
 	action_menu.visible = false
 	if _fled:
@@ -516,6 +548,7 @@ func _end_battle() -> void:
 					view.play_victory_dance()
 		_log(Localization.t("battle.end_victory"))
 		_sync_party_to_game_state()
+		_award_xp()
 	GameState.pending_monster_id = ""
 	_log_separator()
 	GameState.save_game()

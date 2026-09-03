@@ -5,7 +5,13 @@
   "char_class": "Stalker",
   "char_class_zh": "潛行者",
   "is_player": false,
-  "log_color": [0.4, 0.35, 0.5, 1.0],
+  "xp": 45,
+  "log_color": [
+    0.4,
+    0.35,
+    0.5,
+    1.0
+  ],
   "str_score": 14,
   "dex_score": 16,
   "con_score": 12,

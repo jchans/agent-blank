@@ -244,6 +244,8 @@ func _rebuild_consumables_rows() -> void:
 ## max HP, max_rp) to cap a heal/restore_rp effect the same way battle.gd
 ## would — equipment never affects max HP/RP, so unlike battle.gd's
 ## _load_party there's no need to also apply GameState.equipment here.
+## Level *does* affect max HP/RP (see combatant_stats.gd's apply_level),
+## so that's applied here too, same as battle.gd.
 func _member_stats(member_id: String) -> CombatantStats:
 	var file := FileAccess.open(PARTY_DATA_DIR + member_id + ".json", FileAccess.READ)
 	if file == null:
@@ -252,7 +254,9 @@ func _member_stats(member_id: String) -> CombatantStats:
 	file.close()
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return CombatantStats.new()
-	return CombatantStats.from_dict(parsed)
+	var stats := CombatantStats.from_dict(parsed)
+	stats.apply_level(GameState.party_level.get(member_id, 1))
+	return stats
 
 
 ## Applies a heal/restore_rp consumable directly to GameState.party_hp/

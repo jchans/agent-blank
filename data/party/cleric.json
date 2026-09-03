@@ -19,6 +19,7 @@
   "weapon_symbol": "鎚",
   "weapon_dice": "1d6",
   "weapon_ability": "str",
+  "primary_ability": "wis",
   "max_rp": 3,
   "skills": [
     {
@@ -31,7 +32,47 @@
       "damage_dice": "1d8",
       "rp_cost": 1,
       "kaomoji_key": "heal",
-      "targets_ally": true
+      "targets_ally": true,
+      "unlock_level": 1
+    },
+    {
+      "skill_name": "Guiding Bolt",
+      "skill_name_zh": "引導箭",
+      "description": "A streak of radiant light lances toward a foe, guided true by faith.",
+      "description_zh": "一道聖光箭矢在信仰引導下直射敵人。",
+      "kind": "attack_roll",
+      "ability": "wis",
+      "damage_dice": "2d6",
+      "rp_cost": 1,
+      "kaomoji_key": "cast",
+      "unlock_level": 3
+    },
+    {
+      "skill_name": "Healing Light",
+      "skill_name_zh": "聖光普照",
+      "description": "A greater working of holy light, mending far deeper wounds than a simple prayer.",
+      "description_zh": "更為強大的聖光術式，能治癒遠比尋常禱詞更深的傷勢。",
+      "kind": "heal",
+      "ability": "wis",
+      "damage_dice": "3d8",
+      "rp_cost": 2,
+      "kaomoji_key": "heal",
+      "targets_ally": true,
+      "unlock_level": 6
+    },
+    {
+      "skill_name": "Wrath of the Divine",
+      "skill_name_zh": "天譴",
+      "description": "Calls down judgment on a foe — those who resist still feel its weight.",
+      "description_zh": "召喚天罰降臨敵人，即使抵抗也難逃其威。",
+      "kind": "save",
+      "ability": "wis",
+      "save_ability": "wis",
+      "damage_dice": "4d8",
+      "half_on_save": true,
+      "rp_cost": 3,
+      "kaomoji_key": "cast",
+      "unlock_level": 9
     }
   ]
 }

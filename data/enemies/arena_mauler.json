@@ -5,7 +5,13 @@
   "char_class": "Beast",
   "char_class_zh": "猛獸",
   "is_player": false,
-  "log_color": [0.7, 0.35, 0.25, 1.0],
+  "xp": 65,
+  "log_color": [
+    0.7,
+    0.35,
+    0.25,
+    1.0
+  ],
   "str_score": 18,
   "dex_score": 13,
   "con_score": 16,

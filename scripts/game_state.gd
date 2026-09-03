@@ -19,6 +19,15 @@ var flags: Dictionary = {}
 var party_hp: Dictionary = {}
 var party_rp: Dictionary = {}
 
+## party_member_id -> total XP earned / current level (see
+## combatant_stats.gd's apply_level/level_for_xp and battle.gd's
+## _award_xp). Deliberately never surfaced in any UI — the user asked for
+## leveling to happen silently, so there's no "XP: N/300" label or
+## "LEVEL UP!" toast anywhere; a party member with no entry here yet is
+## level 1 / 0 XP, same default apply_level(1) already produces.
+var party_xp: Dictionary = {}
+var party_level: Dictionary = {}
+
 ## Shared party inventory: item_id (see data/items/*.json) -> count owned.
 ## Consumables and equipment both live here; equipping doesn't remove an
 ## item from this count (see equipment below) — a picked-up sword just
@@ -91,6 +100,8 @@ func reset_new_game() -> void:
 	flags = {}
 	party_hp = {}
 	party_rp = {}
+	party_xp = {}
+	party_level = {}
 	inventory = {}
 	equipment = {}
 	monster_defeats = {}
@@ -150,6 +161,8 @@ func save_game() -> void:
 		"flags": flags,
 		"party_hp": party_hp,
 		"party_rp": party_rp,
+		"party_xp": party_xp,
+		"party_level": party_level,
 		"inventory": inventory,
 		"equipment": equipment,
 		"monster_defeats": monster_defeats,
@@ -172,6 +185,8 @@ func load_game() -> void:
 		flags = parsed.get("flags", {})
 		party_hp = parsed.get("party_hp", {})
 		party_rp = parsed.get("party_rp", {})
+		party_xp = parsed.get("party_xp", {})
+		party_level = parsed.get("party_level", {})
 		inventory = parsed.get("inventory", {})
 		equipment = parsed.get("equipment", {})
 		monster_defeats = parsed.get("monster_defeats", {})
