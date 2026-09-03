@@ -1,0 +1,9 @@
+{
+  "id": "shrine_bottle_1",
+  "map": "old_shrine",
+  "position": [60, 156],
+  "glyph": "i",
+  "color": [0.4, 0.7, 0.75, 1.0],
+  "item_id": "power_draught",
+  "quantity": 1
+}

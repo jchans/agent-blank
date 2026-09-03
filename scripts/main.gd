@@ -13,6 +13,8 @@ extends Node2D
 const NPC_SCENE := preload("res://scenes/NPC.tscn")
 const NPC_DATA_DIR := "res://data/npcs/"
 const MAP_DATA_DIR := "res://data/maps/"
+const WORLD_ITEM_SCENE := preload("res://scenes/WorldItem.tscn")
+const WORLD_ITEM_DATA_DIR := "res://data/map_items/"
 
 const TILE_SIZE := 24.0
 const TILE_FONT_SIZE := 18
@@ -59,14 +61,20 @@ static func tile_center(col: int, row: int) -> Vector2:
 
 
 func _load_map(map_id: String) -> void:
+	# WorldItem is the one spawned-node type that can free itself mid-visit
+	# (see world_item.gd's _collect()), so _spawned_nodes can already hold
+	# a stale reference by the time a room reload gets here — guard against
+	# re-freeing it.
 	for node in _spawned_nodes:
-		node.queue_free()
+		if is_instance_valid(node):
+			node.queue_free()
 	_spawned_nodes.clear()
 	_doors.clear()
 	GameState.current_map = map_id
 	_load_doors(MAP_DATA_DIR + map_id + ".doors.json")
 	_render_map(MAP_DATA_DIR + map_id + ".txt")
 	_spawn_npcs(map_id)
+	_spawn_world_items(map_id)
 
 
 func _check_door_crossing() -> void:
@@ -206,3 +214,53 @@ func _spawn_npc_from_file(path: String, map_id: String) -> void:
 	npc.name = String(parsed.get("id", "NPC"))
 	add_child(npc)
 	_spawned_nodes.append(npc)
+
+
+## Same one-file-per-object, "map" field scoping convention as NPCs (see
+## "How to add a world item" in PROGRESS.md). Each file additionally
+## carries "collected_flag" (defaulted from "id" if omitted) — an item
+## already collected is a permanently set GameState flag, so it's simply
+## never spawned again rather than needing per-room "already taken" state.
+func _spawn_world_items(map_id: String) -> void:
+	var dir := DirAccess.open(WORLD_ITEM_DATA_DIR)
+	if dir == null:
+		push_warning("Main: could not open world item data dir: %s" % WORLD_ITEM_DATA_DIR)
+		return
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir() and file_name.ends_with(".json"):
+			_spawn_world_item_from_file(WORLD_ITEM_DATA_DIR + file_name, map_id)
+		file_name = dir.get_next()
+	dir.list_dir_end()
+
+
+func _spawn_world_item_from_file(path: String, map_id: String) -> void:
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_warning("Main: could not open world item data file: %s" % path)
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_DICTIONARY:
+		push_warning("Main: invalid world item data file: %s" % path)
+		return
+	if parsed.get("map", "") != map_id:
+		return
+	var item_id: String = String(parsed.get("id", "item"))
+	var collected_flag: String = parsed.get("collected_flag", "world_item_%s_taken" % item_id)
+	if GameState.has_flag(collected_flag):
+		return
+
+	var world_item := WORLD_ITEM_SCENE.instantiate()
+	var pos: Array = parsed.get("position", [0, 0])
+	world_item.position = Vector2(pos[0], pos[1])
+	var col: Array = parsed.get("color", [1, 1, 1, 1])
+	world_item.portrait_color = Color(col[0], col[1], col[2], col[3] if col.size() > 3 else 1.0)
+	world_item.glyph = parsed.get("glyph", "=")
+	world_item.item_id = parsed.get("item_id", "")
+	world_item.quantity = parsed.get("quantity", 1)
+	world_item.collected_flag = collected_flag
+	world_item.name = item_id
+	add_child(world_item)
+	_spawned_nodes.append(world_item)

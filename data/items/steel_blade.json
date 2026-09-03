@@ -1,0 +1,15 @@
+{
+  "id": "steel_blade",
+  "name": "Steel Blade",
+  "name_zh": "鋼劍",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 1,
+  "damage_bonus": 1,
+  "weapon_dice": "1d10",
+  "weapon_name": "Steel Blade",
+  "weapon_name_zh": "鋼劍",
+  "weapon_symbol": "劍",
+  "description": "A finely forged blade, sharper and truer than common steel.",
+  "description_zh": "精心鍛造的劍刃，比普通鋼鐵更為銳利精準。"
+}

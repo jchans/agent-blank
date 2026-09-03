@@ -39,6 +39,23 @@ func start_dialogue(dialogue_path: String) -> void:
 	_show_current_node()
 
 
+## A one-off announcement (e.g. an item pickup) that reuses the dialogue
+## box's display/typewriter/advance machinery instead of a real branching
+## graph: a single speakerless node with no "next", so the player's next
+## Z press (after the typewriter finishes) naturally ends it via the
+## dangling-next path in _show_current_node/advance below.
+func show_message(text: String) -> void:
+	if _dialogue_box == null:
+		push_warning("DialogueManager: no dialogue box registered")
+		return
+	_dialogue_data = {"start": "message", "nodes": {"message": {"speaker": "", "text": text}}}
+	_current_node_id = "message"
+	is_active = true
+	dialogue_started.emit()
+	_dialogue_box.show()
+	_show_current_node()
+
+
 func advance(next_id: String = "") -> void:
 	if not is_active:
 		return

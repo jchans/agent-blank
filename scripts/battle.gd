@@ -91,6 +91,7 @@ func _load_party() -> Array[CombatantStats]:
 		if not dir.current_is_dir() and file_name.ends_with(".json"):
 			var c := _load_combatant(PARTY_DATA_DIR + file_name)
 			if c != null:
+				_apply_equipment(c)
 				if GameState.party_hp.has(c.id):
 					c.current_hp = GameState.party_hp[c.id]
 					c.current_rp = GameState.party_rp.get(c.id, c.max_rp)
@@ -102,6 +103,23 @@ func _load_party() -> Array[CombatantStats]:
 	dir.list_dir_end()
 	list.sort_custom(func(a, b): return a.id < b.id)
 	return list
+
+
+## Layers a party member's persisted gear (GameState.equipment, set via the
+## pause menu's Items screen) on top of their base JSON stats. Enemies
+## never have equipment, so this is only called from _load_party.
+func _apply_equipment(c: CombatantStats) -> void:
+	var equipped: Dictionary = GameState.equipment.get(c.id, {})
+	var weapon_id: String = equipped.get("weapon", "")
+	if weapon_id != "":
+		var item := ItemDB.get_item(weapon_id)
+		if item.get("slot", "") == "weapon":
+			c.apply_weapon_equipment(item)
+	var armor_id: String = equipped.get("armor", "")
+	if armor_id != "":
+		var item := ItemDB.get_item(armor_id)
+		if item.get("slot", "") == "armor":
+			c.apply_armor_equipment(item)
 
 
 func _load_enemy(enemy_id: String) -> CombatantStats:
@@ -195,6 +213,8 @@ func _resolve_choice(actor: CombatantStats, choice: Dictionary) -> void:
 			await _do_attack(actor, choice["target"])
 		"skill":
 			await _do_skill(actor, choice["skill"], choice["target"])
+		"item":
+			await _do_item(actor, choice["item_id"], choice["target"])
 		"defend":
 			actor.is_defending = true
 			_set_state(actor, "defend")
@@ -220,7 +240,7 @@ func _do_attack(actor: CombatantStats, target: CombatantStats) -> void:
 		_set_state(target, "miss")
 	elif roll == 20 or total >= target.get_ac():
 		var crit := roll == 20
-		var dmg := Dice.roll_dice_string(actor.weapon_dice) + actor.get_modifier(actor.weapon_ability)
+		var dmg := Dice.roll_dice_string(actor.weapon_dice) + actor.get_modifier(actor.weapon_ability) + actor.equip_damage_bonus
 		if crit:
 			dmg += Dice.roll_dice_string(actor.weapon_dice)
 			_log(Localization.t("battle.crit_hit"))
@@ -295,6 +315,46 @@ func _resolve_skill_heal(actor: CombatantStats, skill: Skill, target: CombatantS
 	target.current_hp = min(target.current_hp + heal, target.get_max_hp())
 	_set_state(target, "heal")
 	_log(Localization.t("battle.heal") % [_name(actor), _name(target), _actor_text(actor, skill.localized_name()), heal])
+
+
+## Consumes one unit of `item_id` from the shared party inventory and
+## applies its effect (see data/items/*.json's "effect" field). Unlike
+## Skill, an item's effect isn't an enum in code — the small set of
+## effect strings below is the entire vocabulary items can use, kept
+## flat since there are only five of them; a Skill-style class would be
+## pure ceremony at this size.
+func _do_item(actor: CombatantStats, item_id: String, target: CombatantStats) -> void:
+	var item := ItemDB.get_item(item_id)
+	GameState.remove_item(item_id)
+	var item_name := ItemDB.localized_name(item_id)
+	var item_text := _actor_text(actor, item_name)
+	match item.get("effect", ""):
+		"heal":
+			var heal := maxi(Dice.roll_dice_string(item.get("amount_dice", "1d4")), 0)
+			target.current_hp = min(target.current_hp + heal, target.get_max_hp())
+			_set_state(target, "heal")
+			_log(Localization.t("battle.item_heal") % [_name(actor), item_text, _name(target), heal])
+		"restore_rp":
+			var amount: int = item.get("amount", 1)
+			target.current_rp = min(target.current_rp + amount, target.max_rp)
+			_set_state(target, "heal")
+			_log(Localization.t("battle.item_restore_rp") % [_name(actor), item_text, _name(target), amount])
+		"damage":
+			_set_state(actor, "attack_special")
+			var dmg := maxi(Dice.roll_dice_string(item.get("amount_dice", "1d4")), 0)
+			_log(Localization.t("battle.item_damage") % [_name(actor), item_text, _name(target)])
+			_apply_damage(target, dmg, false, actor)
+		"buff_attack":
+			var amount: int = item.get("amount", 1)
+			target.equip_attack_bonus += amount
+			_log(Localization.t("battle.item_buff_attack") % [_name(actor), item_text, _name(target)])
+		"buff_defense":
+			var amount: int = item.get("amount", 1)
+			target.equip_ac_bonus += amount
+			_log(Localization.t("battle.item_buff_defense") % [_name(actor), item_text, _name(target)])
+	await _pause()
+	if actor.is_alive():
+		_set_state(actor, "idle")
 
 
 func _apply_damage(target: CombatantStats, dmg: int, crit: bool = false, actor: CombatantStats = null) -> void:

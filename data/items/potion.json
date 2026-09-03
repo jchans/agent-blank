@@ -1,0 +1,11 @@
+{
+  "id": "potion",
+  "name": "Potion",
+  "name_zh": "藥水",
+  "type": "consumable",
+  "effect": "heal",
+  "amount_dice": "2d4+2",
+  "target": "ally",
+  "description": "A fizzy tonic that mends wounds.",
+  "description_zh": "會冒泡的藥劑，能治療傷勢。"
+}

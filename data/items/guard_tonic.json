@@ -1,0 +1,11 @@
+{
+  "id": "guard_tonic",
+  "name": "Guard Tonic",
+  "name_zh": "堅甲藥劑",
+  "type": "consumable",
+  "effect": "buff_defense",
+  "amount": 2,
+  "target": "ally",
+  "description": "Toughens the drinker's hide for the rest of the battle.",
+  "description_zh": "服用後皮膚變得堅韌，效果持續到本場戰鬥結束。"
+}

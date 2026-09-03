@@ -1,0 +1,9 @@
+{
+  "id": "forest_chest_1",
+  "map": "forest_path",
+  "position": [60, 36],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "fire_bomb",
+  "quantity": 2
+}

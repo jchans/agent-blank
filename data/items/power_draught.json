@@ -1,0 +1,11 @@
+{
+  "id": "power_draught",
+  "name": "Power Draught",
+  "name_zh": "力量藥劑",
+  "type": "consumable",
+  "effect": "buff_attack",
+  "amount": 2,
+  "target": "ally",
+  "description": "Sharpens the drinker's strikes for the rest of the battle.",
+  "description_zh": "服用後攻擊更加精準，效果持續到本場戰鬥結束。"
+}

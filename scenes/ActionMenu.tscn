@@ -30,6 +30,12 @@ alignment = 1
 theme_override_constants/separation = 8
 visible = false
 
+[node name="ItemBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+visible = false
+
 [node name="TargetBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 alignment = 1

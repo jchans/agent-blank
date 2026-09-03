@@ -1,0 +1,10 @@
+{
+  "id": "leather_vest",
+  "name": "Leather Vest",
+  "name_zh": "皮甲背心",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 1,
+  "description": "Light armor that doesn't get in the way of spellcasting.",
+  "description_zh": "輕便的護甲，不會妨礙施法。"
+}

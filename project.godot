@@ -15,6 +15,7 @@ Controls="*res://scripts/controls.gd"
 HelpOverlay="*res://scenes/HelpOverlay.tscn"
 Dice="*res://scripts/dice.gd"
 Kaomoji="*res://scripts/kaomoji.gd"
+ItemDB="*res://scripts/item_database.gd"
 
 [gui]
 

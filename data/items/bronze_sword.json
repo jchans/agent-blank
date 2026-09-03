@@ -1,0 +1,15 @@
+{
+  "id": "bronze_sword",
+  "name": "Bronze Sword",
+  "name_zh": "青銅劍",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 1,
+  "damage_bonus": 0,
+  "weapon_dice": "1d6",
+  "weapon_name": "Bronze Sword",
+  "weapon_name_zh": "青銅劍",
+  "weapon_symbol": "劍",
+  "description": "A well-balanced blade, sturdier than most starting gear.",
+  "description_zh": "平衡良好的劍刃，比大多數初始裝備更為堅固。"
+}

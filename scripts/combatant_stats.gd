@@ -43,6 +43,18 @@ var current_rp: int = 0
 var is_defending: bool = false
 var current_initiative: int = 0
 
+## Additive bonuses layered on top of the base JSON stats above by
+## apply_weapon_equipment/apply_armor_equipment (persisted gear, see
+## GameState.equipment) and by consumable buff items in battle (see
+## battle.gd's _do_item) — both use the same fields since a
+## CombatantStats instance only ever lives for one battle (rebuilt fresh
+## from JSON + GameState.equipment each time in battle.gd's _load_party),
+## so there's nothing to reset: an item buff naturally "expires" because
+## the object it modified is thrown away at the end of the encounter.
+var equip_attack_bonus: int = 0
+var equip_damage_bonus: int = 0
+var equip_ac_bonus: int = 0
+
 ## Ability-score arrays use the standard 6-key shorthand (str/dex/con/int/
 ## wis/cha) throughout this system, matching the SRD's own abbreviations.
 static func from_dict(data: Dictionary) -> CombatantStats:
@@ -119,14 +131,31 @@ func get_max_hp() -> int:
 	return hit_die + get_modifier("con")
 
 func get_attack_bonus(ability: String) -> int:
-	return get_modifier(ability) + get_proficiency_bonus()
+	return get_modifier(ability) + get_proficiency_bonus() + equip_attack_bonus
 
 func get_save_dc(ability: String) -> int:
 	return 8 + get_proficiency_bonus() + get_modifier(ability)
 
 func get_ac() -> int:
-	var ac := 10 + get_modifier("dex") + armor_bonus
+	var ac := 10 + get_modifier("dex") + armor_bonus + equip_ac_bonus
 	return ac + (4 if is_defending else 0)
+
+## Mutates this combatant's weapon fields directly (rather than layering
+## on override fields) since a CombatantStats instance is already rebuilt
+## from scratch every battle — see the equip_* fields' doc comment above.
+## `item` is a parsed data/items/*.json dict with "slot": "weapon".
+func apply_weapon_equipment(item: Dictionary) -> void:
+	weapon_name = item.get("weapon_name", weapon_name)
+	weapon_name_zh = item.get("weapon_name_zh", weapon_name_zh)
+	weapon_symbol = item.get("weapon_symbol", weapon_symbol)
+	if item.has("weapon_dice"):
+		weapon_dice = item["weapon_dice"]
+	equip_attack_bonus += item.get("attack_bonus", 0)
+	equip_damage_bonus += item.get("damage_bonus", 0)
+
+## `item` is a parsed data/items/*.json dict with "slot": "armor".
+func apply_armor_equipment(item: Dictionary) -> void:
+	equip_ac_bonus += item.get("ac_bonus", 0)
 
 func roll_initiative_once() -> void:
 	current_initiative = Dice.d20() + get_modifier("dex")

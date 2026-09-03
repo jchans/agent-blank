@@ -1,9 +1,8 @@
 extends Node
 
-## Autoload singleton. Tracks story flags and party battle stats,
-## persisted immediately to user://save.json on every change. Inventory
-## isn't tracked yet (see PROGRESS.md Next up) — keep the save format
-## additive when adding it, don't redesign it.
+## Autoload singleton. Tracks story flags, party battle stats, and the
+## shared item system, persisted immediately to user://save.json on every
+## change.
 
 const SAVE_PATH := "user://save.json"
 
@@ -19,6 +18,16 @@ var flags: Dictionary = {}
 ## HP/RP the first time they're loaded into a battle.
 var party_hp: Dictionary = {}
 var party_rp: Dictionary = {}
+
+## Shared party inventory: item_id (see data/items/*.json) -> count owned.
+## Consumables and equipment both live here; equipping doesn't remove an
+## item from this count (see equipment below) — a picked-up sword just
+## becomes available to assign to whichever party member wants it.
+var inventory: Dictionary = {}
+## party_member_id -> {"weapon": item_id, "armor": item_id}. Missing slot
+## or missing member entry means "nothing equipped" — battle.gd applies
+## these on top of a combatant's base JSON stats when a battle starts.
+var equipment: Dictionary = {}
 
 ## Kept in sync from Main._process() while the overworld is loaded; written
 ## to save.json whenever save_game() runs (flag change, battle end, pause).
@@ -60,6 +69,8 @@ func reset_new_game() -> void:
 	flags = {}
 	party_hp = {}
 	party_rp = {}
+	inventory = {}
+	equipment = {}
 	player_position = Vector2(300, 180)
 	has_saved_position = false
 	current_map = "village"
@@ -74,6 +85,38 @@ func has_flag(flag_name: String) -> bool:
 	return flags.get(flag_name, false)
 
 
+func add_item(item_id: String, count: int = 1) -> void:
+	inventory[item_id] = inventory.get(item_id, 0) + count
+	save_game()
+
+
+func remove_item(item_id: String, count: int = 1) -> void:
+	var have: int = inventory.get(item_id, 0) - count
+	if have <= 0:
+		inventory.erase(item_id)
+	else:
+		inventory[item_id] = have
+	save_game()
+
+
+func item_count(item_id: String) -> int:
+	return inventory.get(item_id, 0)
+
+
+func equip(member_id: String, slot: String, item_id: String) -> void:
+	if not equipment.has(member_id):
+		equipment[member_id] = {}
+	if item_id == "":
+		equipment[member_id].erase(slot)
+	else:
+		equipment[member_id][slot] = item_id
+	save_game()
+
+
+func equipped_item(member_id: String, slot: String) -> String:
+	return equipment.get(member_id, {}).get(slot, "")
+
+
 func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
@@ -83,6 +126,8 @@ func save_game() -> void:
 		"flags": flags,
 		"party_hp": party_hp,
 		"party_rp": party_rp,
+		"inventory": inventory,
+		"equipment": equipment,
 		"player_position": [player_position.x, player_position.y],
 		"current_map": current_map,
 		"locale": locale,
@@ -102,6 +147,8 @@ func load_game() -> void:
 		flags = parsed.get("flags", {})
 		party_hp = parsed.get("party_hp", {})
 		party_rp = parsed.get("party_rp", {})
+		inventory = parsed.get("inventory", {})
+		equipment = parsed.get("equipment", {})
 		var pos: Array = parsed.get("player_position", [])
 		if pos.size() == 2:
 			player_position = Vector2(pos[0], pos[1])
