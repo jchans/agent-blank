@@ -24,6 +24,7 @@ window/size/viewport_width=720
 window/size/viewport_height=480
 window/size/mode=0
 window/size/resizable=true
+window/dpi/allow_hidpi=true
 
 [rendering]
 
