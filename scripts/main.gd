@@ -168,39 +168,49 @@ func _is_walkable(col: int, row: int) -> bool:
 ## dependency for.
 const PLAYER_COLLISION_HALF := 8.0
 
-## A saved player_position can land a few pixels inside a wall tile's
-## edge if it was captured at a bad moment — most notably a RoamingMonster
-## physically shoving the player mid-chase right as a battle triggers
-## (user report: coming back from battle sometimes left them wedged in a
-## wall, unable to move at all). Restoring that raw pixel position
-## verbatim risks resuming with the player's whole collision shape inside
-## a wall's, which move_and_slide has no way to resolve on its own since
-## nothing is ever pressed *into* the wall to trigger a push-out.
+## A saved player_position can land inside a wall tile's edge, or
+## overlapping an NPC/RoamingMonster's own body, if it was captured at a
+## bad moment — a RoamingMonster physically shoving the player mid-chase
+## right as a battle triggers (the original wall case), or simply having
+## walked up close enough to an NPC to start a dialogue battle in the
+## first place (user report: winning an NPC-triggered battle can *also*
+## leave the player wedged against that same NPC — same underlying issue,
+## different solid body). Restoring that raw pixel position verbatim
+## risks resuming with the player's whole collision shape overlapping
+## another one, which move_and_slide has no way to resolve on its own
+## since nothing is ever pressed *into* the obstacle to trigger a
+## push-out.
 ##
-## Only correct the position when it's actually unsafe (_collides_with_wall
+## Only correct the position when it's actually unsafe (_position_is_unsafe
 ## below, checked against the player's real collision box, not just the
 ## tile the position's raw pixel falls in) — an earlier version of this
 ## fix snapped to a tile center unconditionally on every restore, which
-## fixed the stuck-in-wall case but introduced a new, more visible bug:
-## the player visibly hopped a few pixels on *every single* battle return,
-## even when standing on perfectly safe ground mid-stride between tiles
-## (user report: "leaving battle still jumps around"). Snapping only ever
+## fixed the stuck case but introduced a new, more visible bug: the player
+## visibly hopped a few pixels on *every single* battle return, even when
+## standing on perfectly safe ground mid-stride between tiles (user
+## report: "leaving battle still jumps around"). Snapping only ever
 ## happens now when genuinely needed; the common case returns raw
 ## untouched. Called for every saved-position restore (battle return and
 ## resuming a save from the title screen alike).
 func _safe_restore_position(raw: Vector2) -> Vector2:
-	if not _collides_with_wall(raw):
+	if not _position_is_unsafe(raw):
 		return raw
 	var col := int(floor(raw.x / TILE_SIZE))
 	var row := int(floor(raw.y / TILE_SIZE))
-	if _is_walkable(col, row):
+	if _is_walkable(col, row) and not _collides_with_obstacle(tile_center(col, row)):
 		return tile_center(col, row)
-	var offsets := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
+	var offsets: Array[Vector2i] = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
 		Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]
 	for offset in offsets:
-		if _is_walkable(col + offset.x, row + offset.y):
-			return tile_center(col + offset.x, row + offset.y)
+		var c := col + offset.x
+		var r := row + offset.y
+		if _is_walkable(c, r) and not _collides_with_obstacle(tile_center(c, r)):
+			return tile_center(c, r)
 	return raw
+
+
+func _position_is_unsafe(pos: Vector2) -> bool:
+	return _collides_with_wall(pos) or _collides_with_obstacle(pos)
 
 
 ## True if a player-sized collision box centered at `pos` overlaps any
@@ -216,6 +226,22 @@ func _collides_with_wall(pos: Vector2) -> bool:
 		var col := int(floor(corner.x / TILE_SIZE))
 		var row := int(floor(corner.y / TILE_SIZE))
 		if not _is_walkable(col, row):
+			return true
+	return false
+
+
+## True if a player-sized (16x16) box centered at `pos` overlaps any
+## currently-spawned NPC or RoamingMonster — both use the same 16x16
+## CollisionShape2D as the player (see NPC.tscn/RoamingMonster.tscn), so
+## two AABBs of that size overlap whenever both axes' centers are within
+## PLAYER_COLLISION_HALF*2 (8+8) of each other. WorldItem/wall colliders
+## aren't CharacterBody2D so this only ever matches NPCs/monsters.
+func _collides_with_obstacle(pos: Vector2) -> bool:
+	for node in _spawned_nodes:
+		if not is_instance_valid(node) or not (node is CharacterBody2D):
+			continue
+		var delta: Vector2 = pos - node.position
+		if absf(delta.x) < PLAYER_COLLISION_HALF * 2.0 and absf(delta.y) < PLAYER_COLLISION_HALF * 2.0:
 			return true
 	return false
 
