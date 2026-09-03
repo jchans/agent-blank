@@ -8,9 +8,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
-offset_top = -180.0
+offset_top = -230.0
 offset_right = -20.0
-offset_bottom = -20.0
+offset_bottom = -50.0
 script = ExtResource("1")
 
 [node name="Panel" type="Panel" parent="."]
@@ -48,4 +48,4 @@ layout_mode = 2
 [node name="ContinueIndicator" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 horizontal_alignment = 2
-text = "▼ Press Enter"
+text = "▼ Press Z"

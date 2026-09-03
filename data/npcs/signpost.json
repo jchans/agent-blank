@@ -1,0 +1,9 @@
+{
+  "id": "signpost",
+  "name": "Signpost",
+  "glyph": "i",
+  "position": [132, 108],
+  "color": [0.7, 0.7, 0.7, 1],
+  "map": "crossroads",
+  "dialogue": "res://dialogues/signpost.json"
+}

@@ -1,17 +1,21 @@
 extends Node2D
 
-@onready var prompt_label: Label = $CanvasLayer/VBoxContainer/PromptLabel
+@onready var continue_button: Button = $CanvasLayer/VBoxContainer/ContinueButton
+@onready var new_game_button: Button = $CanvasLayer/VBoxContainer/NewGameButton
 
 
 func _ready() -> void:
 	if GameState.has_saved_position:
-		prompt_label.text = "Press Enter to Continue"
+		continue_button.grab_focus()
 	else:
-		prompt_label.text = "Press Enter to Start"
+		continue_button.hide()
+		new_game_button.grab_focus()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ENTER or event.keycode == KEY_SPACE:
-			get_tree().change_scene_to_file.bind("res://scenes/Main.tscn").call_deferred()
-			get_viewport().set_input_as_handled()
+func _on_continue_button_pressed() -> void:
+	get_tree().change_scene_to_file.bind("res://scenes/Main.tscn").call_deferred()
+
+
+func _on_new_game_button_pressed() -> void:
+	GameState.reset_new_game()
+	get_tree().change_scene_to_file.bind("res://scenes/Main.tscn").call_deferred()

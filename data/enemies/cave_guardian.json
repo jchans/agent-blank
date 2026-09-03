@@ -1,0 +1,7 @@
+{
+  "id": "cave_guardian",
+  "name": "Cave Guardian",
+  "glyph": "g",
+  "hp": 24,
+  "attack": 6
+}

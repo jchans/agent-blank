@@ -10,6 +10,8 @@ config/features=PackedStringArray("4.7")
 
 GameState="*res://scripts/game_state.gd"
 DialogueManager="*res://scripts/dialogue_manager.gd"
+Controls="*res://scripts/controls.gd"
+HelpOverlay="*res://scenes/HelpOverlay.tscn"
 
 [display]
 

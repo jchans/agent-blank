@@ -68,7 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible or _current_choices.size() > 0:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_ENTER or event.keycode == KEY_SPACE or event.keycode == KEY_E:
+		if event.keycode == KEY_Z:
 			if _typing_tween and _typing_tween.is_running():
 				_typing_tween.custom_step(1000.0)
 			else:

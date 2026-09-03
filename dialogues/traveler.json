@@ -1,0 +1,11 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Traveler",
+      "text": "Careful in these woods — I heard something moving near the old shrine to the south.",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

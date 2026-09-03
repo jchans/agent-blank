@@ -1,40 +1,56 @@
 extends Node2D
 
-## Spawns one NPC per JSON file under data/npcs/. Creating a new NPC in the
-## game requires no scene editing: drop a new JSON file in data/npcs/ (see
-## data/npcs/elder.json for the shape) and a matching dialogue graph under
-## dialogues/.
+## Spawns one NPC per JSON file under data/npcs/ that matches the current
+## room, and renders the current room's ASCII map. Adding a new NPC/room
+## requires no scene editing — see "How to add a new NPC"/"How to add a
+## new room" in PROGRESS.md.
 ##
-## The map is plain-text ASCII (data/maps/*.txt) rendered as one Label per
-## character — no tileset/sprite asset needed, and no monospace font
-## dependency either, since each glyph gets its own fixed-size centered cell.
+## Rooms are data/maps/<id>.txt (ASCII grid, one Label per character, same
+## as before) plus a sibling data/maps/<id>.doors.json listing door tiles:
+## walking onto one swaps the whole room in place (no change_scene_to_file
+## per room — that path is reserved for Title/Battle transitions).
 
 const NPC_SCENE := preload("res://scenes/NPC.tscn")
 const NPC_DATA_DIR := "res://data/npcs/"
+const MAP_DATA_DIR := "res://data/maps/"
 
-const MAP_PATH := "res://data/maps/village.txt"
 const TILE_SIZE := 24.0
 const TILE_FONT_SIZE := 18
 const TILE_COLORS := {
 	"#": Color(0.55, 0.5, 0.45),
 	".": Color(0.28, 0.42, 0.24),
+	"~": Color(0.3, 0.5, 0.65),
+	"T": Color(0.25, 0.45, 0.2),
+	"+": Color(0.65, 0.5, 0.3),
+	"o": Color(0.8, 0.7, 0.3),
+	"R": Color(0.9, 0.8, 0.2),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
-const WALL_GLYPHS := ["#"]
-
+## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
+## are deliberately not here — doors must be walkable to trigger, and the
+## decoration is just flavor.
+const WALL_GLYPHS := ["#", "T"]
 
 @onready var player: CharacterBody2D = $Player
 
+## Everything _load_map spawned (tile labels, wall colliders, NPCs) so the
+## next call can clear it. queue_free() is deferred, which is fine here —
+## the replacement nodes get different instances, so a stray frame of
+## overlap during a door transition is harmless.
+var _spawned_nodes: Array[Node] = []
+## "<col>,<row>" -> {"target_map": String, "target_spawn": [col, row], "requires_flag": String (optional)}
+var _doors: Dictionary = {}
+
 
 func _ready() -> void:
-	_render_map()
-	_spawn_npcs()
+	_load_map(GameState.current_map)
 	if GameState.has_saved_position:
 		player.position = GameState.player_position
 
 
 func _process(_delta: float) -> void:
 	GameState.player_position = player.position
+	_check_door_crossing()
 
 
 ## World-space center of tile (col, row), for positioning player/NPCs.
@@ -42,10 +58,42 @@ static func tile_center(col: int, row: int) -> Vector2:
 	return Vector2((col + 0.5) * TILE_SIZE, (row + 0.5) * TILE_SIZE)
 
 
-func _render_map() -> void:
-	var file := FileAccess.open(MAP_PATH, FileAccess.READ)
+func _load_map(map_id: String) -> void:
+	for node in _spawned_nodes:
+		node.queue_free()
+	_spawned_nodes.clear()
+	_doors.clear()
+	GameState.current_map = map_id
+	_render_map(MAP_DATA_DIR + map_id + ".txt")
+	_load_doors(MAP_DATA_DIR + map_id + ".doors.json")
+	_spawn_npcs(map_id)
+
+
+func _check_door_crossing() -> void:
+	if DialogueManager.is_active or Controls.is_help_open:
+		return
+	var col := int(floor(player.position.x / TILE_SIZE))
+	var row := int(floor(player.position.y / TILE_SIZE))
+	var door: Dictionary = _doors.get("%d,%d" % [col, row], {})
+	if door.is_empty():
+		return
+	var requires_flag: String = door.get("requires_flag", "")
+	if requires_flag != "" and not GameState.has_flag(requires_flag):
+		return
+	var target_map: String = door.get("target_map", "")
+	if target_map == "":
+		return
+	var target_spawn: Array = door.get("target_spawn", [0, 0])
+	_load_map(target_map)
+	player.position = tile_center(int(target_spawn[0]), int(target_spawn[1]))
+	GameState.player_position = player.position
+	GameState.save_game()
+
+
+func _render_map(path: String) -> void:
+	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
-		push_warning("Main: could not open map file: %s" % MAP_PATH)
+		push_warning("Main: could not open map file: %s" % path)
 		return
 	var row := 0
 	while not file.eof_reached():
@@ -69,6 +117,7 @@ func _spawn_tile(glyph: String, col: int, row: int) -> void:
 	label.position = Vector2(col * TILE_SIZE, row * TILE_SIZE)
 	label.size = Vector2(TILE_SIZE, TILE_SIZE)
 	add_child(label)
+	_spawned_nodes.append(label)
 
 	if glyph in WALL_GLYPHS:
 		_spawn_wall_collider(col, row)
@@ -83,9 +132,29 @@ func _spawn_wall_collider(col: int, row: int) -> void:
 	shape.shape = rect
 	body.add_child(shape)
 	add_child(body)
+	_spawned_nodes.append(body)
 
 
-func _spawn_npcs() -> void:
+func _load_doors(path: String) -> void:
+	if not FileAccess.file_exists(path):
+		return
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_warning("Main: could not open doors file: %s" % path)
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_ARRAY:
+		push_warning("Main: invalid doors file: %s" % path)
+		return
+	for entry in parsed:
+		var pos: Array = entry.get("position", [])
+		if pos.size() != 2:
+			continue
+		_doors["%d,%d" % [int(pos[0]), int(pos[1])]] = entry
+
+
+func _spawn_npcs(map_id: String) -> void:
 	var dir := DirAccess.open(NPC_DATA_DIR)
 	if dir == null:
 		push_warning("Main: could not open NPC data dir: %s" % NPC_DATA_DIR)
@@ -94,12 +163,12 @@ func _spawn_npcs() -> void:
 	var file_name := dir.get_next()
 	while file_name != "":
 		if not dir.current_is_dir() and file_name.ends_with(".json"):
-			_spawn_npc_from_file(NPC_DATA_DIR + file_name)
+			_spawn_npc_from_file(NPC_DATA_DIR + file_name, map_id)
 		file_name = dir.get_next()
 	dir.list_dir_end()
 
 
-func _spawn_npc_from_file(path: String) -> void:
+func _spawn_npc_from_file(path: String, map_id: String) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		push_warning("Main: could not open NPC data file: %s" % path)
@@ -108,6 +177,8 @@ func _spawn_npc_from_file(path: String) -> void:
 	file.close()
 	if typeof(parsed) != TYPE_DICTIONARY:
 		push_warning("Main: invalid NPC data file: %s" % path)
+		return
+	if parsed.get("map", "village") != map_id:
 		return
 
 	var npc := NPC_SCENE.instantiate()
@@ -120,3 +191,4 @@ func _spawn_npc_from_file(path: String) -> void:
 	npc.glyph = parsed.get("glyph", "N")
 	npc.name = String(parsed.get("id", "NPC"))
 	add_child(npc)
+	_spawned_nodes.append(npc)

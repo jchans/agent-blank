@@ -1,0 +1,11 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Signpost",
+      "text": "A weathered signpost. North: Forest Path. South: Old Shrine.",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

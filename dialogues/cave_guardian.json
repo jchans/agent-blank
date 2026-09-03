@@ -1,0 +1,25 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Cave Guardian",
+      "text": "A hulking shape rises from the dark, guarding a glint of gold.",
+      "choices": [
+        { "text": "Fight for the relic!", "next": "battle_start", "requires_not_flag": "relic_found" },
+        { "text": "The relic is already yours.", "next": "already_won", "requires_flag": "relic_found" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Cave Guardian",
+      "text": "It roars and charges!",
+      "start_battle": "cave_guardian",
+      "victory_flag": "relic_found"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The guardian's remains lie still. The relic is already in your hands.",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

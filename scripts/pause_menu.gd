@@ -5,7 +5,9 @@ extends Control
 ## default, since Godot's default node process_mode is PAUSABLE-equivalent).
 
 @onready var resume_button: Button = $Panel/MarginContainer/VBoxContainer/ResumeButton
+@onready var save_button: Button = $Panel/MarginContainer/VBoxContainer/SaveButton
 @onready var quit_button: Button = $Panel/MarginContainer/VBoxContainer/QuitButton
+@onready var status_label: Label = $Panel/MarginContainer/VBoxContainer/StatusLabel
 
 
 func _ready() -> void:
@@ -14,6 +16,8 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Controls.is_help_open:
+		return
 	if DialogueManager.is_active and not visible:
 		return
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
@@ -31,7 +35,9 @@ func _toggle_pause() -> void:
 func _pause() -> void:
 	get_tree().paused = true
 	GameState.save_game()
+	status_label.text = ""
 	show()
+	resume_button.grab_focus()
 
 
 func _resume() -> void:
@@ -41,6 +47,11 @@ func _resume() -> void:
 
 func _on_resume_button_pressed() -> void:
 	_resume()
+
+
+func _on_save_button_pressed() -> void:
+	GameState.save_game()
+	status_label.text = "Saved."
 
 
 func _on_quit_button_pressed() -> void:

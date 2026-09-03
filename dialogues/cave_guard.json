@@ -1,0 +1,24 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Cave Guard",
+      "text": "The cave beyond is dangerous. Are you prepared?",
+      "choices": [
+        { "text": "The hermit warned me. I'm ready.", "next": "let_through", "requires_flag": "shrine_warned" },
+        { "text": "I'll go carefully.", "next": "let_through_unwarned", "requires_not_flag": "shrine_warned" }
+      ]
+    },
+    "let_through": {
+      "speaker": "Cave Guard",
+      "text": "Good. Then go — and watch yourself.",
+      "next": "end"
+    },
+    "let_through_unwarned": {
+      "speaker": "Cave Guard",
+      "text": "Hmph. Suit yourself. Don't say I didn't warn you.",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

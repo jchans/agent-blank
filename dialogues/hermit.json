@@ -1,0 +1,20 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Hermit",
+      "text": "You've come to the old shrine. Few do, these days.",
+      "choices": [
+        { "text": "What guards this place?", "next": "warning" },
+        { "text": "I'm only passing through.", "next": "end" }
+      ]
+    },
+    "warning": {
+      "speaker": "Hermit",
+      "text": "A guardian sleeps in the cave beyond. Face it with care, and the relic may yet be yours.",
+      "set_flag": "shrine_warned",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

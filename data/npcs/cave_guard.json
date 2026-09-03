@@ -1,0 +1,9 @@
+{
+  "id": "cave_guard",
+  "name": "Cave Guard",
+  "glyph": "C",
+  "position": [132, 108],
+  "color": [0.5, 0.6, 0.7, 1],
+  "map": "cave_entrance",
+  "dialogue": "res://dialogues/cave_guard.json"
+}

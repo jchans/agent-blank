@@ -58,6 +58,18 @@ func _update_status() -> void:
 	]
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if _battle_over or Controls.is_help_open:
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_Z:
+			_on_attack_button_pressed()
+			get_viewport().set_input_as_handled()
+		elif event.keycode == KEY_X:
+			_on_run_button_pressed()
+			get_viewport().set_input_as_handled()
+
+
 func _on_attack_button_pressed() -> void:
 	if _battle_over:
 		return
@@ -66,6 +78,9 @@ func _on_attack_button_pressed() -> void:
 	if enemy_hp == 0:
 		_update_status()
 		_log("%s is defeated! You win." % enemy_name)
+		if GameState.pending_victory_flag != "":
+			GameState.set_flag(GameState.pending_victory_flag)
+			GameState.pending_victory_flag = ""
 		_end_battle()
 		return
 	GameState.player_hp = max(0, GameState.player_hp - enemy_attack)
