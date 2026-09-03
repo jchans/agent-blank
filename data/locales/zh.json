@@ -1,7 +1,7 @@
 {
   "strings": {
     "help.title": "操作說明",
-    "help.body": "方向鍵       移動\nZ            確認／對話／攻擊\nX            取消／逃跑\nEsc          暫停選單\nH            切換說明視窗",
+    "help.body": "方向鍵       移動\nZ            確認／對話／攻擊\nX            取消／逃跑\nI            物品\nEsc          暫停選單\nH            切換說明視窗",
     "help.close_hint": "按 H 或 Esc 關閉",
     "dialogue.continue": "▼ 按 Z 繼續",
     "pause.title": "暫停",

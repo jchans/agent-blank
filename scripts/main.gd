@@ -59,7 +59,7 @@ var _encounter_triggered := false
 func _ready() -> void:
 	_load_map(GameState.current_map)
 	if GameState.has_saved_position:
-		player.position = GameState.player_position
+		player.position = _safe_restore_position(GameState.player_position)
 
 
 func _process(_delta: float) -> void:
@@ -154,6 +154,37 @@ func _glyph_at(col: int, row: int) -> String:
 	if col < 0 or col >= line.length():
 		return ""
 	return line[col]
+
+
+func _is_walkable(col: int, row: int) -> bool:
+	var glyph := _glyph_at(col, row)
+	return glyph != "" and not (glyph in WALL_GLYPHS)
+
+
+## A saved player_position can land a few pixels inside a wall tile's
+## edge if it was captured at a bad moment — most notably a RoamingMonster
+## physically shoving the player mid-chase right as a battle triggers
+## (user report: coming back from battle sometimes left them wedged in a
+## wall, unable to move at all). Restoring that raw pixel position
+## verbatim risks resuming with the player's whole collision shape inside
+## a wall's, which move_and_slide has no way to resolve on its own since
+## nothing is ever pressed *into* the wall to trigger a push-out. Snap to
+## the nearest walkable tile's center instead — a wall tile's center is
+## never reachable through ordinary walking in the first place, so once
+## found this is always safe ground. Called for every saved-position
+## restore (battle return and resuming a save from the title screen
+## alike), not just the battle case, since it's strictly safer either way.
+func _safe_restore_position(raw: Vector2) -> Vector2:
+	var col := int(floor(raw.x / TILE_SIZE))
+	var row := int(floor(raw.y / TILE_SIZE))
+	if _is_walkable(col, row):
+		return tile_center(col, row)
+	var offsets := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
+		Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]
+	for offset in offsets:
+		if _is_walkable(col + offset.x, row + offset.y):
+			return tile_center(col + offset.x, row + offset.y)
+	return raw
 
 
 func _render_map(path: String) -> void:
