@@ -21,10 +21,10 @@ const CombatantViewScene := preload("res://scenes/CombatantView.tscn")
 
 @onready var panel: Panel = $UI/Panel
 @onready var hint_label: Label = $UI/Panel/MarginContainer/VBoxContainer/HintLabel
-@onready var enemy_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/EnemyRow
-@onready var party_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/PartyRow
-@onready var log_scroll: ScrollContainer = $UI/Panel/MarginContainer/VBoxContainer/LogScroll
-@onready var battle_log: RichTextLabel = $UI/Panel/MarginContainer/VBoxContainer/LogScroll/LogLabel
+@onready var enemy_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn/EnemyRow
+@onready var party_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn/PartyRow
+@onready var log_scroll: ScrollContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/LogScroll
+@onready var battle_log: RichTextLabel = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/LogScroll/LogLabel
 @onready var action_menu: ActionMenu = $UI/Panel/MarginContainer/VBoxContainer/ActionMenu
 
 var party: Array[CombatantStats] = []
