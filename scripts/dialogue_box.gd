@@ -13,13 +13,33 @@ var _pending_choices: Array = []
 var _typing_tween: Tween
 
 
+## Design-resolution (720x480 fixed window, see project.godot) pixel rect
+## for this box. Hardcoded and applied unconditionally in _ready() (see
+## _force_explicit_rect) because on the user's real hardware this Control's
+## anchor/offset properties read back as (0,1,1,1)/(0,0,0,0) -- Godot's
+## PRESET_BOTTOM_WIDE with zero offsets -- from the very first line of
+## _ready(), never matching whatever this scene file actually declares
+## (confirmed correct in the packed/exported resource itself). Re-reading
+## and reapplying those same properties (the old LayoutWorkaround approach)
+## can't fix a value that's already wrong before anything runs, so this
+## bypasses the anchor system entirely with literal position/size instead.
+const BOX_POSITION := Vector2(20, 20)
+const BOX_SIZE := Vector2(680, 180)
+
+
 func _ready() -> void:
 	hide()
 	DialogueManager.register_dialogue_box(self)
 	_print_diag("ready_before_fix")
-	LayoutWorkaround.force_relayout(self)
+	_force_explicit_rect()
 	_print_diag("ready_after_fix")
 	call_deferred("_print_diag", "ready_deferred")
+
+
+func _force_explicit_rect() -> void:
+	set_anchors_preset(Control.PRESET_TOP_LEFT)
+	position = BOX_POSITION
+	size = BOX_SIZE
 
 
 func _print_diag(tag: String) -> void:
@@ -35,6 +55,7 @@ func _print_diag(tag: String) -> void:
 
 
 func display_node(node: Dictionary) -> void:
+	_force_explicit_rect()
 	_print_diag("display_node")
 	speaker_label.text = Localization.speaker(node.get("speaker", ""))
 	var full_text: String = Localization.text_for(node, "text")
