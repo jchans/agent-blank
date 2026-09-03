@@ -40,13 +40,13 @@ text = "an ASCII JRPG"
 layout_mode = 2
 custom_minimum_size = Vector2(0, 16)
 
-[node name="ContinueButton" type="Button" parent="CanvasLayer/VBoxContainer"]
-layout_mode = 2
-text = "Continue"
-
 [node name="NewGameButton" type="Button" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 text = "New Game"
 
-[connection signal="pressed" from="CanvasLayer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[node name="ContinueButton" type="Button" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
 [connection signal="pressed" from="CanvasLayer/VBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
