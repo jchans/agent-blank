@@ -270,6 +270,9 @@ func _spawn_npc_from_file(path: String, map_id: String) -> void:
 	npc.dialogue_path = parsed.get("dialogue", "")
 	npc.glyph = parsed.get("glyph", "N")
 	npc.name = String(parsed.get("id", "NPC"))
+	npc.wanders = parsed.get("wanders", false)
+	npc.wander_radius = float(parsed.get("wander_radius", 48.0))
+	npc.wander_speed = float(parsed.get("wander_speed", 20.0))
 	add_child(npc)
 	_spawned_nodes.append(npc)
 
