@@ -16,6 +16,29 @@ var _typing_tween: Tween
 func _ready() -> void:
 	hide()
 	DialogueManager.register_dialogue_box(self)
+	_print_panel_diagnostics()
+
+
+func _print_panel_diagnostics() -> void:
+	var panel := $Panel as Panel
+	var sb := panel.get_theme_stylebox("panel")
+	print("PANEL_DEBUG stylebox_class=", sb.get_class() if sb else "null")
+	if sb is StyleBoxFlat:
+		var flat := sb as StyleBoxFlat
+		print("PANEL_DEBUG bg_color=", flat.bg_color)
+		print("PANEL_DEBUG corner_radius_tl=", flat.corner_radius_top_left)
+		print("PANEL_DEBUG anti_aliasing=", flat.anti_aliasing)
+		print("PANEL_DEBUG border_width_left=", flat.border_width_left)
+	print("PANEL_DEBUG panel_size=", panel.size, " panel_position=", panel.position)
+	print("PANEL_DEBUG dialoguebox_size=", size, " dialoguebox_position=", position)
+	print("PANEL_DEBUG viewport_size=", get_viewport_rect().size)
+	print("PANEL_DEBUG window_size=", DisplayServer.window_get_size())
+	print("PANEL_DEBUG screen_dpi_scale=", DisplayServer.screen_get_scale())
+	print("PANEL_DEBUG rendering_method=", ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+	print("PANEL_DEBUG video_adapter_name=", RenderingServer.get_video_adapter_name())
+	print("PANEL_DEBUG video_adapter_vendor=", RenderingServer.get_video_adapter_vendor())
+	print("PANEL_DEBUG video_adapter_api=", RenderingServer.get_video_adapter_api_version())
+	print("PANEL_DEBUG project_theme_setting=", ProjectSettings.get_setting("gui/theme/custom", "UNSET"))
 
 
 func display_node(node: Dictionary) -> void:
