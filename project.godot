@@ -17,6 +17,7 @@ HelpOverlay="*res://scenes/HelpOverlay.tscn"
 [gui]
 
 theme/custom_font="res://assets/fonts/ui-cjk-tc.otf"
+theme/custom="res://theme/ui_theme.tres"
 
 [display]
 
