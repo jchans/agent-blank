@@ -1,0 +1,36 @@
+{
+  "id": "player",
+  "display_name": "You",
+  "display_name_zh": "你",
+  "char_class": "Swordsman",
+  "char_class_zh": "劍士",
+  "is_player": true,
+  "log_color": [1.0, 0.45, 0.35, 1.0],
+  "str_score": 15,
+  "dex_score": 13,
+  "con_score": 14,
+  "int_score": 8,
+  "wis_score": 10,
+  "cha_score": 12,
+  "hit_die": 10,
+  "armor_bonus": 5,
+  "weapon_name": "Longsword",
+  "weapon_name_zh": "長劍",
+  "weapon_symbol": "劍",
+  "weapon_dice": "1d8",
+  "weapon_ability": "str",
+  "max_rp": 2,
+  "skills": [
+    {
+      "skill_name": "Power Strike",
+      "skill_name_zh": "強力打擊",
+      "description": "A blow thrown with your whole body behind it, hitting harder than a normal attack.",
+      "description_zh": "灌注全身力量的一擊，傷害比普通攻擊更高。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "2d8",
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}
