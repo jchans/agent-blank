@@ -64,8 +64,8 @@ func _load_map(map_id: String) -> void:
 	_spawned_nodes.clear()
 	_doors.clear()
 	GameState.current_map = map_id
-	_render_map(MAP_DATA_DIR + map_id + ".txt")
 	_load_doors(MAP_DATA_DIR + map_id + ".doors.json")
+	_render_map(MAP_DATA_DIR + map_id + ".txt")
 	_spawn_npcs(map_id)
 
 
@@ -108,6 +108,7 @@ func _render_map(path: String) -> void:
 
 
 func _spawn_tile(glyph: String, col: int, row: int) -> void:
+	glyph = _visible_glyph(glyph, col, row)
 	var label := Label.new()
 	label.text = glyph
 	label.add_theme_color_override("font_color", TILE_COLORS.get(glyph, TILE_COLOR_DEFAULT))
@@ -121,6 +122,19 @@ func _spawn_tile(glyph: String, col: int, row: int) -> void:
 
 	if glyph in WALL_GLYPHS:
 		_spawn_wall_collider(col, row)
+
+
+## A map tile that's really a flag-gated door (e.g. a portal that should
+## only appear once a quest condition is met) shouldn't be visible before
+## its flag is set, even though the door itself already correctly refuses
+## to trigger until then (_check_door_crossing). Requires _doors to already
+## be populated, so _load_map calls _load_doors before _render_map.
+func _visible_glyph(glyph: String, col: int, row: int) -> String:
+	var door: Dictionary = _doors.get("%d,%d" % [col, row], {})
+	var requires_flag: String = door.get("requires_flag", "")
+	if requires_flag != "" and not GameState.has_flag(requires_flag):
+		return "."
+	return glyph
 
 
 func _spawn_wall_collider(col: int, row: int) -> void:
