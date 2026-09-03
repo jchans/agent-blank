@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/battle.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ActionMenu.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/CombatantView.tscn" id="3"]
 
 [node name="Battle" type="Node2D"]
 script = ExtResource("1")
@@ -15,36 +17,49 @@ offset_bottom = 480.0
 layout_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 24
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 6
 
-[node name="StatusLabel" type="Label" parent="UI/Panel/MarginContainer/VBoxContainer"]
+[node name="HintLabel" type="Label" parent="UI/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Status"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+text = "Arrows: select  Z: confirm  X: cancel  A/S/D: shortcuts  Esc: pause"
 
-[node name="LogLabel" type="RichTextLabel" parent="UI/Panel/MarginContainer/VBoxContainer"]
+[node name="EnemyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 260)
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="HSeparator1" type="HSeparator" parent="UI/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PartyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="LogScroll" type="ScrollContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
 size_flags_vertical = 3
-bbcode_enabled = false
-scroll_following = true
+horizontal_scroll_mode = 0
 
-[node name="ActionsContainer" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
+[node name="LogLabel" type="RichTextLabel" parent="UI/Panel/MarginContainer/VBoxContainer/LogScroll"]
 layout_mode = 2
+size_flags_horizontal = 3
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 3
+theme_override_font_sizes/normal_font_size = 13
 
-[node name="AttackButton" type="Button" parent="UI/Panel/MarginContainer/VBoxContainer/ActionsContainer"]
+[node name="ActionMenu" parent="UI/Panel/MarginContainer/VBoxContainer" instance=ExtResource("2")]
 layout_mode = 2
-text = "Attack"
-
-[node name="RunButton" type="Button" parent="UI/Panel/MarginContainer/VBoxContainer/ActionsContainer"]
-layout_mode = 2
-text = "Run"
-
-[connection signal="pressed" from="UI/Panel/MarginContainer/VBoxContainer/ActionsContainer/AttackButton" to="." method="_on_attack_button_pressed"]
-[connection signal="pressed" from="UI/Panel/MarginContainer/VBoxContainer/ActionsContainer/RunButton" to="." method="_on_run_button_pressed"]
