@@ -1,0 +1,12 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Signpost",
+      "text": "A weathered signpost. North: Forest Path. South: Old Shrine.",
+      "text_zh": "一根風化的路標。北：森林小徑。南：古老神社。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

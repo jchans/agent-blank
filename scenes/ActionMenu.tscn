@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/action_menu.gd" id="1"]
+
+[node name="ActionMenu" type="VBoxContainer"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+script = ExtResource("1")
+
+[node name="PromptLabel" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
+text = "Choose an action"
+
+[node name="MainBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+
+[node name="SkillBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+visible = false
+
+[node name="ItemBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+visible = false
+
+[node name="TargetBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 8
+visible = false

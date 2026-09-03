@@ -4,5 +4,6 @@
   "glyph": "G",
   "position": [180, 252],
   "color": [0.6, 0.6, 0.9, 1],
+  "map": "village",
   "dialogue": "res://dialogues/guard.json"
 }

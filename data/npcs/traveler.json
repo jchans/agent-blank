@@ -1,0 +1,9 @@
+{
+  "id": "traveler",
+  "name": "Traveler",
+  "glyph": "t",
+  "position": [180, 108],
+  "color": [0.6, 0.8, 0.5, 1],
+  "map": "forest_path",
+  "dialogue": "res://dialogues/traveler.json"
+}

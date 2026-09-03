@@ -1,0 +1,11 @@
+{
+  "id": "hi_potion",
+  "name": "Hi-Potion",
+  "name_zh": "高級藥水",
+  "type": "consumable",
+  "effect": "heal",
+  "amount_dice": "4d4+4",
+  "target": "ally",
+  "description": "A concentrated tonic that mends serious wounds.",
+  "description_zh": "濃縮藥劑，能治療較重的傷勢。"
+}

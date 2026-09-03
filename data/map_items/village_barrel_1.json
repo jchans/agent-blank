@@ -1,0 +1,9 @@
+{
+  "id": "village_barrel_1",
+  "map": "village",
+  "position": [516, 84],
+  "glyph": "U",
+  "color": [0.6, 0.45, 0.25, 1.0],
+  "item_id": "ether",
+  "quantity": 1
+}

@@ -1,0 +1,9 @@
+{
+  "id": "cave_guardian",
+  "name": "Cave Guardian",
+  "glyph": "g",
+  "position": [132, 132],
+  "color": [0.7, 0.3, 0.3, 1],
+  "map": "cave_depths",
+  "dialogue": "res://dialogues/cave_guardian.json"
+}

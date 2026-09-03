@@ -1,0 +1,11 @@
+{
+  "id": "ether",
+  "name": "Ether",
+  "name_zh": "以太",
+  "type": "consumable",
+  "effect": "restore_rp",
+  "amount": 1,
+  "target": "ally",
+  "description": "A shimmering draught that restores spent resolve.",
+  "description_zh": "閃著微光的藥劑，能恢復消耗的鬥氣。"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "fire_bomb",
+  "name": "Fire Bomb",
+  "name_zh": "火焰彈",
+  "type": "consumable",
+  "effect": "damage",
+  "amount_dice": "2d6",
+  "target": "enemy",
+  "description": "A crude bomb that bursts into flame on impact.",
+  "description_zh": "簡陋的爆裂物，碰撞後會噴出火焰。"
+}

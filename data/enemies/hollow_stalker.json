@@ -1,0 +1,36 @@
+{
+  "id": "hollow_stalker",
+  "display_name": "Hollow Stalker",
+  "display_name_zh": "空洞潛行者",
+  "char_class": "Stalker",
+  "char_class_zh": "潛行者",
+  "is_player": false,
+  "log_color": [0.4, 0.35, 0.5, 1.0],
+  "str_score": 14,
+  "dex_score": 16,
+  "con_score": 12,
+  "int_score": 6,
+  "wis_score": 10,
+  "cha_score": 6,
+  "armor_bonus": 1,
+  "max_hp_override": 13,
+  "weapon_name": "Claws",
+  "weapon_name_zh": "利爪",
+  "weapon_symbol": "爪",
+  "weapon_dice": "1d6",
+  "weapon_ability": "dex",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Pounce",
+      "skill_name_zh": "撲擊",
+      "description": "A sudden lunge that strikes before the target can react.",
+      "description_zh": "驟然撲出，趁對方反應之前發動攻擊。",
+      "kind": "attack_roll",
+      "ability": "dex",
+      "damage_dice": "2d6",
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  { "position": [7, 0], "target_map": "forest_path", "target_spawn": [7, 7] },
+  { "position": [7, 8], "target_map": "old_shrine", "target_spawn": [7, 1] },
+  { "position": [0, 4], "target_map": "sunken_grove_1", "target_spawn": [13, 4] },
+  { "position": [14, 4], "target_map": "ember_hollow_1", "target_spawn": [1, 4] }
+]

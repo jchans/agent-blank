@@ -1,0 +1,37 @@
+{
+  "id": "cleric",
+  "display_name": "Cleric",
+  "display_name_zh": "牧師",
+  "char_class": "Cleric",
+  "char_class_zh": "牧師",
+  "is_player": true,
+  "log_color": [1.0, 0.85, 0.35, 1.0],
+  "str_score": 12,
+  "dex_score": 13,
+  "con_score": 14,
+  "int_score": 8,
+  "wis_score": 15,
+  "cha_score": 10,
+  "hit_die": 8,
+  "armor_bonus": 4,
+  "weapon_name": "Warhammer",
+  "weapon_name_zh": "戰鎚",
+  "weapon_symbol": "鎚",
+  "weapon_dice": "1d6",
+  "weapon_ability": "str",
+  "max_rp": 3,
+  "skills": [
+    {
+      "skill_name": "Cure Wounds",
+      "skill_name_zh": "治癒術",
+      "description": "Channels holy light to heal a companion's wounds.",
+      "description_zh": "以聖光治癒一位同伴的傷勢。",
+      "kind": "heal",
+      "ability": "wis",
+      "damage_dice": "1d8",
+      "rp_cost": 1,
+      "kaomoji_key": "heal",
+      "targets_ally": true
+    }
+  ]
+}

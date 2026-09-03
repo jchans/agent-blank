@@ -23,10 +23,7 @@
       "Bash(~/.local/bin/godot4 *)",
       "Bash(/home/laohanj/.local/bin/godot4 *)",
       "Read(/home/laohanj/claude-projects/agent-blank/**)",
-      "Write(/home/laohanj/claude-projects/agent-blank/**)",
-      "Edit(/home/laohanj/claude-projects/agent-blank/**)",
-      "Glob(/home/laohanj/claude-projects/agent-blank/**)",
-      "Grep(/home/laohanj/claude-projects/agent-blank/**)"
+      "Edit(/home/laohanj/claude-projects/agent-blank/**)"
     ],
     "deny": [
       "Bash(git push --force*)",

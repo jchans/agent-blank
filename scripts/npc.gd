@@ -35,9 +35,9 @@ func _on_interaction_area_body_exited(body: Node2D) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _player_in_range or DialogueManager.is_active:
+	if not _player_in_range or DialogueManager.is_active or Controls.is_help_open:
 		return
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_E:
+	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_Z:
 		if dialogue_path != "":
 			prompt.hide()
 			DialogueManager.start_dialogue(dialogue_path)

@@ -1,0 +1,22 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Hermit",
+      "text": "You've come to the old shrine. Few do, these days.",
+      "text_zh": "你來到了這座古老的神社。如今很少有人會來這裡了。",
+      "choices": [
+        { "text": "What guards this place?", "text_zh": "是什麼東西在守護這裡？", "next": "warning" },
+        { "text": "I'm only passing through.", "text_zh": "我只是路過而已。", "next": "end" }
+      ]
+    },
+    "warning": {
+      "speaker": "Hermit",
+      "text": "A guardian sleeps in the cave beyond. Face it with care, and the relic may yet be yours.",
+      "text_zh": "有一位守護者沉睡在前方的洞窟中。小心應對，遺物或許還是屬於你的。",
+      "set_flag": "shrine_warned",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

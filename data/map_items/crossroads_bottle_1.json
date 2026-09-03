@@ -1,0 +1,9 @@
+{
+  "id": "crossroads_bottle_1",
+  "map": "crossroads",
+  "position": [276, 60],
+  "glyph": "i",
+  "color": [0.4, 0.7, 0.75, 1.0],
+  "item_id": "potion",
+  "quantity": 1
+}

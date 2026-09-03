@@ -1,0 +1,36 @@
+{
+  "id": "cave_guardian",
+  "display_name": "Cave Guardian",
+  "display_name_zh": "洞窟守護者",
+  "char_class": "Guardian",
+  "char_class_zh": "守護者",
+  "is_player": false,
+  "log_color": [0.75, 0.6, 0.35, 1.0],
+  "str_score": 17,
+  "dex_score": 10,
+  "con_score": 16,
+  "int_score": 6,
+  "wis_score": 10,
+  "cha_score": 6,
+  "armor_bonus": 6,
+  "max_hp_override": 32,
+  "weapon_name": "Massive Claws",
+  "weapon_name_zh": "巨爪",
+  "weapon_symbol": "爪",
+  "weapon_dice": "1d10",
+  "weapon_ability": "str",
+  "max_rp": 2,
+  "skills": [
+    {
+      "skill_name": "Rending Roar",
+      "skill_name_zh": "裂吼衝撞",
+      "description": "A bone-shaking roar precedes a savage double-clawed lunge.",
+      "description_zh": "震骨的咆哮之後，是雙爪齊下的猛烈衝撞。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "2d10",
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

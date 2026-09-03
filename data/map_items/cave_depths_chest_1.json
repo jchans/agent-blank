@@ -1,0 +1,9 @@
+{
+  "id": "cave_depths_chest_1",
+  "map": "cave_depths",
+  "position": [60, 156],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "hi_potion",
+  "quantity": 1
+}

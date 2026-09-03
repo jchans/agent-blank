@@ -1,0 +1,4 @@
+[
+  { "position": [84, 36], "enemy_id": "hollow_stalker", "glyph": "S", "color": [0.4, 0.35, 0.5, 1.0], "speed": 80, "chase_range": 150 },
+  { "position": [132, 156], "enemy_id": "hollow_stalker", "glyph": "S", "color": [0.4, 0.35, 0.5, 1.0], "speed": 80, "chase_range": 150 }
+]

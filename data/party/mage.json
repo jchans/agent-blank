@@ -1,0 +1,49 @@
+{
+  "id": "mage",
+  "display_name": "Mage",
+  "display_name_zh": "法師",
+  "char_class": "Mage",
+  "char_class_zh": "法師",
+  "is_player": true,
+  "log_color": [0.45, 0.65, 1.0, 1.0],
+  "str_score": 8,
+  "dex_score": 14,
+  "con_score": 13,
+  "int_score": 15,
+  "wis_score": 12,
+  "cha_score": 10,
+  "hit_die": 6,
+  "armor_bonus": 0,
+  "weapon_name": "Staff",
+  "weapon_name_zh": "法杖",
+  "weapon_symbol": "杖",
+  "weapon_dice": "1d4",
+  "weapon_ability": "int",
+  "max_rp": 3,
+  "skills": [
+    {
+      "skill_name": "Fire Bolt",
+      "skill_name_zh": "火焰箭",
+      "description": "Hurls a mote of fire at a single target, dealing fire damage.",
+      "description_zh": "投擲一團火焰，對單一目標造成火焰傷害。",
+      "kind": "attack_roll",
+      "ability": "int",
+      "damage_dice": "1d10",
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    },
+    {
+      "skill_name": "Ice Burst",
+      "skill_name_zh": "寒冰爆",
+      "description": "Frost erupts around the target, who must make a DEX save or take full damage (half on a success).",
+      "description_zh": "冰霜在目標周身炸裂，目標須通過敏捷豁免，失敗承受全額傷害、成功減半。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "dex",
+      "damage_dice": "2d6",
+      "half_on_save": true,
+      "rp_cost": 2,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

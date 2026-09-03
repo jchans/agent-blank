@@ -4,5 +4,6 @@
   "glyph": "E",
   "position": [108, 60],
   "color": [0.9, 0.7, 0.3, 1],
+  "map": "village",
   "dialogue": "res://dialogues/elder.json"
 }
