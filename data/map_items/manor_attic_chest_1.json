@@ -1,0 +1,10 @@
+{
+  "id": "manor_attic_chest_1",
+  "map": "manor_attic",
+  "position": [228, 60],
+  "glyph": "=",
+  "color": [0.8, 0.7, 0.3, 1.0],
+  "item_id": "philosophers_coat",
+  "quantity": 1,
+  "requires_flag": "manor_cleared"
+}

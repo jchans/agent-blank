@@ -1,0 +1,4 @@
+[
+  { "position": [0, 4], "target_map": "manor_study", "target_spawn": [11, 4] },
+  { "position": [10, 4], "target_map": "manor_attic", "target_spawn": [3, 4] }
+]

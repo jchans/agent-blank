@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "The Alchemist's Shade",
+      "text": "A pale figure hunches over a workbench of shattered glass, still measuring reagents that turned to dust decades ago. It turns — too slowly — and its voice is a dry whisper. \"Almost. I was almost there.\"",
+      "text_zh": "一道蒼白的身影俯身在滿是破碎玻璃器皿的工作台前，仍在秤量早已化為塵埃的藥劑。她緩緩轉過身來，聲音乾澀如風：「就快了。我明明就快成功了。」",
+      "choices": [
+        { "text": "It's over. Let it go.", "text_zh": "都結束了。放手吧。", "next": "battle_start", "requires_not_flag": "manor_cleared" },
+        { "text": "The workbench has gone quiet.", "text_zh": "工作台已經安靜下來了。", "next": "already_won", "requires_flag": "manor_cleared" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "The Alchemist's Shade",
+      "text": "\"No. No, I won't stop now — not when I'm this close!\"",
+      "text_zh": "「不。不，我不會現在停下——都到這一步了！」",
+      "start_battle": "alchemist_shade",
+      "victory_flag": "manor_cleared"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The glassware lies still and silent. Whatever kept her working has finally let her rest.",
+      "text_zh": "玻璃器皿靜靜躺著，不再作響。無論是什麼支撐著她不斷工作，如今終於讓她得以安息。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

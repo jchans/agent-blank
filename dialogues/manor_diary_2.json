@@ -1,0 +1,18 @@
+{
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "Faded Journal",
+      "text": "A later entry, the handwriting shakier now: \"They tell me to rest. I cannot rest. If I stop even for a night, I am afraid I will never start again — and then what was it all for?\"",
+      "text_zh": "更晚的一篇字跡已明顯顫抖：「他們叫我休息。我不能休息。只要停下一晚，我怕我就再也提不起勁繼續了——那這一切又是為了什麼？」",
+      "next": "cont"
+    },
+    "cont": {
+      "speaker": "Faded Journal",
+      "text": "The last page is blank.",
+      "text_zh": "最後一頁是空白的。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

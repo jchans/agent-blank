@@ -1,0 +1,9 @@
+{
+  "id": "manor_diary_1",
+  "name": "Faded Journal",
+  "glyph": "書",
+  "position": [84, 84],
+  "color": [0.7, 0.65, 0.5, 1.0],
+  "map": "manor_parlor",
+  "dialogue": "res://dialogues/manor_diary_1.json"
+}

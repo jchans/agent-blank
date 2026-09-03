@@ -29,11 +29,18 @@ const TILE_COLORS := {
 	"R": Color(0.9, 0.8, 0.2),
 	",": Color(0.6, 0.75, 0.25),
 	"^": Color(0.75, 0.9, 0.95),
+	">": Color(0.85, 0.75, 0.4),
+	"<": Color(0.85, 0.75, 0.4),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
-## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
-## are deliberately not here — doors must be walkable to trigger, and the
-## decoration is just flavor.
+## Solid/blocking glyphs. "+" (door), ">"/"<" (stairs down/up), and "o"/"R"
+## (shrine/relic decoration) are deliberately not here — a stairway is
+## just another door tile (same data/maps/<id>.doors.json mechanism,
+## already generic — see below), reskinned so a multi-floor building
+## reads visually as "you're changing floors" rather than "you're
+## leaving the room." No new engine code needed: WALL_GLYPHS is the only
+## thing collision/rendering cares about, and stairs were never added to
+## it, same as any other walkable decoration glyph.
 const WALL_GLYPHS := ["#", "T"]
 
 @onready var player: CharacterBody2D = $Player

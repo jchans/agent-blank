@@ -1,0 +1,30 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Anxious Heir",
+      "text": "\"Oh — are you here about the manor? My great-aunt's old place, west of here. I finally have to settle her estate, but every appraiser I've sent comes back pale and empty-handed. Lights moving on their own, they say.\"",
+      "text_zh": "「喔——你是為了那棟宅邸來的嗎？我姨婆的老房子，就在西邊。我終於得處理她的遺產了，可是每個我派去的估價師回來都臉色發白，兩手空空。他們說裡面的燈會自己移動。」",
+      "choices": [
+        { "text": "What happened to her?", "text_zh": "她發生了什麼事？", "next": "backstory" },
+        { "text": "I'll take a look inside.", "text_zh": "我會進去看看。", "next": "farewell" }
+      ]
+    },
+    "backstory": {
+      "speaker": "Anxious Heir",
+      "text": "\"She was an alchemist. Brilliant, everyone said — and then she just... stopped seeing anyone, years before she died. Whatever she was working on at the end, she never finished it. Maybe that's why she won't leave.\"",
+      "text_zh": "「她是個煉金術師。大家都說她天資過人——但後來她就……不再見任何人了，在她過世前好幾年就是如此。不知道她臨終前在鑽研什麼，總之從未完成。也許這就是她放不下的原因。」",
+      "choices": [
+        { "text": "I'll take a look inside.", "text_zh": "我會進去看看。", "next": "farewell" }
+      ]
+    },
+    "farewell": {
+      "speaker": "Anxious Heir",
+      "text": "\"Thank you. Whatever you find in there — I just want to know it's finally at rest.\"",
+      "text_zh": "「謝謝你。不管你在裡面發現什麼——我只希望知道它終於能安息了。」",
+      "set_flag": "heir_asked",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}
