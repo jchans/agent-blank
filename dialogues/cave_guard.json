@@ -4,19 +4,22 @@
     "greet": {
       "speaker": "Cave Guard",
       "text": "The cave beyond is dangerous. Are you prepared?",
+      "text_zh": "前方的洞窟很危險。你準備好了嗎？",
       "choices": [
-        { "text": "The hermit warned me. I'm ready.", "next": "let_through", "requires_flag": "shrine_warned" },
-        { "text": "I'll go carefully.", "next": "let_through_unwarned", "requires_not_flag": "shrine_warned" }
+        { "text": "The hermit warned me. I'm ready.", "text_zh": "隱士警告過我了，我準備好了。", "next": "let_through", "requires_flag": "shrine_warned" },
+        { "text": "I'll go carefully.", "text_zh": "我會小心行事的。", "next": "let_through_unwarned", "requires_not_flag": "shrine_warned" }
       ]
     },
     "let_through": {
       "speaker": "Cave Guard",
       "text": "Good. Then go — and watch yourself.",
+      "text_zh": "很好。那就去吧——自己多加小心。",
       "next": "end"
     },
     "let_through_unwarned": {
       "speaker": "Cave Guard",
       "text": "Hmph. Suit yourself. Don't say I didn't warn you.",
+      "text_zh": "哼。隨你便吧。可別說我沒警告過你。",
       "next": "end"
     },
     "end": { "speaker": "", "text": "", "end": true }

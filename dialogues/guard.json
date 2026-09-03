@@ -4,14 +4,16 @@
     "greet": {
       "speaker": "Guard",
       "text": "Want to test your skills? I can summon a training slime.",
+      "text_zh": "想試試身手嗎？我可以召喚一隻訓練用的史萊姆。",
       "choices": [
-        { "text": "Let's spar!", "next": "battle_start" },
-        { "text": "Not now.", "next": "end" }
+        { "text": "Let's spar!", "text_zh": "來切磋一下！", "next": "battle_start" },
+        { "text": "Not now.", "text_zh": "現在不想。", "next": "end" }
       ]
     },
     "battle_start": {
       "speaker": "Guard",
       "text": "Here it comes!",
+      "text_zh": "牠來了！",
       "start_battle": "slime"
     },
     "end": {

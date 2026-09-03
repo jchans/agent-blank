@@ -1,0 +1,39 @@
+{
+  "strings": {
+    "help.title": "Controls",
+    "help.body": "Arrows      Move\nZ           Confirm / Talk / Attack\nX           Cancel / Run\nEsc         Pause menu\nH           Toggle this help",
+    "help.close_hint": "H or Esc to close",
+    "dialogue.continue": "▼ Press Z",
+    "pause.title": "Paused",
+    "pause.resume": "Resume",
+    "pause.save": "Save",
+    "pause.saved": "Saved.",
+    "pause.options": "Options",
+    "pause.quit": "Quit",
+    "options.title": "Options",
+    "options.language": "Language",
+    "options.back": "Back",
+    "title.subtitle": "an ASCII JRPG",
+    "title.continue": "Continue",
+    "title.new_game": "New Game",
+    "battle.appears": "A wild %s (%s) appears!",
+    "battle.status": "@ You  HP: %d/%d      %s %s  HP: %d/%d",
+    "battle.attack_hit": "You attack %s for %d damage.",
+    "battle.win": "%s is defeated! You win.",
+    "battle.enemy_hit": "%s attacks you for %d damage.",
+    "battle.lose": "You were defeated... you crawl back to the village.",
+    "battle.run": "You run away.",
+    "battle.attack_button": "Attack",
+    "battle.run_button": "Run"
+  },
+  "speakers": {
+    "Elder": "Elder",
+    "Guard": "Guard",
+    "Merchant": "Merchant",
+    "Traveler": "Traveler",
+    "Signpost": "Signpost",
+    "Hermit": "Hermit",
+    "Cave Guard": "Cave Guard",
+    "Cave Guardian": "Cave Guardian"
+  }
+}

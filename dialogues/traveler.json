@@ -4,6 +4,7 @@
     "greet": {
       "speaker": "Traveler",
       "text": "Careful in these woods — I heard something moving near the old shrine to the south.",
+      "text_zh": "在這片樹林裡要小心——我聽說南邊的老神社附近有東西在移動。",
       "next": "end"
     },
     "end": { "speaker": "", "text": "", "end": true }

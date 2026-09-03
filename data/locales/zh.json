@@ -1,0 +1,39 @@
+{
+  "strings": {
+    "help.title": "操作說明",
+    "help.body": "方向鍵       移動\nZ            確認／對話／攻擊\nX            取消／逃跑\nEsc          暫停選單\nH            切換說明視窗",
+    "help.close_hint": "按 H 或 Esc 關閉",
+    "dialogue.continue": "▼ 按 Z 繼續",
+    "pause.title": "暫停",
+    "pause.resume": "繼續遊戲",
+    "pause.save": "儲存",
+    "pause.saved": "已儲存。",
+    "pause.options": "選項",
+    "pause.quit": "離開遊戲",
+    "options.title": "選項",
+    "options.language": "語言",
+    "options.back": "返回",
+    "title.subtitle": "一款 ASCII 風格 JRPG",
+    "title.continue": "繼續遊戲",
+    "title.new_game": "開始新遊戲",
+    "battle.appears": "一隻野生的 %s（%s）出現了！",
+    "battle.status": "@ 你  HP：%d/%d      %s %s  HP：%d/%d",
+    "battle.attack_hit": "你攻擊了 %s，造成 %d 點傷害。",
+    "battle.win": "%s 被擊敗了！你獲勝了。",
+    "battle.enemy_hit": "%s 攻擊你，造成 %d 點傷害。",
+    "battle.lose": "你被擊敗了……你狼狽地爬回村莊。",
+    "battle.run": "你逃跑了。",
+    "battle.attack_button": "攻擊",
+    "battle.run_button": "逃跑"
+  },
+  "speakers": {
+    "Elder": "長老",
+    "Guard": "守衛",
+    "Merchant": "商人",
+    "Traveler": "旅人",
+    "Signpost": "路標",
+    "Hermit": "隱士",
+    "Cave Guard": "洞窟守衛",
+    "Cave Guardian": "洞窟守護者"
+  }
+}

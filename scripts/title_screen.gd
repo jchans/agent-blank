@@ -1,10 +1,16 @@
 extends Node2D
 
+@onready var subtitle_label: Label = $CanvasLayer/VBoxContainer/SubtitleLabel
 @onready var continue_button: Button = $CanvasLayer/VBoxContainer/ContinueButton
 @onready var new_game_button: Button = $CanvasLayer/VBoxContainer/NewGameButton
 
 
 func _ready() -> void:
+	# The title itself ("WANDERER'S VILLAGE") is a proper-noun logo, kept
+	# untranslated; everything else here localizes.
+	subtitle_label.text = Localization.t("title.subtitle")
+	continue_button.text = Localization.t("title.continue")
+	new_game_button.text = Localization.t("title.new_game")
 	if GameState.has_saved_position:
 		continue_button.grab_focus()
 	else:

@@ -4,20 +4,23 @@
     "greet": {
       "speaker": "Cave Guardian",
       "text": "A hulking shape rises from the dark, guarding a glint of gold.",
+      "text_zh": "一個龐大的身影從黑暗中升起，守護著一絲金光。",
       "choices": [
-        { "text": "Fight for the relic!", "next": "battle_start", "requires_not_flag": "relic_found" },
-        { "text": "The relic is already yours.", "next": "already_won", "requires_flag": "relic_found" }
+        { "text": "Fight for the relic!", "text_zh": "為了遺物而戰！", "next": "battle_start", "requires_not_flag": "relic_found" },
+        { "text": "The relic is already yours.", "text_zh": "遺物已經是你的了。", "next": "already_won", "requires_flag": "relic_found" }
       ]
     },
     "battle_start": {
       "speaker": "Cave Guardian",
       "text": "It roars and charges!",
+      "text_zh": "牠咆哮著衝了過來！",
       "start_battle": "cave_guardian",
       "victory_flag": "relic_found"
     },
     "already_won": {
       "speaker": "",
       "text": "The guardian's remains lie still. The relic is already in your hands.",
+      "text_zh": "守護者的殘骸靜靜躺著。遺物已經在你手中了。",
       "next": "end"
     },
     "end": { "speaker": "", "text": "", "end": true }

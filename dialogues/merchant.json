@@ -4,19 +4,22 @@
     "greet": {
       "speaker": "Merchant",
       "text": "Care to see my wares?",
+      "text_zh": "要看看我的商品嗎？",
       "choices": [
-        { "text": "Show me what you have.", "next": "wares" },
-        { "text": "Not right now.", "next": "leave" }
+        { "text": "Show me what you have.", "text_zh": "讓我看看你有什麼。", "next": "wares" },
+        { "text": "Not right now.", "text_zh": "現在不用了。", "next": "leave" }
       ]
     },
     "wares": {
       "speaker": "Merchant",
       "text": "Potions, antidotes, a rusty old key... take your pick! (Shop system coming soon.)",
+      "text_zh": "藥水、解毒劑、一把生鏽的舊鑰匙……隨你挑選！（商店系統即將推出。）",
       "next": "end"
     },
     "leave": {
       "speaker": "Merchant",
       "text": "Come back anytime.",
+      "text_zh": "歡迎隨時回來。",
       "next": "end"
     },
     "end": {

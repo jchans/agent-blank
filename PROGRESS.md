@@ -66,6 +66,62 @@ Both should exit 0 with no `SCRIPT ERROR` / `push_error` output.
 3. Add NPCs scoped to it via `"map": "<id>"` in their `data/npcs/*.json` (see above).
 4. No `.tscn` editing, no code changes — `main.gd` discovers everything from these data files.
 
+### Localization
+
+`scripts/localization.gd` (autoload `Localization`, added right after
+`GameState` in `project.godot` so `GameState.locale` is already loaded
+by the time it reads it) backs a bilingual English/Traditional-Chinese
+UI, following the project's existing "content lives in JSON, not code"
+convention:
+
+- `data/locales/en.json` / `data/locales/zh.json` — each
+  `{"strings": {...}, "speakers": {...}}`. `Localization.t(key)` looks
+  up a UI string (falls back to English, then the key itself, if
+  missing); `Localization.speaker(name_en)` translates a dialogue
+  speaker's canonical English name via the 8-entry `speakers` table.
+- Dialogue JSON (`dialogues/*.json`): every node with body `"text"` and
+  every choice can carry an additive `"text_zh"` sibling key (English
+  `"text"` is untouched — see `dialogues/elder.json` for the pattern).
+  `Localization.text_for(dict, "text")` returns the right one for the
+  current locale. **Translation happens at the display layer
+  (`dialogue_box.gd`), not in `dialogue_manager.gd`** — the manager only
+  cares about flags/branching/battle-triggering, not presentation, so
+  it's unchanged; `display_node()`/`_reveal_choices_or_continue()` call
+  `Localization.text_for()`/`.speaker()` instead of reading `"text"`/
+  `"speaker"` raw. A new dialogue node without `"text_zh"` just silently
+  falls back to English — nothing breaks, it's just untranslated.
+- `data/npcs/*.json`'s `"name"` field is **not** translated — it's
+  write-only (`npc.npc_name` is set but never read anywhere; the
+  speaker shown in dialogue comes entirely from the dialogue JSON's own
+  `"speaker"` field), confirmed by grepping every script before doing
+  the (unnecessary) work of translating it.
+- UI screens (`PauseMenu`, `HelpOverlay`, `TitleScreen`, `Battle`) call
+  `Localization.t(key)` for their labels/buttons. `PauseMenu` and
+  `HelpOverlay` persist for a whole scene's lifetime and can be open
+  while the language changes (Options is reachable *from* the pause
+  menu), so both connect a `_refresh_texts()` handler to
+  `Localization.locale_changed` — one handler per screen, called once
+  at `_ready()` too, covers every case (menu open during the change,
+  closed, mid-navigation) without scattering refresh calls across each
+  button handler. `TitleScreen`/`Battle` only ever exist while
+  pause/options (which live inside `Main.tscn`) are *not* open, so they
+  just set text once at `_ready()` — no signal needed. `DialogueBox`
+  needs neither: `display_node()`/`_reveal_choices_or_continue()`
+  already re-run every dialogue turn, so translating inline there picks
+  up whatever the current locale is each time automatically.
+- **Judgment calls**: the title screen's `"WANDERER'S VILLAGE"` logo
+  stays untranslated (a stylized proper noun, not typically translated)
+  — only its subtitle/buttons localize. The Options menu's "English"/
+  "中文" button labels are proper nouns for the languages themselves,
+  never translated either. `locale` is a `GameState` field but
+  deliberately **not** reset by `reset_new_game()` — it's a
+  player/device preference, not story state, so starting a new game
+  doesn't silently revert the player's language choice. Enemy
+  `data/enemies/*.json` `"name"` fields (shown via `%s` in battle
+  format strings) were left English — the user's ask was scoped to
+  dialogue/UI text, not specifically enemy names; a natural follow-up
+  if wanted (add them to the `speakers` table) rather than done unasked.
+
 ## Done
 
 - [x] Project skeleton, headless Godot 4.7.2 installed at `~/.local/bin/godot4`.
@@ -129,6 +185,9 @@ Both should exit 0 with no `SCRIPT ERROR` / `push_error` output.
   - **How this is wired into the project**: the compiled template lives at `~/.local/share/godot/custom_templates/windows_release_x86_64_minimal.exe` (outside the repo, this-machine-only, like the rest of the "Godot toolchain" state `CLAUDE.md` already documents as not version-controlled). To use it, temporarily set `custom_template/release` in `export_presets.cfg`'s `[preset.0.options]` to that path, export, then revert — **`export_presets.cfg`'s committed `custom_template/release=""` was deliberately left as-is** (still points at the stock official template by default) rather than silently making the smaller custom build the new standing default. Reasoning: switching the default engine binary the game ships on is a bigger, more permanent decision than "make this one build smaller" — flagging it back to the user rather than baking it in quietly. If the user wants the minimal template to become the permanent default, that's a one-line `export_presets.cfg` change plus documenting the rebuild recipe above in `CLAUDE.md`'s "Godot toolchain" section — not done yet.
   - **Verification gap, disclosed rather than silently skipped**: Wine visual verification was already established as broken in this environment (see the Wine note above, added earlier the same day) — re-tested with this new binary anyway and got the *identical* fault address as the already-known-broken official template, confirming (again) it's the environment, not this binary. Beyond that, this session could only verify: (a) the disabled features are genuinely unused by this project (checked directly against source, not assumed), (b) the exe is statically linked and has no missing-DLL risk, (c) the existing headless smoke tests still pass (they exercise the *editor* binary, not the export template, so this is necessary but not sufficient). **No real-Windows-hardware confirmation yet** — same category of gap as any new build, not specific to this optimization.
   - **Known process gap this round**: the SCons compile (~13 minutes, `scons ... -j6 > log 2>&1 &` backgrounded and waited on via a Bash `run_in_background` completion watcher) finished cleanly, but this session didn't act on the completion notification for roughly 4 hours — the user had to prompt ("已經超過一兩個小時了") before this picked back up. Same failure category as the earlier-logged "didn't resume after 'Continue from where you left off'" incident — flagged as feedback again rather than left unremarked.
+
+- [x] **Bilingual English/Traditional-Chinese localization + an Options menu in the Esc pause menu (2026-09-03, user request).** English is unchanged/kept everywhere; Chinese is an added, switchable option, not a replacement. Full architecture in the new "Localization" subsection under "How to add a new NPC"/"How to add a new room" above — summary: new `Localization` autoload backed by `data/locales/{en,zh}.json`, additive `"text_zh"` keys on every `dialogues/*.json` node/choice, translation applied at the display layer (`dialogue_box.gd`) rather than in `dialogue_manager.gd`, and a `_refresh_texts()`-on-`Localization.locale_changed` pattern for the two screens (`PauseMenu`, `HelpOverlay`) that can stay open across a language change. Pause menu now has Resume/Save/**Options**/Quit — Options opens a sub-panel (not a separate top-level scene, since the ask was specifically "inside the Esc menu") with English/中文 buttons and a Back button. `GameState.locale` persists the choice but is deliberately excluded from `reset_new_game()`'s reset (a language preference, not story state).
+  Verified: headless smoke test clean after every file group; a temporary `GODOT_TEST_LOCALE=1`-gated hook (removed before commit) exercised the full loop — default-locale check, `set_locale("zh")` persisting to `GameState` and refreshing an already-open `PauseMenu`'s labels via the signal, a live `DialogueManager` conversation rendering fully in Chinese (speaker + body text) via `DialogueBox`, then switching back to `"en"` and confirming both the pause menu and a fresh dialogue reverted correctly. 0 failures. A prior fork first surveyed every hardcoded English string in the project (scenes, scripts, all 8 dialogue files) before any code was written, which is also what surfaced that `data/npcs/*.json`'s `"name"` field is dead code (never displayed) — saved translating 8 strings that would never have been shown.
 
 ## Next up (in rough priority order)
 

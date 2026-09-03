@@ -4,50 +4,58 @@
     "greet": {
       "speaker": "Elder",
       "text": "Welcome, traveler. What brings you to our village?",
+      "text_zh": "歡迎，旅人。是什麼風把你吹來我們村子的？",
       "choices": [
-        { "text": "I'm looking for the ancient sword.", "next": "sword_info", "requires_not_flag": "knows_about_sword" },
-        { "text": "Tell me more about the sword.", "next": "sword_info_more", "requires_flag": "knows_about_sword" },
-        { "text": "Is something troubling the village?", "next": "quest_intro", "requires_not_flag": "quest_started" },
-        { "text": "Any word on the relic?", "next": "quest_progress", "requires_flag": "quest_started", "requires_not_flag": "relic_found" },
-        { "text": "I found the relic!", "next": "quest_complete", "requires_flag": "relic_found" },
-        { "text": "Just passing through.", "next": "passing" }
+        { "text": "I'm looking for the ancient sword.", "text_zh": "我在尋找那把古劍。", "next": "sword_info", "requires_not_flag": "knows_about_sword" },
+        { "text": "Tell me more about the sword.", "text_zh": "多告訴我一些關於那把劍的事。", "next": "sword_info_more", "requires_flag": "knows_about_sword" },
+        { "text": "Is something troubling the village?", "text_zh": "村子裡是不是發生了什麼麻煩事？", "next": "quest_intro", "requires_not_flag": "quest_started" },
+        { "text": "Any word on the relic?", "text_zh": "遺物的下落有消息了嗎？", "next": "quest_progress", "requires_flag": "quest_started", "requires_not_flag": "relic_found" },
+        { "text": "I found the relic!", "text_zh": "我找到那件遺物了！", "next": "quest_complete", "requires_flag": "relic_found" },
+        { "text": "Just passing through.", "text_zh": "只是路過而已。", "next": "passing" }
       ]
     },
     "sword_info": {
       "speaker": "Elder",
       "text": "Ah, the ancient sword... it lies deep within the Whispering Caves, north of here.",
+      "text_zh": "啊，那把古劍……它深藏在北方的低語洞窟中。",
       "set_flag": "knows_about_sword",
       "next": "warn"
     },
     "sword_info_more": {
       "speaker": "Elder",
       "text": "I've told you all I know. The Whispering Caves are north of here — be careful.",
+      "text_zh": "我知道的都告訴你了。低語洞窟在北方——小心行事。",
       "next": "end"
     },
     "warn": {
       "speaker": "Elder",
       "text": "Be careful. Many who enter do not return.",
+      "text_zh": "千萬小心。許多進去的人都沒能回來。",
       "next": "end"
     },
     "quest_intro": {
       "speaker": "Elder",
       "text": "There is a relic, lost long ago near an old shrine south of here, said to be guarded by something that still wakes when disturbed. If you could recover it, the village would owe you a great debt.",
+      "text_zh": "在南方一座古老神社附近，很久以前遺失了一件遺物，據說有某種東西在守護著它，一旦被打擾就會甦醒。如果你能把它找回來，全村都會感激不盡。",
       "set_flag": "quest_started",
       "next": "end"
     },
     "quest_progress": {
       "speaker": "Elder",
       "text": "The path south leads through the forest to the shrine, and beyond it, the cave. Take care.",
+      "text_zh": "往南的路穿過森林通往神社，再往前就是那座洞窟了。多加小心。",
       "next": "end"
     },
     "quest_complete": {
       "speaker": "Elder",
       "text": "You've truly done it! The village thanks you, traveler. We won't forget this.",
+      "text_zh": "你真的做到了！全村都感謝你，旅人。我們不會忘記這份恩情的。",
       "next": "end"
     },
     "passing": {
       "speaker": "Elder",
       "text": "Safe travels, then. The road can be dangerous at night.",
+      "text_zh": "那麼一路平安。夜裡的路可能會有危險。",
       "next": "end"
     },
     "end": {

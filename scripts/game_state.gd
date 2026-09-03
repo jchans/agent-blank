@@ -26,6 +26,11 @@ var has_saved_position: bool = false
 ## pick the room a saved game resumes into.
 var current_map: String = "village"
 
+## UI/dialogue language ("en" or "zh"). Read by Localization at startup,
+## written by Localization.set_locale(). Deliberately NOT reset by
+## reset_new_game() — it's a player/device preference, not story state.
+var locale: String = "en"
+
 ## Set by whoever triggers a battle (e.g. DialogueManager on a "start_battle"
 ## node) right before changing to Battle.tscn; Battle reads it in _ready().
 var pending_battle_enemy: String = ""
@@ -74,6 +79,7 @@ func save_game() -> void:
 		"player_attack": player_attack,
 		"player_position": [player_position.x, player_position.y],
 		"current_map": current_map,
+		"locale": locale,
 	}))
 	file.close()
 
@@ -96,3 +102,4 @@ func load_game() -> void:
 			player_position = Vector2(pos[0], pos[1])
 			has_saved_position = true
 		current_map = parsed.get("current_map", current_map)
+		locale = parsed.get("locale", locale)

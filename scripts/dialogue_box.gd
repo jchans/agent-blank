@@ -19,8 +19,8 @@ func _ready() -> void:
 
 
 func display_node(node: Dictionary) -> void:
-	speaker_label.text = node.get("speaker", "")
-	var full_text: String = node.get("text", "")
+	speaker_label.text = Localization.speaker(node.get("speaker", ""))
+	var full_text: String = Localization.text_for(node, "text")
 	text_label.text = full_text
 	text_label.visible_ratio = 0.0
 	_clear_choices()
@@ -47,11 +47,12 @@ func _reveal_choices_or_continue() -> void:
 		_current_choices = _pending_choices
 		for choice in _pending_choices:
 			var button := Button.new()
-			button.text = choice.get("text", "")
+			button.text = Localization.text_for(choice, "text")
 			button.pressed.connect(_on_choice_pressed.bind(choice.get("next", "")))
 			choices_container.add_child(button)
 		choices_container.get_child(0).grab_focus()
 	else:
+		continue_indicator.text = Localization.t("dialogue.continue")
 		continue_indicator.show()
 
 

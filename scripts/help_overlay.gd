@@ -9,11 +9,22 @@ extends CanvasLayer
 ## input, the same way scripts already gate on DialogueManager.is_active.
 
 @onready var panel: Control = $Panel
+@onready var title_label: Label = $Panel/Box/MarginContainer/VBoxContainer/TitleLabel
+@onready var body_label: Label = $Panel/Box/MarginContainer/VBoxContainer/BodyLabel
+@onready var close_label: Label = $Panel/Box/MarginContainer/VBoxContainer/CloseLabel
 
 
 func _ready() -> void:
 	layer = 50
 	panel.hide()
+	Localization.locale_changed.connect(_refresh_texts)
+	_refresh_texts()
+
+
+func _refresh_texts() -> void:
+	title_label.text = Localization.t("help.title")
+	body_label.text = Localization.t("help.body")
+	close_label.text = Localization.t("help.close_hint")
 
 
 func _unhandled_input(event: InputEvent) -> void:
