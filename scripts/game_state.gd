@@ -1,6 +1,6 @@
 extends Node
 
-## Autoload singleton. Tracks story flags and basic player battle stats,
+## Autoload singleton. Tracks story flags and party battle stats,
 ## persisted immediately to user://save.json on every change. Inventory
 ## isn't tracked yet (see PROGRESS.md Next up) — keep the save format
 ## additive when adding it, don't redesign it.
@@ -8,9 +8,17 @@ extends Node
 const SAVE_PATH := "user://save.json"
 
 var flags: Dictionary = {}
-var player_max_hp: int = 20
-var player_hp: int = 20
-var player_attack: int = 5
+
+## Party HP/RP, keyed by data/party/*.json's "id" field, persisting a
+## party member's current HP/RP across battle encounters (see
+## combatant_stats.gd's reset_for_battle() and battle.gd's _load_party()
+## for why this replaced the old single-character player_hp/player_max_hp/
+## player_attack fields when the battle system was ported to be
+## D&D-5e-lite and party-based — see PROGRESS.md's Notes/decisions for
+## that whole port). A party member with no entry here yet starts at full
+## HP/RP the first time they're loaded into a battle.
+var party_hp: Dictionary = {}
+var party_rp: Dictionary = {}
 
 ## Kept in sync from Main._process() while the overworld is loaded; written
 ## to save.json whenever save_game() runs (flag change, battle end, pause).
@@ -50,9 +58,8 @@ func _ready() -> void:
 ## "New Game" so an existing save doesn't force "Continue".
 func reset_new_game() -> void:
 	flags = {}
-	player_max_hp = 20
-	player_hp = 20
-	player_attack = 5
+	party_hp = {}
+	party_rp = {}
 	player_position = Vector2(300, 180)
 	has_saved_position = false
 	current_map = "village"
@@ -74,9 +81,8 @@ func save_game() -> void:
 		return
 	file.store_string(JSON.stringify({
 		"flags": flags,
-		"player_hp": player_hp,
-		"player_max_hp": player_max_hp,
-		"player_attack": player_attack,
+		"party_hp": party_hp,
+		"party_rp": party_rp,
 		"player_position": [player_position.x, player_position.y],
 		"current_map": current_map,
 		"locale": locale,
@@ -94,9 +100,8 @@ func load_game() -> void:
 	file.close()
 	if typeof(parsed) == TYPE_DICTIONARY:
 		flags = parsed.get("flags", {})
-		player_hp = parsed.get("player_hp", player_hp)
-		player_max_hp = parsed.get("player_max_hp", player_max_hp)
-		player_attack = parsed.get("player_attack", player_attack)
+		party_hp = parsed.get("party_hp", {})
+		party_rp = parsed.get("party_rp", {})
 		var pos: Array = parsed.get("player_position", [])
 		if pos.size() == 2:
 			player_position = Vector2(pos[0], pos[1])
