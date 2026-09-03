@@ -28,6 +28,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Localization.locale_changed.connect(_refresh_texts)
 	_refresh_texts()
+	LayoutWorkaround.force_relayout(panel)
+	LayoutWorkaround.force_relayout(options_panel)
 
 
 ## English/中文 button labels are proper nouns for the language itself, not

@@ -7,6 +7,7 @@ extends Node2D
 
 const ENEMY_DATA_DIR := "res://data/enemies/"
 
+@onready var panel: Panel = $UI/Panel
 @onready var status_label: Label = $UI/Panel/MarginContainer/VBoxContainer/StatusLabel
 @onready var log_label: RichTextLabel = $UI/Panel/MarginContainer/VBoxContainer/LogLabel
 @onready var actions_container: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/ActionsContainer
@@ -23,6 +24,7 @@ var _battle_over: bool = false
 
 
 func _ready() -> void:
+	LayoutWorkaround.force_relayout(panel)
 	attack_button.text = Localization.t("battle.attack_button")
 	run_button.text = Localization.t("battle.run_button")
 	var enemy_id: String = GameState.pending_battle_enemy
