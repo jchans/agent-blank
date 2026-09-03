@@ -105,6 +105,20 @@ one there to give that consent.
   not 100% sure of the exact name for, confirm it actually exists:
   `strings ~/.local/bin/godot4 | grep -i <keyword>`. Don't rely on
   memory or on docs that might be for a different Godot version.
+- **A mingw-w64 cross-compiler and the matching Godot source are already
+  set up for building custom export templates** (e.g. a smaller
+  template with unused modules disabled — see PROGRESS.md's 2026-09-03
+  "Custom minimal Windows export template" entry for the full recipe
+  and reasoning): the toolchain lives at `~/.local/mingw64` (extracted
+  from `.deb`s via `apt-get download` + `dpkg -x`, no root needed — see
+  the sudo note below), and the Godot 4.7.2 source is checked out at
+  `~/godot-src/godot`. Reuse these rather than redoing the setup; a
+  rebuild is just `cd ~/godot-src/godot && export PATH="$HOME/.local/mingw64/usr/bin:$PATH" && scons ...`.
+  The currently-shipped default template is still the stock official
+  one — `export_presets.cfg`'s `custom_template/release` is
+  deliberately left empty; wiring in the smaller custom template as the
+  standing default is a decision for the user to make, not to bake in
+  silently.
 
 ## Windows build
 
@@ -171,6 +185,15 @@ headless, not in the editor), in this order:
    sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y wine wine64 wine32:i386
    pip3 install --user python-xlib Pillow   # scripted key input + screenshots of the Wine window
    ```
+   **`sudo` needs an interactive password prompt** — a background/
+   automated session (e.g. the hourly cron job) has no TTY to supply
+   one and `sudo` just fails silently-ish (asks for a password, gets
+   none, errors). This install step needs a live interactive session.
+   When root isn't available and a tool needs installing anyway, try
+   `apt-get download <pkg>` + `dpkg -x <pkg>.deb <local-dir>` first —
+   that doesn't need root and worked for pulling in a full mingw-w64
+   cross-compiler without sudo (see "Godot toolchain" above).
+
    Set this up as soon as a fix needs runtime verification beyond the
    headless smoke test — not only after the user has already had to
    manually test several candidate builds. **Limitation**: this
@@ -182,3 +205,15 @@ headless, not in the editor), in this order:
    wait — work on something else useful in the meantime (another angle
    of the same investigation, another `PROGRESS.md` item) and come back
    to it.
+   **As of 2026-09-03, Wine is broken in this environment for an
+   unrelated reason**: it crashes immediately on *any* build, including
+   an already-known-good one from before that date (identical fault
+   address on a stock build and this session's new custom-template
+   build both) — isolated to a drifted Mesa package mix
+   (`libgl1-mesa-dri` newer than `libglapi-mesa`), not a code
+   regression. See PROGRESS.md's "Wine verification is currently
+   broken" note for the diagnosis and a possible fix
+   (`apt-get install --reinstall libglapi-mesa`, untried). **Before
+   trusting any new Wine crash as meaningful, first re-run a build from
+   before that date** (or check PROGRESS.md for whether this has since
+   been fixed) to rule out this same environment issue.
