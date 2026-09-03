@@ -1,0 +1,9 @@
+{
+  "id": "sunken_archive_4_chest_2",
+  "map": "sunken_archive_4",
+  "position": [252, 60],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "scroll_of_clarity",
+  "quantity": 2
+}

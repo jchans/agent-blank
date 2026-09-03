@@ -28,6 +28,7 @@ const TILE_COLORS := {
 	"o": Color(0.8, 0.7, 0.3),
 	"R": Color(0.9, 0.8, 0.2),
 	",": Color(0.6, 0.75, 0.25),
+	"^": Color(0.75, 0.9, 0.95),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
 ## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
@@ -58,7 +59,7 @@ var _encounter_triggered := false
 func _ready() -> void:
 	_load_map(GameState.current_map)
 	if GameState.has_saved_position:
-		player.position = GameState.player_position
+		player.position = _safe_restore_position(GameState.player_position)
 
 
 func _process(_delta: float) -> void:
@@ -153,6 +154,37 @@ func _glyph_at(col: int, row: int) -> String:
 	if col < 0 or col >= line.length():
 		return ""
 	return line[col]
+
+
+func _is_walkable(col: int, row: int) -> bool:
+	var glyph := _glyph_at(col, row)
+	return glyph != "" and not (glyph in WALL_GLYPHS)
+
+
+## A saved player_position can land a few pixels inside a wall tile's
+## edge if it was captured at a bad moment — most notably a RoamingMonster
+## physically shoving the player mid-chase right as a battle triggers
+## (user report: coming back from battle sometimes left them wedged in a
+## wall, unable to move at all). Restoring that raw pixel position
+## verbatim risks resuming with the player's whole collision shape inside
+## a wall's, which move_and_slide has no way to resolve on its own since
+## nothing is ever pressed *into* the wall to trigger a push-out. Snap to
+## the nearest walkable tile's center instead — a wall tile's center is
+## never reachable through ordinary walking in the first place, so once
+## found this is always safe ground. Called for every saved-position
+## restore (battle return and resuming a save from the title screen
+## alike), not just the battle case, since it's strictly safer either way.
+func _safe_restore_position(raw: Vector2) -> Vector2:
+	var col := int(floor(raw.x / TILE_SIZE))
+	var row := int(floor(raw.y / TILE_SIZE))
+	if _is_walkable(col, row):
+		return tile_center(col, row)
+	var offsets := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
+		Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]
+	for offset in offsets:
+		if _is_walkable(col + offset.x, row + offset.y):
+			return tile_center(col + offset.x, row + offset.y)
+	return raw
 
 
 func _render_map(path: String) -> void:
@@ -282,6 +314,9 @@ func _spawn_npc_from_file(path: String, map_id: String) -> void:
 ## carries "collected_flag" (defaulted from "id" if omitted) — an item
 ## already collected is a permanently set GameState flag, so it's simply
 ## never spawned again rather than needing per-room "already taken" state.
+## An optional "requires_flag" mirrors doors' own flag-gating (see
+## _check_door_crossing) — the item simply doesn't spawn until that flag
+## is set, e.g. a boss-drop chest that only appears after the boss falls.
 func _spawn_world_items(map_id: String) -> void:
 	var dir := DirAccess.open(WORLD_ITEM_DATA_DIR)
 	if dir == null:
@@ -311,6 +346,9 @@ func _spawn_world_item_from_file(path: String, map_id: String) -> void:
 	var item_id: String = String(parsed.get("id", "item"))
 	var collected_flag: String = parsed.get("collected_flag", "world_item_%s_taken" % item_id)
 	if GameState.has_flag(collected_flag):
+		return
+	var requires_flag: String = parsed.get("requires_flag", "")
+	if requires_flag != "" and not GameState.has_flag(requires_flag):
 		return
 
 	var world_item := WORLD_ITEM_SCENE.instantiate()

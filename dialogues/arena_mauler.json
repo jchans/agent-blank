@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Arena Mauler",
+      "text": "Something huge and scarred paces behind an iron gate, growling low.",
+      "text_zh": "巨大且傷痕累累的身影在鐵柵欄後踱步，發出低沉的咆哮。",
+      "choices": [
+        { "text": "Open the gate!", "text_zh": "打開柵欄！", "next": "battle_start", "requires_not_flag": "coliseum_round2_won" },
+        { "text": "It's already beaten.", "text_zh": "牠已經被打敗了。", "next": "already_won", "requires_flag": "coliseum_round2_won" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Arena Mauler",
+      "text": "The gate rattles open. It's already moving before it's fully clear.",
+      "text_zh": "柵欄嘎吱作響地打開。牠還沒完全脫身就已經撲了上來。",
+      "start_battle": "arena_mauler",
+      "victory_flag": "coliseum_round2_won"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The mauler lies still behind the gate, chest rising and falling in an uneasy sleep.",
+      "text_zh": "猛獸靜靜躺在柵欄後，胸口隨著不安的沉睡起伏著。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

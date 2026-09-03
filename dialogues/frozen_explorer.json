@@ -1,0 +1,42 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Frozen Explorer",
+      "text": "A traveler sits slumped against the ice wall, rime crusted over an old coat. Their eyes flicker open as you approach.",
+      "text_zh": "一名旅人靠著冰牆癱坐著，破舊的外套上結滿了霜。你靠近時，他們的眼睛微微睜開。",
+      "next": "talk"
+    },
+    "talk": {
+      "speaker": "Frozen Explorer",
+      "text": "Don't waste breath on me... I came for the treasure the old golem guards. Got greedy. Got slow. The ice doesn't forgive slow.",
+      "text_zh": "別浪費力氣在我身上……我是為了那尊老巨像守著的寶藏來的。太貪心，太遲鈍。冰不會放過遲鈍的人。",
+      "choices": [
+        { "text": "What treasure?", "text_zh": "什麼寶藏？", "next": "treasure" },
+        { "text": "Is there a way to save you?", "text_zh": "有辦法救你嗎？", "next": "no_saving", "requires_not_flag": "explorer_asked_help" },
+        { "text": "Any advice for the ice ahead?", "text_zh": "對前面的冰有什麼建議嗎？", "next": "advice" },
+        { "text": "Farewell.", "text_zh": "再見了。", "next": "end" }
+      ]
+    },
+    "treasure": {
+      "speaker": "Frozen Explorer",
+      "text": "Something forged in the golem's own frost-heart, they say. Deeper in, past where the ice doesn't let you stop. You'll know the golem when the whole cavern goes quiet.",
+      "text_zh": "聽說是用巨像自己的冰霜之心鍛造出來的東西。在更深處，過了那片不讓你停下的冰地之後。當整個洞穴安靜下來時，你就會知道巨像到了。",
+      "next": "talk"
+    },
+    "no_saving": {
+      "speaker": "Frozen Explorer",
+      "text": "Ha. Kind of you to ask. No — I made my choices long before I sat down here. Go on. Don't let my slowness be for nothing.",
+      "text_zh": "哈，你能問這句就很好心了。不——我早在坐下之前就做好了選擇。去吧，別讓我的遲鈍白白浪費。",
+      "set_flag": "explorer_asked_help",
+      "next": "talk"
+    },
+    "advice": {
+      "speaker": "Frozen Explorer",
+      "text": "The ice doesn't care what you meant to do, only what you're doing. Keep a direction in mind before you step on, and don't panic when your feet won't listen.",
+      "text_zh": "冰不管你原本想做什麼，只管你正在做什麼。踏上去之前先想好方向，腳不聽使喚時也別慌。",
+      "next": "talk"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

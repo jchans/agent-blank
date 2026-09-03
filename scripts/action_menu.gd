@@ -30,7 +30,7 @@ func _ready() -> void:
 	visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not visible or not (event is InputEventKey) or not event.pressed or event.echo:
+	if not visible or Controls.is_help_open or not (event is InputEventKey) or not event.pressed or event.echo:
 		return
 	match event.keycode:
 		KEY_X:

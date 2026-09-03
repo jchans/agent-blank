@@ -1,0 +1,9 @@
+{
+  "id": "arena_duelist",
+  "name": "Arena Duelist",
+  "glyph": "d",
+  "position": [180, 156],
+  "color": [0.85, 0.55, 0.3, 1],
+  "map": "coliseum_1",
+  "dialogue": "res://dialogues/arena_duelist.json"
+}

@@ -1,0 +1,45 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "A second ledger-shade drifts among the deeper stacks. \"One riddle behind you. One before the vault. Are you ready?\"",
+      "text_zh": "第二個帳冊之影在更深處的書架間飄動。「一個謎題已在你身後，另一個守著寶庫。準備好了嗎？」",
+      "choices": [
+        { "text": "Ask the riddle.", "text_zh": "請出謎題。", "next": "riddle", "requires_not_flag": "archive_riddle2_solved" },
+        { "text": "You already have my answer.", "text_zh": "你已經知道我的答案了。", "next": "already_solved", "requires_flag": "archive_riddle2_solved" }
+      ]
+    },
+    "riddle": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?\"",
+      "text_zh": "「我沒有嘴卻能說話，沒有耳朵卻能聆聽。我沒有身軀，卻隨風而活。我是什麼？」",
+      "choices": [
+        { "text": "A ghost.", "text_zh": "幽靈。", "next": "wrong" },
+        { "text": "The wind itself.", "text_zh": "風本身。", "next": "wrong" },
+        { "text": "A dream.", "text_zh": "夢境。", "next": "wrong" },
+        { "text": "An echo.", "text_zh": "回聲。", "next": "correct" }
+      ]
+    },
+    "wrong": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "The shade's pages fall still. \"Close, but no. Listen more carefully.\"",
+      "text_zh": "書影的頁面靜止了下來。「接近了，但不對。再仔細聽聽。」",
+      "next": "riddle"
+    },
+    "correct": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"An echo — just so. A voice with no body of its own.\" The vault door beyond groans and settles open.",
+      "text_zh": "「回聲——正是如此。一個沒有自己身軀的聲音。」後方的寶庫大門發出低吟，緩緩開啟。",
+      "set_flag": "archive_riddle2_solved",
+      "next": "already_solved"
+    },
+    "already_solved": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"An echo. Whatever you find in the vault, it was already answered for.\"",
+      "text_zh": "「回聲。無論你在寶庫裡找到什麼，那答案早已為你備妥。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

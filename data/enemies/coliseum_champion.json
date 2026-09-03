@@ -1,0 +1,49 @@
+{
+  "id": "coliseum_champion",
+  "display_name": "The Champion",
+  "display_name_zh": "王者",
+  "char_class": "Champion",
+  "char_class_zh": "王者",
+  "is_player": false,
+  "log_color": [1.0, 0.8, 0.2, 1.0],
+  "str_score": 17,
+  "dex_score": 17,
+  "con_score": 16,
+  "int_score": 12,
+  "wis_score": 13,
+  "cha_score": 15,
+  "armor_bonus": 5,
+  "max_hp_override": 38,
+  "weapon_name": "Twin-Crested Blade",
+  "weapon_name_zh": "雙冠之刃",
+  "weapon_symbol": "冠",
+  "weapon_dice": "1d10",
+  "weapon_ability": "str",
+  "max_rp": 3,
+  "skills": [
+    {
+      "skill_name": "Undefeated",
+      "skill_name_zh": "不敗之姿",
+      "description": "Years of victories crystallize into a single, perfectly-timed strike.",
+      "description_zh": "多年不敗的積累，凝聚成一記完美時機的致命一擊。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "3d8",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special"
+    },
+    {
+      "skill_name": "Crowd's Roar",
+      "skill_name_zh": "群眾的怒吼",
+      "description": "The Champion feeds on the imagined roar of a crowd that isn't there, striking twice as hard.",
+      "description_zh": "王者從想像中觀眾的怒吼汲取力量，出手比平時更加猛烈。",
+      "kind": "save",
+      "ability": "cha",
+      "save_ability": "wis",
+      "damage_dice": "3d6",
+      "half_on_save": true,
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

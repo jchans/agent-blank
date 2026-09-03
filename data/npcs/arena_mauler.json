@@ -1,0 +1,9 @@
+{
+  "id": "arena_mauler",
+  "name": "Arena Mauler",
+  "glyph": "m",
+  "position": [180, 84],
+  "color": [0.7, 0.35, 0.25, 1],
+  "map": "coliseum_2",
+  "dialogue": "res://dialogues/arena_mauler.json"
+}

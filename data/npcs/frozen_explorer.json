@@ -1,0 +1,9 @@
+{
+  "id": "frozen_explorer",
+  "name": "Frozen Explorer",
+  "glyph": "f",
+  "position": [252, 132],
+  "color": [0.55, 0.7, 0.8, 1],
+  "map": "frostbite_hollow_1",
+  "dialogue": "res://dialogues/frozen_explorer.json"
+}

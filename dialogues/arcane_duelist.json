@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Arcane Duelist",
+      "text": "Runes drift lazily around a dagger's edge. \"The muscle-bound rounds are over. Now it gets interesting.\"",
+      "text_zh": "符文懶洋洋地繞著匕首刀刃打轉。「靠蠻力的回合結束了。現在才要開始有趣。」",
+      "choices": [
+        { "text": "Bring it on.", "text_zh": "放馬過來。", "next": "battle_start", "requires_not_flag": "coliseum_round3_won" },
+        { "text": "We've already dueled.", "text_zh": "我們已經交過手了。", "next": "already_won", "requires_flag": "coliseum_round3_won" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Arcane Duelist",
+      "text": "The runes flare bright.",
+      "text_zh": "符文驟然亮起。",
+      "start_battle": "arcane_duelist",
+      "victory_flag": "coliseum_round3_won"
+    },
+    "already_won": {
+      "speaker": "Arcane Duelist",
+      "text": "\"Hm. Better than I expected. The Champion won't go as easy on you as I did.\"",
+      "text_zh": "「嗯，比我預期的好。王者可不會像我這樣手下留情。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "bound_tome",
+  "display_name": "Bound Tome",
+  "display_name_zh": "縛靈之書",
+  "char_class": "Tome",
+  "char_class_zh": "魔書",
+  "is_player": false,
+  "log_color": [0.55, 0.4, 0.7, 1.0],
+  "str_score": 10,
+  "dex_score": 13,
+  "con_score": 11,
+  "int_score": 15,
+  "wis_score": 12,
+  "cha_score": 8,
+  "armor_bonus": 2,
+  "max_hp_override": 16,
+  "weapon_name": "Papercut Flurry",
+  "weapon_name_zh": "紙頁亂舞",
+  "weapon_symbol": "頁",
+  "weapon_dice": "1d6",
+  "weapon_ability": "dex",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Binding Verse",
+      "skill_name_zh": "束縛詩篇",
+      "description": "Reads a stanza of old binding-magic aloud, the words themselves lashing out.",
+      "description_zh": "朗誦一段古老的束縛咒語，話語本身化為攻擊襲來。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "wis",
+      "damage_dice": "2d6",
+      "half_on_save": true,
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

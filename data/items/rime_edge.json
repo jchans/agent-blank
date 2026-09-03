@@ -1,0 +1,15 @@
+{
+  "id": "rime_edge",
+  "name": "Rime Edge",
+  "name_zh": "冰霜之刃",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 2,
+  "damage_bonus": 1,
+  "weapon_dice": "1d8",
+  "weapon_name": "Rime Edge",
+  "weapon_name_zh": "冰霜之刃",
+  "weapon_symbol": "霜",
+  "description": "A blade quarried from the Rime Golem's own frozen heart, still bitterly cold to the touch.",
+  "description_zh": "取自冰霜巨像核心冰晶所鑄的劍刃，觸手仍是刺骨的寒冷。"
+}

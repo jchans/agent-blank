@@ -1,0 +1,38 @@
+{
+  "id": "tome_sovereign",
+  "display_name": "Tome Sovereign",
+  "display_name_zh": "書卷之君",
+  "char_class": "Mimic",
+  "char_class_zh": "擬態怪",
+  "is_player": false,
+  "log_color": [0.75, 0.55, 0.85, 1.0],
+  "str_score": 16,
+  "dex_score": 12,
+  "con_score": 14,
+  "int_score": 17,
+  "wis_score": 13,
+  "cha_score": 10,
+  "armor_bonus": 3,
+  "max_hp_override": 22,
+  "weapon_name": "Gilded Clasp",
+  "weapon_name_zh": "鎏金書扣",
+  "weapon_symbol": "扣",
+  "weapon_dice": "1d8",
+  "weapon_ability": "str",
+  "max_rp": 2,
+  "skills": [
+    {
+      "skill_name": "Forbidden Page",
+      "skill_name_zh": "禁忌之頁",
+      "description": "Unfurls a page no mortal should read, the words burning straight into the mind.",
+      "description_zh": "展開一頁不該被凡人讀取的文字，字句直接灼燒進心智。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "wis",
+      "damage_dice": "2d8",
+      "half_on_save": true,
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

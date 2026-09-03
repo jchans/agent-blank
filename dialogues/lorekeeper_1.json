@@ -1,0 +1,45 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "A translucent figure hovers over an open ledger, ink dripping upward from its pages. \"Answer my riddle, and the stacks beyond will open to you.\"",
+      "text_zh": "一個半透明的身影懸浮在攤開的帳冊上方，墨水正向上滴落。「答對我的謎語，後面的書庫就會為你開啟。」",
+      "choices": [
+        { "text": "Ask the riddle.", "text_zh": "請出謎題。", "next": "riddle", "requires_not_flag": "archive_riddle1_solved" },
+        { "text": "You already have my answer.", "text_zh": "你已經知道我的答案了。", "next": "already_solved", "requires_flag": "archive_riddle1_solved" }
+      ]
+    },
+    "riddle": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"The more you take, the more you leave behind. What am I?\"",
+      "text_zh": "「拿得越多，留下的也越多。我是什麼？」",
+      "choices": [
+        { "text": "A shadow.", "text_zh": "影子。", "next": "wrong" },
+        { "text": "A river.", "text_zh": "河流。", "next": "wrong" },
+        { "text": "Footsteps.", "text_zh": "腳印。", "next": "correct" },
+        { "text": "A secret.", "text_zh": "秘密。", "next": "wrong" }
+      ]
+    },
+    "wrong": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "The ledger's pages riffle in disappointment. \"Not quite. Think again, traveler.\"",
+      "text_zh": "帳冊的書頁失望地翻動著。「不太對。再想想吧，旅人。」",
+      "next": "riddle"
+    },
+    "correct": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"Footsteps — yes. Every one you take is both taken and left.\" The air past the shelves grows lighter. The way is open.",
+      "text_zh": "「腳印——沒錯。每一步既是帶走，也是留下。」書架後方的空氣變得輕盈了些。通道開啟了。",
+      "set_flag": "archive_riddle1_solved",
+      "next": "already_solved"
+    },
+    "already_solved": {
+      "speaker": "Lorekeeper Spirit",
+      "text": "\"Footsteps, footsteps... a fine answer. Go on, the stacks are yours to wander.\"",
+      "text_zh": "「腳印、腳印……好答案。去吧，書庫任你遨遊。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

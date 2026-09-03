@@ -1,3 +1,4 @@
 [
-  { "position": [12, 14], "target_map": "forest_path", "target_spawn": [7, 1] }
+  { "position": [12, 14], "target_map": "forest_path", "target_spawn": [7, 1] },
+  { "position": [12, 0], "target_map": "frostbite_hollow_1", "target_spawn": [7, 7] }
 ]

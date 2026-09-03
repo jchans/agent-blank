@@ -1,0 +1,9 @@
+{
+  "id": "frostbite_hollow_3_chest",
+  "map": "frostbite_hollow_3",
+  "position": [252, 132],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "power_draught",
+  "quantity": 1
+}

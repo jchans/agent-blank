@@ -1,0 +1,36 @@
+{
+  "id": "rime_golem",
+  "display_name": "Rime Golem",
+  "display_name_zh": "冰霜巨像",
+  "char_class": "Golem",
+  "char_class_zh": "巨像",
+  "is_player": false,
+  "log_color": [0.65, 0.85, 0.9, 1.0],
+  "str_score": 18,
+  "dex_score": 8,
+  "con_score": 18,
+  "int_score": 5,
+  "wis_score": 10,
+  "cha_score": 5,
+  "armor_bonus": 5,
+  "max_hp_override": 34,
+  "weapon_name": "Glacial Fist",
+  "weapon_name_zh": "冰河之拳",
+  "weapon_symbol": "拳",
+  "weapon_dice": "1d10",
+  "weapon_ability": "str",
+  "max_rp": 2,
+  "skills": [
+    {
+      "skill_name": "Avalanche Slam",
+      "skill_name_zh": "雪崩重擊",
+      "description": "The golem rears up and crashes down with the weight of a collapsing glacier.",
+      "description_zh": "巨像高舉身軀，帶著崩塌冰川般的重量轟然砸下。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "3d8",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

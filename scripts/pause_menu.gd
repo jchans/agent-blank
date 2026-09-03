@@ -72,13 +72,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if DialogueManager.is_active and not visible:
 		return
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+	if not (event is InputEventKey) or not event.pressed or event.echo:
+		return
+	if event.keycode == KEY_ESCAPE:
 		if options_panel.visible:
 			_on_back_button_pressed()
 		elif items_panel.visible:
 			_on_items_back_button_pressed()
 		else:
 			_toggle_pause()
+		get_viewport().set_input_as_handled()
+	elif event.keycode == KEY_I and not visible:
+		# A direct shortcut to Items while exploring, so checking your bag
+		# doesn't require going through the full pause menu first — same
+		# key as battle's own Item action, opened here via the same
+		# panel-swap this file's Items button already uses.
+		_open_items_directly()
 		get_viewport().set_input_as_handled()
 
 
@@ -154,6 +163,23 @@ func _on_quit_to_title_button_pressed() -> void:
 func _on_items_button_pressed() -> void:
 	panel.hide()
 	items_panel.show()
+	_refresh_items_panel()
+
+
+## Entered via the "I" overworld shortcut (see _unhandled_input), skipping
+## the main pause panel entirely. Still pauses the tree and autosaves,
+## same as _pause() — this is a real pause, just landing straight on
+## Items instead of Resume/Save/.... Backing out (Escape) goes to the
+## main panel via the existing _on_items_back_button_pressed, same as
+## backing out of Items when reached the normal way through that panel.
+func _open_items_directly() -> void:
+	get_tree().paused = true
+	GameState.save_game()
+	status_label.text = ""
+	panel.hide()
+	options_panel.hide()
+	items_panel.show()
+	show()
 	_refresh_items_panel()
 
 

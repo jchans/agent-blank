@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Rime Golem",
+      "text": "The cavern falls utterly silent. A mountain of ice unfolds itself and turns to face you, frost cracking like breaking glass.",
+      "text_zh": "整個洞穴瞬間安靜下來。一座冰山緩緩展開身軀，轉身面向你，寒霜如碎玻璃般裂響。",
+      "choices": [
+        { "text": "Stand your ground!", "text_zh": "站穩腳步，迎戰！", "next": "battle_start", "requires_not_flag": "rime_golem_defeated" },
+        { "text": "The golem is already still.", "text_zh": "巨像已經靜止不動了。", "next": "already_won", "requires_flag": "rime_golem_defeated" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Rime Golem",
+      "text": "It raises a fist of packed glacial ice.",
+      "text_zh": "牠舉起一拳凝結的冰川寒冰。",
+      "start_battle": "rime_golem",
+      "victory_flag": "rime_golem_defeated"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The golem's shattered frame is already melting into a quiet pool. Whatever it guarded is yours now.",
+      "text_zh": "巨像破碎的身軀已經融成一灘靜靜的水窪。牠守護的東西，現在是你的了。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}
