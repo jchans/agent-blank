@@ -43,10 +43,7 @@ const BOX_MAX_HEIGHT := 440.0
 func _ready() -> void:
 	hide()
 	DialogueManager.register_dialogue_box(self)
-	_print_diag("ready_before_fix")
 	_force_explicit_rect()
-	_print_diag("ready_after_fix")
-	call_deferred("_print_diag", "ready_deferred")
 
 
 func _force_explicit_rect() -> void:
@@ -64,21 +61,8 @@ func _resize_to_content() -> void:
 	size = Vector2(BOX_WIDTH, clamp(content_height, BOX_MIN_HEIGHT, BOX_MAX_HEIGHT))
 
 
-func _print_diag(tag: String) -> void:
-	var panel: Panel = $Panel
-	print("BOX_DEBUG[", tag, "] anchor=(", anchor_left, ",", anchor_top, ",", anchor_right, ",", anchor_bottom,
-		") offset=(", offset_left, ",", offset_top, ",", offset_right, ",", offset_bottom,
-		") size=", size, " position=", position,
-		" self_global_rect=", get_global_rect(),
-		" panel_global_rect=", panel.get_global_rect(),
-		" viewport_size=", get_viewport_rect().size,
-		" window_size=", DisplayServer.window_get_size(),
-		" screen_scale=", DisplayServer.screen_get_scale())
-
-
 func display_node(node: Dictionary) -> void:
 	_force_explicit_rect()
-	_print_diag("display_node")
 	speaker_label.text = Localization.speaker(node.get("speaker", ""))
 	var full_text: String = Localization.text_for(node, "text")
 	text_label.text = full_text
