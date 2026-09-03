@@ -1,0 +1,5 @@
+{
+  "glyphs": [","],
+  "chance": 0.18,
+  "enemies": ["forest_wolf", "marsh_serpent"]
+}

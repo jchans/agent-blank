@@ -1,0 +1,4 @@
+[
+  { "position": [14, 4], "target_map": "crossroads", "target_spawn": [13, 4] },
+  { "position": [0, 4], "target_map": "sunken_grove_2", "target_spawn": [13, 4] }
+]

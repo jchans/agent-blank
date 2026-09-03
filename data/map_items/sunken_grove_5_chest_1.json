@@ -1,0 +1,9 @@
+{
+  "id": "sunken_grove_5_chest_1",
+  "map": "sunken_grove_5",
+  "position": [108, 60],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "bronze_sword",
+  "quantity": 1
+}

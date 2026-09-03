@@ -1,0 +1,36 @@
+{
+  "id": "marsh_serpent",
+  "display_name": "Marsh Serpent",
+  "display_name_zh": "沼澤巨蟒",
+  "char_class": "Serpent",
+  "char_class_zh": "巨蟒",
+  "is_player": false,
+  "log_color": [0.3, 0.55, 0.35, 1.0],
+  "str_score": 14,
+  "dex_score": 12,
+  "con_score": 13,
+  "int_score": 4,
+  "wis_score": 10,
+  "cha_score": 6,
+  "armor_bonus": 1,
+  "max_hp_override": 15,
+  "weapon_name": "Bite",
+  "weapon_name_zh": "咬擊",
+  "weapon_symbol": "咬",
+  "weapon_dice": "1d6",
+  "weapon_ability": "str",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Constrict",
+      "skill_name_zh": "纏繞",
+      "description": "Coils around the target, crushing them for heavy damage.",
+      "description_zh": "纏繞目標並用力擠壓，造成大量傷害。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "2d6",
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

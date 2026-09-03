@@ -15,6 +15,7 @@ const NPC_DATA_DIR := "res://data/npcs/"
 const MAP_DATA_DIR := "res://data/maps/"
 const WORLD_ITEM_SCENE := preload("res://scenes/WorldItem.tscn")
 const WORLD_ITEM_DATA_DIR := "res://data/map_items/"
+const ROAMING_MONSTER_SCENE := preload("res://scenes/RoamingMonster.tscn")
 
 const TILE_SIZE := 24.0
 const TILE_FONT_SIZE := 18
@@ -26,6 +27,7 @@ const TILE_COLORS := {
 	"+": Color(0.65, 0.5, 0.3),
 	"o": Color(0.8, 0.7, 0.3),
 	"R": Color(0.9, 0.8, 0.2),
+	",": Color(0.6, 0.75, 0.25),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
 ## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
@@ -42,6 +44,15 @@ const WALL_GLYPHS := ["#", "T"]
 var _spawned_nodes: Array[Node] = []
 ## "<col>,<row>" -> {"target_map": String, "target_spawn": [col, row], "requires_flag": String (optional)}
 var _doors: Dictionary = {}
+## Raw glyph rows of the current room, kept only so _check_random_encounter
+## can look up what tile the player is standing on (_render_map/_spawn_tile
+## already consume the file once for display and don't otherwise retain it).
+var _map_grid: Array[String] = []
+## Parsed data/maps/<id>.encounters.json for the current room, or {} if the
+## room has none: {"glyphs": [String], "chance": float, "enemies": [String]}.
+var _encounter_config: Dictionary = {}
+var _last_tile: Vector2i = Vector2i(-9999, -9999)
+var _encounter_triggered := false
 
 
 func _ready() -> void:
@@ -53,6 +64,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	GameState.player_position = player.position
 	_check_door_crossing()
+	_check_random_encounter()
 
 
 ## World-space center of tile (col, row), for positioning player/NPCs.
@@ -70,11 +82,16 @@ func _load_map(map_id: String) -> void:
 			node.queue_free()
 	_spawned_nodes.clear()
 	_doors.clear()
+	_map_grid.clear()
+	_last_tile = Vector2i(-9999, -9999)
+	_encounter_triggered = false
 	GameState.current_map = map_id
 	_load_doors(MAP_DATA_DIR + map_id + ".doors.json")
 	_render_map(MAP_DATA_DIR + map_id + ".txt")
+	_encounter_config = _load_json_dict(MAP_DATA_DIR + map_id + ".encounters.json")
 	_spawn_npcs(map_id)
 	_spawn_world_items(map_id)
+	_spawn_monsters(map_id)
 
 
 func _check_door_crossing() -> void:
@@ -98,6 +115,46 @@ func _check_door_crossing() -> void:
 	GameState.save_game()
 
 
+## Sunken Grove's encounter type: a chance per newly-entered tile of a
+## fixed glyph set (tall grass, "," — see data/maps/<id>.encounters.json)
+## to ambush into a random enemy from that room's pool. Distinct from
+## Ember Hollow's RoamingMonster, which chases on sight instead of rolling
+## per tile — see roaming_monster.gd.
+func _check_random_encounter() -> void:
+	if _encounter_config.is_empty() or _encounter_triggered:
+		return
+	if DialogueManager.is_active or Controls.is_help_open:
+		return
+	var col := int(floor(player.position.x / TILE_SIZE))
+	var row := int(floor(player.position.y / TILE_SIZE))
+	var tile := Vector2i(col, row)
+	if tile == _last_tile:
+		return
+	_last_tile = tile
+	var trigger_glyphs: Array = _encounter_config.get("glyphs", [])
+	if not trigger_glyphs.has(_glyph_at(col, row)):
+		return
+	if randf() >= float(_encounter_config.get("chance", 0.1)):
+		return
+	var enemy_pool: Array = _encounter_config.get("enemies", [])
+	if enemy_pool.is_empty():
+		return
+	_encounter_triggered = true
+	GameState.pending_battle_enemy = enemy_pool[randi() % enemy_pool.size()]
+	GameState.pending_victory_flag = ""
+	GameState.save_game()
+	get_tree().change_scene_to_file.bind("res://scenes/Battle.tscn").call_deferred()
+
+
+func _glyph_at(col: int, row: int) -> String:
+	if row < 0 or row >= _map_grid.size():
+		return ""
+	var line: String = _map_grid[row]
+	if col < 0 or col >= line.length():
+		return ""
+	return line[col]
+
+
 func _render_map(path: String) -> void:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -109,6 +166,7 @@ func _render_map(path: String) -> void:
 		if line == "":
 			row += 1
 			continue
+		_map_grid.append(line)
 		for col in range(line.length()):
 			_spawn_tile(line[col], col, row)
 		row += 1
@@ -264,3 +322,48 @@ func _spawn_world_item_from_file(path: String, map_id: String) -> void:
 	world_item.name = item_id
 	add_child(world_item)
 	_spawned_nodes.append(world_item)
+
+
+func _load_json_dict(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		return {}
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_warning("Main: could not open JSON file: %s" % path)
+		return {}
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_DICTIONARY:
+		push_warning("Main: invalid JSON file (expected a dict): %s" % path)
+		return {}
+	return parsed
+
+
+## Ember Hollow's encounter type: data/maps/<id>.monsters.json is an
+## optional sibling of the room's .txt (same convention as .doors.json/
+## .encounters.json) listing fixed RoamingMonster spawns for that room.
+func _spawn_monsters(map_id: String) -> void:
+	var path := MAP_DATA_DIR + map_id + ".monsters.json"
+	if not FileAccess.file_exists(path):
+		return
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		push_warning("Main: could not open monsters file: %s" % path)
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_ARRAY:
+		push_warning("Main: invalid monsters file: %s" % path)
+		return
+	for entry in parsed:
+		var monster := ROAMING_MONSTER_SCENE.instantiate()
+		var pos: Array = entry.get("position", [0, 0])
+		monster.position = Vector2(pos[0], pos[1])
+		var col: Array = entry.get("color", [0.8, 0.2, 0.2, 1])
+		monster.monster_color = Color(col[0], col[1], col[2], col[3] if col.size() > 3 else 1.0)
+		monster.glyph = entry.get("glyph", "M")
+		monster.enemy_id = entry.get("enemy_id", "slime")
+		monster.speed = float(entry.get("speed", 70.0))
+		monster.chase_range = float(entry.get("chase_range", 140.0))
+		add_child(monster)
+		_spawned_nodes.append(monster)

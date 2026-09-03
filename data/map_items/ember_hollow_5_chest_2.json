@@ -1,0 +1,9 @@
+{
+  "id": "ember_hollow_5_chest_2",
+  "map": "ember_hollow_5",
+  "position": [108, 156],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "iron_plate",
+  "quantity": 1
+}

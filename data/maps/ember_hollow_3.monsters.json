@@ -1,0 +1,5 @@
+[
+  { "position": [60, 36], "enemy_id": "cave_rat", "glyph": "r", "color": [0.55, 0.45, 0.35, 1.0], "speed": 65, "chase_range": 130 },
+  { "position": [300, 36], "enemy_id": "cave_rat", "glyph": "r", "color": [0.55, 0.45, 0.35, 1.0], "speed": 65, "chase_range": 130 },
+  { "position": [180, 180], "enemy_id": "hollow_stalker", "glyph": "S", "color": [0.4, 0.35, 0.5, 1.0], "speed": 80, "chase_range": 150 }
+]
