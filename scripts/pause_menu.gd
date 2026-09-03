@@ -16,6 +16,7 @@ const PARTY_DATA_DIR := "res://data/party/"
 @onready var save_button: Button = $Panel/MarginContainer/VBoxContainer/SaveButton
 @onready var items_button: Button = $Panel/MarginContainer/VBoxContainer/ItemsButton
 @onready var options_button: Button = $Panel/MarginContainer/VBoxContainer/OptionsButton
+@onready var quit_to_title_button: Button = $Panel/MarginContainer/VBoxContainer/QuitToTitleButton
 @onready var quit_button: Button = $Panel/MarginContainer/VBoxContainer/QuitButton
 @onready var status_label: Label = $Panel/MarginContainer/VBoxContainer/StatusLabel
 
@@ -53,6 +54,7 @@ func _refresh_texts() -> void:
 	save_button.text = Localization.t("pause.save")
 	items_button.text = Localization.t("pause.items")
 	options_button.text = Localization.t("pause.options")
+	quit_to_title_button.text = Localization.t("pause.quit_to_title")
 	quit_button.text = Localization.t("pause.quit")
 	options_title_label.text = Localization.t("options.title")
 	language_label.text = Localization.t("options.language")
@@ -133,6 +135,20 @@ func _on_chinese_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+
+## Saves first (same as the explicit Save button), matching this project's
+## established "autosave on every meaningful transition" pattern (door
+## crossings, battle end, opening this very menu). SceneTree.paused must
+## be cleared before the title screen loads, or its own _unhandled_input
+## (no process_mode override, unlike this menu) would never run —
+## deferred per CLAUDE.md's change_scene_to_file rule, this being a
+## signal callback.
+func _on_quit_to_title_button_pressed() -> void:
+	get_tree().paused = false
+	GameState.save_game()
+	hide()
+	get_tree().change_scene_to_file.bind("res://scenes/TitleScreen.tscn").call_deferred()
 
 
 func _on_items_button_pressed() -> void:

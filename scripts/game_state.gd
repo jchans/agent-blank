@@ -133,6 +133,13 @@ func save_game() -> void:
 		"locale": locale,
 	}))
 	file.close()
+	# A just-written save always has a valid player_position on disk (the
+	# in-memory one, just serialized) — without this, a fresh "New Game"
+	# session that saves (pause, a flag, an item pickup, quitting to title)
+	# without ever going through load_game() would keep has_saved_position
+	# false despite the save file being perfectly good to resume from, and
+	# the title screen's Continue button would wrongly stay hidden.
+	has_saved_position = true
 
 
 func load_game() -> void:
