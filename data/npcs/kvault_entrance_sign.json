@@ -1,0 +1,9 @@
+{
+  "id": "kvault_entrance_sign",
+  "name": "Signpost",
+  "glyph": "i",
+  "position": [180, 84],
+  "color": [0.7, 0.7, 0.7, 1.0],
+  "map": "kvault_b1_1",
+  "dialogue": "res://dialogues/kvault_entrance_sign.json"
+}

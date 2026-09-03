@@ -1,0 +1,10 @@
+{
+  "id": "kvault_b1_boss_chest_2",
+  "map": "kvault_b1_5a",
+  "position": [252, 156],
+  "glyph": "=",
+  "color": [0.8, 0.7, 0.3, 1.0],
+  "item_id": "scavengers_hide",
+  "quantity": 1,
+  "requires_flag": "kvault_b1_boss_cleared"
+}

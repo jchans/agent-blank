@@ -1,0 +1,9 @@
+{
+  "id": "kvault_plaque_b1",
+  "name": "Weathered Plaque",
+  "glyph": "碑",
+  "position": [132, 84],
+  "color": [0.65, 0.65, 0.6, 1.0],
+  "map": "kvault_b1_3b",
+  "dialogue": "res://dialogues/kvault_plaque_b1.json"
+}

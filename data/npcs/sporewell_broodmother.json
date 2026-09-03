@@ -1,0 +1,9 @@
+{
+  "id": "sporewell_broodmother",
+  "name": "Sporewell Broodmother",
+  "glyph": "巢",
+  "position": [180, 108],
+  "color": [0.45, 0.55, 0.35, 1.0],
+  "map": "kvault_b2_5a",
+  "dialogue": "res://dialogues/sporewell_broodmother.json"
+}

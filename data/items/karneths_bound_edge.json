@@ -1,0 +1,15 @@
+{
+  "id": "karneths_bound_edge",
+  "name": "Karneth's Bound Edge",
+  "name_zh": "卡奈斯的束縛之刃",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 3,
+  "damage_bonus": 2,
+  "weapon_dice": "1d10",
+  "weapon_name": "Karneth's Bound Edge",
+  "weapon_name_zh": "卡奈斯的束縛之刃",
+  "weapon_symbol": "縛",
+  "description": "A single blade among the warden's hoard bears a name not its own — a warden's tool, not a warden itself.",
+  "description_zh": "守衛者的收藏之中，唯獨這柄劍刻著不屬於它自己的名字——它只是守衛者的工具，而非守衛者本身。"
+}

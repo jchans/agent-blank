@@ -1,0 +1,9 @@
+{
+  "id": "kvault_sealed_gate",
+  "name": "Sealed Gate",
+  "glyph": "門",
+  "position": [180, 180],
+  "color": [0.35, 0.3, 0.3, 1.0],
+  "map": "kvault_b3_8",
+  "dialogue": "res://dialogues/kvault_sealed_gate.json"
+}

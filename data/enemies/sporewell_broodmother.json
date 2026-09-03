@@ -1,0 +1,50 @@
+{
+  "id": "sporewell_broodmother",
+  "display_name": "Sporewell Broodmother",
+  "display_name_zh": "孢井母巢",
+  "char_class": "Cistern Horror",
+  "char_class_zh": "水窖異形",
+  "is_player": false,
+  "xp": 190,
+  "log_color": [0.45, 0.55, 0.35, 1.0],
+  "str_score": 15,
+  "dex_score": 10,
+  "con_score": 16,
+  "int_score": 6,
+  "wis_score": 12,
+  "cha_score": 8,
+  "armor_bonus": 2,
+  "max_hp_override": 46,
+  "weapon_name": "Grasping Tendril",
+  "weapon_name_zh": "攫拿觸鬚",
+  "weapon_symbol": "鬚",
+  "weapon_dice": "1d10",
+  "weapon_ability": "str",
+  "max_rp": 4,
+  "skills": [
+    {
+      "skill_name": "Drowning Embrace",
+      "skill_name_zh": "溺水擁抱",
+      "description": "Tendrils drag a struggling target beneath the flooded stone, crushing the breath from them.",
+      "description_zh": "觸鬚將掙扎的目標拖入積水的石地之下，將其呼吸盡數擠壓而出。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "2d10",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special"
+    },
+    {
+      "skill_name": "Spore Bloom",
+      "skill_name_zh": "孢子綻放",
+      "description": "Its whole bloated mass shudders and releases a choking storm of spores in every direction.",
+      "description_zh": "臃腫的身軀猛然一震，朝四面八方噴發出令人窒息的孢子風暴。",
+      "kind": "save",
+      "ability": "con",
+      "save_ability": "con",
+      "damage_dice": "4d6",
+      "half_on_save": true,
+      "rp_cost": 3,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

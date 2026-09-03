@@ -1,0 +1,39 @@
+{
+  "id": "spore_stalker",
+  "display_name": "Spore Stalker",
+  "display_name_zh": "孢息潛行者",
+  "char_class": "Fungal Growth",
+  "char_class_zh": "真菌生物",
+  "is_player": false,
+  "xp": 50,
+  "log_color": [0.55, 0.4, 0.6, 1.0],
+  "str_score": 11,
+  "dex_score": 10,
+  "con_score": 13,
+  "int_score": 5,
+  "wis_score": 11,
+  "cha_score": 4,
+  "armor_bonus": 2,
+  "max_hp_override": 17,
+  "weapon_name": "Spore Burst",
+  "weapon_name_zh": "孢子迸發",
+  "weapon_symbol": "孢",
+  "weapon_dice": "1d6",
+  "weapon_ability": "con",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Choking Cloud",
+      "skill_name_zh": "窒息孢雲",
+      "description": "A thick cloud of spores bursts outward, clogging lungs and stinging eyes.",
+      "description_zh": "濃密的孢子雲向外爆開，堵塞呼吸並刺痛雙眼。",
+      "kind": "save",
+      "ability": "con",
+      "save_ability": "con",
+      "damage_dice": "2d6",
+      "half_on_save": true,
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

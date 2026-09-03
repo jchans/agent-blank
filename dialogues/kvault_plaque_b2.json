@@ -1,0 +1,18 @@
+{
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "Waterlogged Tablet",
+      "text": "The carving here has survived the flooding better: \"The wardens below do not sleep, nor do they age. Karneth's word does not weaken with time, only with breach.\"",
+      "text_zh": "這裡的刻文在水患中保存得較為完整：「深處的守衛既不沉睡，也不衰老。卡奈斯之言不因時光而減弱，唯因破口而動搖。」",
+      "next": "cont"
+    },
+    "cont": {
+      "speaker": "Waterlogged Tablet",
+      "text": "A smaller line beneath, almost an afterthought: \"He does not come for trespassers. He does not need to.\"",
+      "text_zh": "下方還有一行較小的字，彷彿是隨手添上的：「他不會為了闖入者現身。他無需如此。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

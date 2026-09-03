@@ -1,0 +1,10 @@
+{
+  "id": "kvault_b3_boss_chest_2",
+  "map": "kvault_b3_5a",
+  "position": [300, 156],
+  "glyph": "=",
+  "color": [0.8, 0.7, 0.3, 1.0],
+  "item_id": "karneths_bound_edge",
+  "quantity": 1,
+  "requires_flag": "kvault_b3_boss_cleared"
+}

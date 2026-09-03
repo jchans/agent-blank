@@ -1,0 +1,10 @@
+{
+  "id": "wardplate_of_the_reliquary",
+  "name": "Wardplate of the Reliquary",
+  "name_zh": "聖髑室的結界甲",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 5,
+  "description": "Still humming faintly with the same warding magic that has held this floor together for centuries.",
+  "description_zh": "至今仍隱隱嗡鳴，帶著數百年來維繫此層結界的相同秘法。"
+}

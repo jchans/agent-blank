@@ -1,0 +1,15 @@
+{
+  "id": "wardens_cleaver",
+  "name": "Warden's Cleaver",
+  "name_zh": "守衛開山刀",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 2,
+  "damage_bonus": 1,
+  "weapon_dice": "1d10",
+  "weapon_name": "Warden's Cleaver",
+  "weapon_name_zh": "守衛開山刀",
+  "weapon_symbol": "刀",
+  "description": "A heavy blade once carried by whoever kept watch over this breach — dented, but still true.",
+  "description_zh": "曾屬於看守此處缺口者的重刃，雖有磕碰仍鋒利如昔。"
+}

@@ -1,0 +1,18 @@
+{
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "Weathered Plaque",
+      "text": "Deep gouges in ancient stone, half-legible: \"...sealed by Karneth's own hand, that what waits below might wait forever. Let no warden's watch be relieved.\"",
+      "text_zh": "古老石碑上刻著深深的紋路，字跡已半數難辨：「……由卡奈斯親手封印，願深處所待之物永世沉眠。守衛之責，永不解除。」",
+      "next": "cont"
+    },
+    "cont": {
+      "speaker": "Weathered Plaque",
+      "text": "Whatever came after that line is lost — the stone below it has crumbled away entirely.",
+      "text_zh": "這句話之後的內容已經佚失——底下的石面早已完全崩落。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

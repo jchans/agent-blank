@@ -1,0 +1,37 @@
+{
+  "id": "arc_construct",
+  "display_name": "Arc Construct",
+  "display_name_zh": "電弧造物",
+  "char_class": "Guardian Construct",
+  "char_class_zh": "守護造物",
+  "is_player": false,
+  "xp": 65,
+  "log_color": [0.55, 0.7, 0.8, 1.0],
+  "str_score": 14,
+  "dex_score": 10,
+  "con_score": 15,
+  "int_score": 6,
+  "wis_score": 10,
+  "cha_score": 1,
+  "armor_bonus": 4,
+  "max_hp_override": 22,
+  "weapon_name": "Arcing Coil",
+  "weapon_name_zh": "電弧線圈",
+  "weapon_symbol": "弧",
+  "weapon_dice": "1d8",
+  "weapon_ability": "con",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Discharge",
+      "skill_name_zh": "電能釋放",
+      "description": "Stored arcane current arcs outward, crackling across armor and skin alike.",
+      "description_zh": "體內積蓄的秘能電流猛然向外迸射，在鎧甲與皮膚上劈啪竄動。",
+      "kind": "attack_roll",
+      "ability": "con",
+      "damage_dice": "2d8",
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

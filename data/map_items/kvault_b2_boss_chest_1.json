@@ -1,0 +1,10 @@
+{
+  "id": "kvault_b2_boss_chest_1",
+  "map": "kvault_b2_5a",
+  "position": [252, 60],
+  "glyph": "=",
+  "color": [0.8, 0.7, 0.3, 1.0],
+  "item_id": "cistern_trident",
+  "quantity": 1,
+  "requires_flag": "kvault_b2_boss_cleared"
+}

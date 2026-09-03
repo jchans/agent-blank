@@ -1,0 +1,9 @@
+{
+  "id": "charnel_matriarch",
+  "name": "Charnel Matriarch",
+  "glyph": "蝠",
+  "position": [180, 108],
+  "color": [0.6, 0.35, 0.5, 1.0],
+  "map": "kvault_b1_5a",
+  "dialogue": "res://dialogues/charnel_matriarch.json"
+}

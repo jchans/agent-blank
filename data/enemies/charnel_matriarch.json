@@ -1,0 +1,50 @@
+{
+  "id": "charnel_matriarch",
+  "display_name": "Charnel Matriarch",
+  "display_name_zh": "屍巢母獸",
+  "char_class": "Alpha Bat",
+  "char_class_zh": "蝙蝠魁首",
+  "is_player": false,
+  "xp": 160,
+  "log_color": [0.6, 0.35, 0.5, 1.0],
+  "str_score": 14,
+  "dex_score": 17,
+  "con_score": 13,
+  "int_score": 4,
+  "wis_score": 13,
+  "cha_score": 8,
+  "armor_bonus": 2,
+  "max_hp_override": 40,
+  "weapon_name": "Rending Talons",
+  "weapon_name_zh": "撕裂利爪",
+  "weapon_symbol": "爪",
+  "weapon_dice": "1d8",
+  "weapon_ability": "dex",
+  "max_rp": 3,
+  "skills": [
+    {
+      "skill_name": "Shrieking Dive",
+      "skill_name_zh": "尖嘯俯衝",
+      "description": "A disorienting screech precedes a diving strike from an unexpected angle.",
+      "description_zh": "令人昏亂的尖嘯過後，緊接著從意想不到的角度俯衝而下。",
+      "kind": "attack_roll",
+      "ability": "dex",
+      "damage_dice": "2d8",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special"
+    },
+    {
+      "skill_name": "Swarm Call",
+      "skill_name_zh": "召喚蝠群",
+      "description": "A piercing call brings the rest of the roost swirling down in a chaotic, biting mass.",
+      "description_zh": "尖銳的呼喚引來巢穴中其餘的成員盤旋而下，形成一片混亂的撕咬。",
+      "kind": "save",
+      "ability": "dex",
+      "save_ability": "dex",
+      "damage_dice": "3d6",
+      "half_on_save": true,
+      "rp_cost": 3,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}
