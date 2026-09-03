@@ -16,9 +16,7 @@ var _typing_tween: Tween
 func _ready() -> void:
 	hide()
 	DialogueManager.register_dialogue_box(self)
-	print("PANEL_DEBUG[before_fix] dialoguebox_size=", size, " dialoguebox_position=", position)
 	LayoutWorkaround.force_relayout(self)
-	print("PANEL_DEBUG[after_fix] dialoguebox_size=", size, " dialoguebox_position=", position)
 
 
 func display_node(node: Dictionary) -> void:
