@@ -55,6 +55,28 @@ var pending_battle_enemy: String = ""
 ## e.g. a dialogue node's "victory_flag" field (see dialogue_manager.gd).
 ## Empty means no flag to set. Not persisted (transient, like the above).
 var pending_victory_flag: String = ""
+## Set only by a RoamingMonster's contact trigger (its synthesized "<map>_<
+## index>" id, see main.gd._spawn_monsters/roaming_monster.gd) right before
+## changing to Battle.tscn; every other battle trigger (dialogue, tile
+## encounter) explicitly clears this to "" so a stale id from an earlier
+## monster battle can't leak a defeat/flee record onto an unrelated fight.
+## Not persisted (transient, like the two fields above).
+var pending_monster_id: String = ""
+
+## monster_id -> Time.get_unix_time_from_system() when it was defeated.
+## Checked by main.gd._spawn_monsters to skip (re)spawning a monster for
+## MONSTER_RESPAWN_SECONDS after it falls — "defeated monsters should
+## disappear, and respawn after a delay" (user request). Persisted so the
+## despawn survives a save/quit/reload.
+var monster_defeats: Dictionary = {}
+## monster_id -> Time.get_unix_time_from_system() until which that specific
+## monster should stay idle instead of chasing/triggering again. Set on a
+## successful Run against a RoamingMonster-triggered battle so the same
+## monster doesn't immediately re-catch the player the instant Main.tscn
+## reloads (user report: fleeing "succeeds" but you can't actually get
+## away). Deliberately NOT persisted — it's a few-second anti-frustration
+## grace, not state worth surviving a save/quit.
+var monster_flee_grace: Dictionary = {}
 
 
 func _ready() -> void:
@@ -71,6 +93,8 @@ func reset_new_game() -> void:
 	party_rp = {}
 	inventory = {}
 	equipment = {}
+	monster_defeats = {}
+	monster_flee_grace = {}
 	player_position = Vector2(300, 180)
 	has_saved_position = false
 	current_map = "village"
@@ -128,6 +152,7 @@ func save_game() -> void:
 		"party_rp": party_rp,
 		"inventory": inventory,
 		"equipment": equipment,
+		"monster_defeats": monster_defeats,
 		"player_position": [player_position.x, player_position.y],
 		"current_map": current_map,
 		"locale": locale,
@@ -149,6 +174,7 @@ func load_game() -> void:
 		party_rp = parsed.get("party_rp", {})
 		inventory = parsed.get("inventory", {})
 		equipment = parsed.get("equipment", {})
+		monster_defeats = parsed.get("monster_defeats", {})
 		var pos: Array = parsed.get("player_position", [])
 		if pos.size() == 2:
 			player_position = Vector2(pos[0], pos[1])

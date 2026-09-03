@@ -1,7 +1,7 @@
 {
   "strings": {
     "help.title": "操作說明",
-    "help.body": "方向鍵       移動／選擇\nZ            確認／對話／攻擊\nX            取消／返回\nI            物品\nEsc          暫停選單\nH            切換說明視窗\n\n戰鬥中\nA／S／D      攻擊／技能／防禦\nR            逃跑",
+    "help.body": "[table=2]\n[cell][b]方向鍵[/b][/cell][cell]移動／選擇[/cell]\n[cell][b]Z[/b][/cell][cell]確認／對話／攻擊[/cell]\n[cell][b]X[/b][/cell][cell]取消／返回[/cell]\n[cell][b]I[/b][/cell][cell]物品[/cell]\n[cell][b]Esc[/b][/cell][cell]暫停選單[/cell]\n[cell][b]H[/b][/cell][cell]切換說明視窗[/cell]\n[/table]\n\n[b]戰鬥中[/b]\n[table=2]\n[cell][b]A／S／D[/b][/cell][cell]攻擊／技能／防禦[/cell]\n[cell][b]I[/b][/cell][cell]物品[/cell]\n[cell][b]R[/b][/cell][cell]逃跑[/cell]\n[/table]",
     "help.close_hint": "按 H 或 Esc 關閉",
     "dialogue.continue": "▼ 按 Z 繼續",
     "pause.title": "暫停",
@@ -18,6 +18,8 @@
     "items.consumables_heading": "消耗品",
     "items.equipment_heading": "裝備（點擊切換）",
     "items.no_consumables": "沒有消耗品。",
+    "items.battle_only": "（僅限戰鬥）",
+    "items.used": "%s 用在了 %s 身上。",
     "items.none": "（無）",
     "items.back": "返回",
     "title.subtitle": "一款 ASCII 風格 JRPG",
@@ -39,7 +41,9 @@
     "battle.action_run": "逃跑(R)",
     "battle.action_back": "返回(X)",
     "battle.defends": "%s 擺出防禦姿態。",
-    "battle.flees": "%s 逃離了戰鬥！",
+    "battle.flee_roll": "%s 試圖逃跑（擲骰 %d%+d = %d）對 %s（擲骰 %d%+d = %d）",
+    "battle.flee_success": "%s 逃離了戰鬥！",
+    "battle.flee_failed": "%s 沒能逃脫！",
     "battle.attack_roll": "%s 對 %s 發動【%s】攻擊（擲骰 %d%+d = %d，AC %d）",
     "battle.skill_attack_roll": "%s 使用【%s】攻擊 %s（擲骰 %d%+d = %d，AC %d）",
     "battle.skill_save": "%s 對 %s 使用【%s】（DC %d，%s豁免擲骰 %d%+d = %d）",

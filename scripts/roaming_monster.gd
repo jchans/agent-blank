@@ -14,6 +14,15 @@ extends CharacterBody2D
 @export var speed: float = 70.0
 @export var chase_range: float = 140.0
 
+## Synthesized per-instance id ("<map>_<index in monsters.json>", set by
+## main.gd._spawn_monsters) — identifies this monster for
+## GameState.monster_defeats (despawn-then-respawn on defeat) and
+## GameState.monster_flee_grace (a short pause after the player
+## successfully Runs from it, so it doesn't immediately re-catch them the
+## instant the room reloads). Empty only if this scene is ever instanced
+## outside that spawner, in which case both mechanisms are simply inert.
+var monster_id: String = ""
+
 @onready var visual: Label = $Visual
 
 var _player: Node2D = null
@@ -28,8 +37,13 @@ func _ready() -> void:
 		_player = players[0]
 
 
+func _is_in_flee_grace() -> bool:
+	var grace_until: float = GameState.monster_flee_grace.get(monster_id, 0.0)
+	return grace_until > 0.0 and Time.get_unix_time_from_system() < grace_until
+
+
 func _physics_process(_delta: float) -> void:
-	if _triggered or _player == null or DialogueManager.is_active or Controls.is_help_open:
+	if _triggered or _player == null or DialogueManager.is_active or Controls.is_help_open or _is_in_flee_grace():
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
@@ -43,11 +57,12 @@ func _physics_process(_delta: float) -> void:
 ## rather than depending on them fully overlapping (which solid-vs-solid
 ## collision would prevent — see the scene file's radius comment).
 func _on_contact_area_body_entered(body: Node2D) -> void:
-	if _triggered or not body.is_in_group("player"):
+	if _triggered or not body.is_in_group("player") or _is_in_flee_grace():
 		return
 	_triggered = true
 	GameState.pending_battle_enemy = enemy_id
 	GameState.pending_victory_flag = ""
+	GameState.pending_monster_id = monster_id
 	GameState.player_position = body.position
 	GameState.save_game()
 	get_tree().change_scene_to_file.bind("res://scenes/Battle.tscn").call_deferred()

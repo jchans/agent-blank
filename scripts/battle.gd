@@ -221,11 +221,45 @@ func _resolve_choice(actor: CombatantStats, choice: Dictionary) -> void:
 			_log(Localization.t("battle.defends") % _name(actor))
 			await _pause()
 		"run":
-			_log(Localization.t("battle.flees") % _name(actor))
-			battle_over = true
-			_fled = true
+			await _do_run(actor)
 	_log_separator()
 	_refresh_all()
+
+
+## Seconds a RoamingMonster stays put after the player successfully Runs
+## from a battle it triggered — see GameState.monster_flee_grace. Only
+## relevant when GameState.pending_monster_id is set (i.e. this battle
+## started from a RoamingMonster's contact, not a dialogue/tile-encounter
+## battle), applied in _end_battle.
+const FLEE_GRACE_SECONDS := 5.0
+
+## Run used to always succeed instantly — user feedback: it should be a
+## real agility contest, not a guaranteed escape. `actor` rolls d20+DEX
+## against the (single) enemy's own d20+DEX; ties favor the party since
+## it's their turn/initiative to act. A failed attempt just burns the
+## turn, same shape as a Defend or Attack that misses — the battle
+## continues.
+func _do_run(actor: CombatantStats) -> void:
+	var foes := _living(enemies)
+	if foes.is_empty():
+		battle_over = true
+		_fled = true
+		return
+	var foe: CombatantStats = foes[0]
+	var actor_mod := actor.get_modifier("dex")
+	var foe_mod := foe.get_modifier("dex")
+	var actor_roll := Dice.d20()
+	var foe_roll := Dice.d20()
+	var actor_total := actor_roll + actor_mod
+	var foe_total := foe_roll + foe_mod
+	_log(Localization.t("battle.flee_roll") % [_name(actor), actor_roll, actor_mod, actor_total, _name(foe), foe_roll, foe_mod, foe_total])
+	if actor_total >= foe_total:
+		_log(Localization.t("battle.flee_success") % _name(actor))
+		battle_over = true
+		_fled = true
+	else:
+		_log(Localization.t("battle.flee_failed") % _name(actor))
+		await _pause()
 
 
 func _do_attack(actor: CombatantStats, target: CombatantStats) -> void:
@@ -448,6 +482,12 @@ func _end_battle() -> void:
 	if _fled:
 		_log(Localization.t("battle.end_fled"))
 		_sync_party_to_game_state()
+		# A RoamingMonster-triggered battle (see GameState.pending_monster_id)
+		# gets a short grace period so the same monster doesn't immediately
+		# re-catch the player the instant Main.tscn reloads — see
+		# roaming_monster.gd's _is_in_flee_grace.
+		if GameState.pending_monster_id != "":
+			GameState.monster_flee_grace[GameState.pending_monster_id] = Time.get_unix_time_from_system() + FLEE_GRACE_SECONDS
 	elif _living(party).is_empty():
 		for c in party:
 			_set_state(c, "defeat")
@@ -462,6 +502,12 @@ func _end_battle() -> void:
 		if GameState.pending_victory_flag != "":
 			GameState.set_flag(GameState.pending_victory_flag)
 			GameState.pending_victory_flag = ""
+		# Defeating a RoamingMonster marks it gone (main.gd._spawn_monsters
+		# skips it) until MONSTER_RESPAWN_SECONDS have passed — "a defeated
+		# monster should disappear, and take a while to respawn" (user
+		# request).
+		if GameState.pending_monster_id != "":
+			GameState.monster_defeats[GameState.pending_monster_id] = Time.get_unix_time_from_system()
 		for c in party:
 			if c.is_alive():
 				_set_state(c, "victory")
@@ -470,6 +516,7 @@ func _end_battle() -> void:
 					view.play_victory_dance()
 		_log(Localization.t("battle.end_victory"))
 		_sync_party_to_game_state()
+	GameState.pending_monster_id = ""
 	_log_separator()
 	GameState.save_game()
 	await get_tree().create_timer(2.0, false).timeout

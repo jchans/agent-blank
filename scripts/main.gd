@@ -143,6 +143,7 @@ func _check_random_encounter() -> void:
 	_encounter_triggered = true
 	GameState.pending_battle_enemy = enemy_pool[randi() % enemy_pool.size()]
 	GameState.pending_victory_flag = ""
+	GameState.pending_monster_id = ""
 	GameState.save_game()
 	get_tree().change_scene_to_file.bind("res://scenes/Battle.tscn").call_deferred()
 
@@ -161,6 +162,12 @@ func _is_walkable(col: int, row: int) -> bool:
 	return glyph != "" and not (glyph in WALL_GLYPHS)
 
 
+## Half-extent of Player's actual CollisionShape2D (see Player.tscn — a
+## 16x16 RectangleShape2D), duplicated here for the same reason player.gd
+## duplicates TILE_SIZE: a stable, foundational number not worth a real
+## dependency for.
+const PLAYER_COLLISION_HALF := 8.0
+
 ## A saved player_position can land a few pixels inside a wall tile's
 ## edge if it was captured at a bad moment — most notably a RoamingMonster
 ## physically shoving the player mid-chase right as a battle triggers
@@ -168,13 +175,22 @@ func _is_walkable(col: int, row: int) -> bool:
 ## wall, unable to move at all). Restoring that raw pixel position
 ## verbatim risks resuming with the player's whole collision shape inside
 ## a wall's, which move_and_slide has no way to resolve on its own since
-## nothing is ever pressed *into* the wall to trigger a push-out. Snap to
-## the nearest walkable tile's center instead — a wall tile's center is
-## never reachable through ordinary walking in the first place, so once
-## found this is always safe ground. Called for every saved-position
-## restore (battle return and resuming a save from the title screen
-## alike), not just the battle case, since it's strictly safer either way.
+## nothing is ever pressed *into* the wall to trigger a push-out.
+##
+## Only correct the position when it's actually unsafe (_collides_with_wall
+## below, checked against the player's real collision box, not just the
+## tile the position's raw pixel falls in) — an earlier version of this
+## fix snapped to a tile center unconditionally on every restore, which
+## fixed the stuck-in-wall case but introduced a new, more visible bug:
+## the player visibly hopped a few pixels on *every single* battle return,
+## even when standing on perfectly safe ground mid-stride between tiles
+## (user report: "leaving battle still jumps around"). Snapping only ever
+## happens now when genuinely needed; the common case returns raw
+## untouched. Called for every saved-position restore (battle return and
+## resuming a save from the title screen alike).
 func _safe_restore_position(raw: Vector2) -> Vector2:
+	if not _collides_with_wall(raw):
+		return raw
 	var col := int(floor(raw.x / TILE_SIZE))
 	var row := int(floor(raw.y / TILE_SIZE))
 	if _is_walkable(col, row):
@@ -185,6 +201,23 @@ func _safe_restore_position(raw: Vector2) -> Vector2:
 		if _is_walkable(col + offset.x, row + offset.y):
 			return tile_center(col + offset.x, row + offset.y)
 	return raw
+
+
+## True if a player-sized collision box centered at `pos` overlaps any
+## wall tile — checked via its four corners, since a wall tile's own
+## bounding box is what _is_walkable/WALL_GLYPHS test against.
+func _collides_with_wall(pos: Vector2) -> bool:
+	var half := PLAYER_COLLISION_HALF
+	var corners := [
+		pos + Vector2(-half, -half), pos + Vector2(half, -half),
+		pos + Vector2(-half, half), pos + Vector2(half, half),
+	]
+	for corner in corners:
+		var col := int(floor(corner.x / TILE_SIZE))
+		var row := int(floor(corner.y / TILE_SIZE))
+		if not _is_walkable(col, row):
+			return true
+	return false
 
 
 func _render_map(path: String) -> void:
@@ -377,6 +410,11 @@ func _load_json_dict(path: String) -> Dictionary:
 	return parsed
 
 
+## How long a defeated RoamingMonster stays gone before respawning (user
+## request: "a defeated monster should disappear, and respawning should
+## take a while"). Checked against GameState.monster_defeats below.
+const MONSTER_RESPAWN_SECONDS := 60.0
+
 ## Ember Hollow's encounter type: data/maps/<id>.monsters.json is an
 ## optional sibling of the room's .txt (same convention as .doors.json/
 ## .encounters.json) listing fixed RoamingMonster spawns for that room.
@@ -393,8 +431,20 @@ func _spawn_monsters(map_id: String) -> void:
 	if typeof(parsed) != TYPE_ARRAY:
 		push_warning("Main: invalid monsters file: %s" % path)
 		return
-	for entry in parsed:
+	var now := Time.get_unix_time_from_system()
+	for i in range(parsed.size()):
+		var entry: Dictionary = parsed[i]
+		# Synthesized rather than read from the JSON entry — monsters.json
+		# never had an "id" field, and every entry's position in the array
+		# is stable (hand-authored, not reordered at runtime), so
+		# "<map>_<index>" is a stable per-monster key without needing to
+		# edit every existing data file.
+		var monster_id := "%s_%d" % [map_id, i]
+		var defeated_at: float = GameState.monster_defeats.get(monster_id, 0.0)
+		if defeated_at > 0.0 and now - defeated_at < MONSTER_RESPAWN_SECONDS:
+			continue
 		var monster := ROAMING_MONSTER_SCENE.instantiate()
+		monster.monster_id = monster_id
 		var pos: Array = entry.get("position", [0, 0])
 		monster.position = Vector2(pos[0], pos[1])
 		var col: Array = entry.get("color", [0.8, 0.2, 0.2, 1])

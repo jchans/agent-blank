@@ -1,7 +1,7 @@
 {
   "strings": {
     "help.title": "Controls",
-    "help.body": "Arrows      Move / Select\nZ           Confirm / Talk / Attack\nX           Cancel / Back\nI           Items\nEsc         Pause menu\nH           Toggle this help\n\nIn battle\nA / S / D   Attack / Skill / Defend\nR           Run",
+    "help.body": "[table=2]\n[cell][b]Arrows[/b][/cell][cell]Move / Select[/cell]\n[cell][b]Z[/b][/cell][cell]Confirm / Talk / Attack[/cell]\n[cell][b]X[/b][/cell][cell]Cancel / Back[/cell]\n[cell][b]I[/b][/cell][cell]Items[/cell]\n[cell][b]Esc[/b][/cell][cell]Pause menu[/cell]\n[cell][b]H[/b][/cell][cell]Toggle this help[/cell]\n[/table]\n\n[b]In battle[/b]\n[table=2]\n[cell][b]A / S / D[/b][/cell][cell]Attack / Skill / Defend[/cell]\n[cell][b]I[/b][/cell][cell]Item[/cell]\n[cell][b]R[/b][/cell][cell]Run[/cell]\n[/table]",
     "help.close_hint": "H or Esc to close",
     "dialogue.continue": "▼ Press Z",
     "pause.title": "Paused",
@@ -18,6 +18,8 @@
     "items.consumables_heading": "Consumables",
     "items.equipment_heading": "Equipment (click to cycle)",
     "items.no_consumables": "No consumables.",
+    "items.battle_only": "(battle only)",
+    "items.used": "Used %s on %s.",
     "items.none": "(none)",
     "items.back": "Back",
     "title.subtitle": "an ASCII JRPG",
@@ -39,7 +41,9 @@
     "battle.action_run": "Run (R)",
     "battle.action_back": "Back (X)",
     "battle.defends": "%s takes a defensive stance.",
-    "battle.flees": "%s flees from the battle!",
+    "battle.flee_roll": "%s tries to flee (roll %d%+d = %d) vs %s (roll %d%+d = %d)",
+    "battle.flee_success": "%s flees from the battle!",
+    "battle.flee_failed": "%s couldn't get away!",
     "battle.attack_roll": "%s attacks %s with 【%s】 (roll %d%+d = %d vs AC %d)",
     "battle.skill_attack_roll": "%s casts 【%s】 at %s (roll %d%+d = %d vs AC %d)",
     "battle.skill_save": "%s targets %s with 【%s】 (DC %d, %s save %d%+d = %d)",

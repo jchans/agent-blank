@@ -91,6 +91,7 @@ func _show_current_node() -> void:
 	if start_battle != "":
 		GameState.pending_battle_enemy = start_battle
 		GameState.pending_victory_flag = node.get("victory_flag", "")
+		GameState.pending_monster_id = ""
 		_dialogue_box.display_node(node)
 		await get_tree().create_timer(1.2).timeout
 		end_dialogue()

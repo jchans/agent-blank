@@ -29,9 +29,10 @@ const PARTY_DATA_DIR := "res://data/party/"
 @onready var items_panel: Panel = $ItemsPanel
 @onready var items_title_label: Label = $ItemsPanel/MarginContainer/VBoxContainer/TitleLabel
 @onready var consumables_heading: Label = $ItemsPanel/MarginContainer/VBoxContainer/ConsumablesHeading
-@onready var consumables_label: Label = $ItemsPanel/MarginContainer/VBoxContainer/ConsumablesLabel
+@onready var consumables_list: VBoxContainer = $ItemsPanel/MarginContainer/VBoxContainer/ConsumablesScroll/ConsumablesList
 @onready var equipment_heading: Label = $ItemsPanel/MarginContainer/VBoxContainer/EquipmentHeading
 @onready var equipment_list: VBoxContainer = $ItemsPanel/MarginContainer/VBoxContainer/EquipmentList
+@onready var items_status_label: Label = $ItemsPanel/MarginContainer/VBoxContainer/ItemsStatusLabel
 @onready var items_back_button: Button = $ItemsPanel/MarginContainer/VBoxContainer/BackButton
 
 
@@ -147,6 +148,7 @@ func _on_quit_button_pressed() -> void:
 func _on_items_button_pressed() -> void:
 	panel.hide()
 	items_panel.show()
+	items_status_label.text = ""
 	_refresh_items_panel()
 
 
@@ -160,6 +162,7 @@ func _open_items_directly() -> void:
 	get_tree().paused = true
 	GameState.save_game()
 	status_label.text = ""
+	items_status_label.text = ""
 	panel.hide()
 	options_panel.hide()
 	items_panel.show()
@@ -175,20 +178,104 @@ func _on_items_back_button_pressed() -> void:
 
 func _refresh_items_panel() -> void:
 	items_title_label.text = Localization.t("items.title")
-	_refresh_consumables_label()
+	_rebuild_consumables_rows()
 	_rebuild_equipment_rows()
 
 
-func _refresh_consumables_label() -> void:
+## An item is usable outside battle only if its effect makes sense with no
+## live CombatantStats/enemy around: heal/restore_rp target an ally and
+## just adjust GameState.party_hp/party_rp directly (see _use_item_on).
+## damage (targets an enemy) and buff_attack/buff_defense (last "the rest
+## of the current battle" — see data/items/*.json's own doc comments in
+## PROGRESS.md) have no meaning outside a battle, so those still show
+## (for visibility of what's owned) but with no Use button.
+const OVERWORLD_USABLE_EFFECTS := ["heal", "restore_rp"]
+
+## Rebuilt from scratch every time the Items panel opens (or the locale
+## changes while it's open), same pattern as _rebuild_equipment_rows.
+## Each owned consumable gets one row: its name+count, then one button per
+## party member to use it on immediately (no separate "choose target"
+## step) for the effects in OVERWORLD_USABLE_EFFECTS — mirrors the
+## equipment rows' "simplest thing that works for 3 characters" choice
+## right above.
+func _rebuild_consumables_rows() -> void:
+	for child in consumables_list.get_children():
+		child.queue_free()
 	var ids: Array = GameState.inventory.keys()
 	ids.sort()
-	var lines: Array[String] = []
+	var any_shown := false
 	for item_id in ids:
 		if GameState.inventory.get(item_id, 0) <= 0:
 			continue
-		if ItemDB.get_item(item_id).get("type", "") == "consumable":
-			lines.append("%s x%d" % [ItemDB.localized_name(item_id), GameState.inventory[item_id]])
-	consumables_label.text = "\n".join(lines) if not lines.is_empty() else Localization.t("items.no_consumables")
+		var item := ItemDB.get_item(item_id)
+		if item.get("type", "") != "consumable":
+			continue
+		any_shown = true
+		var id: String = item_id
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 6)
+		consumables_list.add_child(row)
+
+		var name_label := Label.new()
+		name_label.text = "%s x%d" % [ItemDB.localized_name(id), GameState.inventory[id]]
+		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		row.add_child(name_label)
+
+		if OVERWORLD_USABLE_EFFECTS.has(item.get("effect", "")):
+			for member_id in _party_member_ids():
+				var mid: String = member_id
+				var b := Button.new()
+				b.text = _party_member_name(mid)
+				b.pressed.connect(_on_use_item.bind(id, mid))
+				row.add_child(b)
+		else:
+			var note := Label.new()
+			note.text = Localization.t("items.battle_only")
+			note.add_theme_color_override("font_color", Color(0.55, 0.55, 0.55, 1))
+			row.add_child(note)
+	if not any_shown:
+		var empty_label := Label.new()
+		empty_label.text = Localization.t("items.no_consumables")
+		empty_label.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8, 1))
+		consumables_list.add_child(empty_label)
+
+
+## Loads just enough of a party member's base stats (hit_die/con_score for
+## max HP, max_rp) to cap a heal/restore_rp effect the same way battle.gd
+## would — equipment never affects max HP/RP, so unlike battle.gd's
+## _load_party there's no need to also apply GameState.equipment here.
+func _member_stats(member_id: String) -> CombatantStats:
+	var file := FileAccess.open(PARTY_DATA_DIR + member_id + ".json", FileAccess.READ)
+	if file == null:
+		return CombatantStats.new()
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return CombatantStats.new()
+	return CombatantStats.from_dict(parsed)
+
+
+## Applies a heal/restore_rp consumable directly to GameState.party_hp/
+## party_rp — the overworld equivalent of battle.gd's _do_item, minus
+## everything that only makes sense mid-battle (no CombatantStats/view/log
+## to update, no enemy target).
+func _on_use_item(item_id: String, member_id: String) -> void:
+	var item := ItemDB.get_item(item_id)
+	var stats := _member_stats(member_id)
+	var current_hp: int = GameState.party_hp.get(member_id, stats.get_max_hp())
+	var current_rp: int = GameState.party_rp.get(member_id, stats.max_rp)
+	match item.get("effect", ""):
+		"heal":
+			var heal := maxi(Dice.roll_dice_string(item.get("amount_dice", "1d4")), 0)
+			GameState.party_hp[member_id] = min(current_hp + heal, stats.get_max_hp())
+		"restore_rp":
+			var amount: int = item.get("amount", 1)
+			GameState.party_rp[member_id] = min(current_rp + amount, stats.max_rp)
+		_:
+			return
+	GameState.remove_item(item_id)
+	items_status_label.text = Localization.t("items.used") % [ItemDB.localized_name(item_id), _party_member_name(member_id)]
+	_rebuild_consumables_rows()
 
 
 ## Owned (inventory count > 0) equipment ids for one slot, sorted for a

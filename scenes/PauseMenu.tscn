@@ -114,10 +114,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -170.0
-offset_top = -150.0
-offset_right = 170.0
-offset_bottom = 150.0
+offset_left = -190.0
+offset_top = -220.0
+offset_right = 190.0
+offset_bottom = 220.0
 
 [node name="MarginContainer" type="MarginContainer" parent="ItemsPanel"]
 layout_mode = 1
@@ -141,11 +141,15 @@ text = "Items & Equipment"
 layout_mode = 2
 text = "Consumables"
 
-[node name="ConsumablesLabel" type="Label" parent="ItemsPanel/MarginContainer/VBoxContainer"]
+[node name="ConsumablesScroll" type="ScrollContainer" parent="ItemsPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 92)
 layout_mode = 2
-autowrap_mode = 3
-theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
-text = "—"
+horizontal_scroll_mode = 0
+
+[node name="ConsumablesList" type="VBoxContainer" parent="ItemsPanel/MarginContainer/VBoxContainer/ConsumablesScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
 
 [node name="HSeparator1" type="HSeparator" parent="ItemsPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -157,6 +161,11 @@ text = "Equipment"
 [node name="EquipmentList" type="VBoxContainer" parent="ItemsPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 4
+
+[node name="ItemsStatusLabel" type="Label" parent="ItemsPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.6, 0.8, 0.6, 1)
 
 [node name="BackButton" type="Button" parent="ItemsPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
