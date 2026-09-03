@@ -31,4 +31,3 @@ window/dpi/allow_hidpi=true
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 rendering/gl_compatibility/driver="opengl3"
-rendering/gl_compatibility/driver.windows="opengl3_angle"
