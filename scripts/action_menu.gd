@@ -9,10 +9,9 @@ class_name ActionMenu
 ## the built-in ui_accept action, so a focused Button's `pressed` fires on
 ## Z for free (same as every other Button-based screen in this project —
 ## dialogue choices, pause menu) with no manual handling needed here.
-## X (cancel/back) and the A/S/D main-menu shortcuts have no built-in
+## X (cancel/back) and the A/S/D/I/R main-menu shortcuts have no built-in
 ## Button behavior, so those are still handled manually below, same as
-## the reference. Run has no shortcut on purpose, so fleeing always takes
-## a deliberate press.
+## the reference.
 
 signal choice_made(data: Dictionary)
 
@@ -49,6 +48,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_I:
 			if main_box.visible and not _usable_items().is_empty():
 				_show_items(_enemies, _allies)
+		KEY_R:
+			if main_box.visible:
+				choice_made.emit({"type": "run"})
 		_:
 			return
 	get_viewport().set_input_as_handled()
