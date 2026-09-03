@@ -1,0 +1,9 @@
+{
+  "id": "arena_steward",
+  "name": "Arena Steward",
+  "glyph": "s",
+  "position": [180, 60],
+  "color": [0.7, 0.6, 0.3, 1],
+  "map": "coliseum_1",
+  "dialogue": "res://dialogues/arena_steward.json"
+}

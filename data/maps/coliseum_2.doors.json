@@ -1,0 +1,4 @@
+[
+  { "position": [14, 4], "target_map": "coliseum_1", "target_spawn": [1, 4] },
+  { "position": [0, 4], "target_map": "coliseum_3", "target_spawn": [15, 5], "requires_flag": "coliseum_round2_won" }
+]

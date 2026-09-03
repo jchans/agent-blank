@@ -1,0 +1,21 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Arena Steward",
+      "text": "\"Welcome to the Trials! Three challengers stand between you and the Champion. Win, and their gear is yours to keep — lose, and, well, you'll wake up back at the cave entrance. We're not monsters.\"",
+      "text_zh": "「歡迎來到試煉場！三位挑戰者擋在你與王者之間。贏了，他們的裝備就歸你；輸了嘛……你會在洞窟入口醒來。我們又不是怪物。」",
+      "choices": [
+        { "text": "Who's the Champion?", "text_zh": "王者是誰？", "next": "champion_lore" },
+        { "text": "I'm ready.", "text_zh": "我準備好了。", "next": "end" }
+      ]
+    },
+    "champion_lore": {
+      "speaker": "Arena Steward",
+      "text": "\"Undefeated, longer than I've worked here — and I've worked here a long time. Some say the Champion doesn't even want to keep winning anymore. Nobody's tested that theory yet.\"",
+      "text_zh": "「不敗紀錄，比我在這裡工作的時間還長——而我可是待了很久了。有人說王者其實早就不想再贏下去了。不過還沒人真的去驗證這個說法。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

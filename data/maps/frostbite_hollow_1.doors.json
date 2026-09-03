@@ -1,0 +1,4 @@
+[
+  { "position": [7, 8], "target_map": "village", "target_spawn": [12, 1] },
+  { "position": [7, 0], "target_map": "frostbite_hollow_2", "target_spawn": [7, 7] }
+]

@@ -28,6 +28,7 @@ const TILE_COLORS := {
 	"o": Color(0.8, 0.7, 0.3),
 	"R": Color(0.9, 0.8, 0.2),
 	",": Color(0.6, 0.75, 0.25),
+	"^": Color(0.75, 0.9, 0.95),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
 ## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
@@ -279,6 +280,9 @@ func _spawn_npc_from_file(path: String, map_id: String) -> void:
 ## carries "collected_flag" (defaulted from "id" if omitted) — an item
 ## already collected is a permanently set GameState flag, so it's simply
 ## never spawned again rather than needing per-room "already taken" state.
+## An optional "requires_flag" mirrors doors' own flag-gating (see
+## _check_door_crossing) — the item simply doesn't spawn until that flag
+## is set, e.g. a boss-drop chest that only appears after the boss falls.
 func _spawn_world_items(map_id: String) -> void:
 	var dir := DirAccess.open(WORLD_ITEM_DATA_DIR)
 	if dir == null:
@@ -308,6 +312,9 @@ func _spawn_world_item_from_file(path: String, map_id: String) -> void:
 	var item_id: String = String(parsed.get("id", "item"))
 	var collected_flag: String = parsed.get("collected_flag", "world_item_%s_taken" % item_id)
 	if GameState.has_flag(collected_flag):
+		return
+	var requires_flag: String = parsed.get("requires_flag", "")
+	if requires_flag != "" and not GameState.has_flag(requires_flag):
 		return
 
 	var world_item := WORLD_ITEM_SCENE.instantiate()

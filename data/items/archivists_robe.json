@@ -1,0 +1,10 @@
+{
+  "id": "archivists_robe",
+  "name": "Archivist's Robe",
+  "name_zh": "書庫典藏袍",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 2,
+  "description": "A dust-proof robe worn by whoever kept these stacks in order, before order was forgotten.",
+  "description_zh": "曾經打理這座書庫的人所穿的防塵長袍，如今秩序早已被遺忘。"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "coliseum_champion",
+  "name": "The Champion",
+  "glyph": "C",
+  "position": [228, 108],
+  "color": [1.0, 0.8, 0.2, 1],
+  "map": "coliseum_4",
+  "dialogue": "res://dialogues/coliseum_champion.json"
+}

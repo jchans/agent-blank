@@ -1,0 +1,49 @@
+{
+  "id": "arcane_duelist",
+  "display_name": "Arcane Duelist",
+  "display_name_zh": "祕法鬥士",
+  "char_class": "Battlemage",
+  "char_class_zh": "戰鬥法師",
+  "is_player": false,
+  "log_color": [0.6, 0.4, 0.85, 1.0],
+  "str_score": 10,
+  "dex_score": 14,
+  "con_score": 13,
+  "int_score": 17,
+  "wis_score": 12,
+  "cha_score": 11,
+  "armor_bonus": 2,
+  "max_hp_override": 20,
+  "weapon_name": "Runed Dagger",
+  "weapon_name_zh": "符文匕首",
+  "weapon_symbol": "匕",
+  "weapon_dice": "1d4",
+  "weapon_ability": "int",
+  "max_rp": 3,
+  "skills": [
+    {
+      "skill_name": "Arc Lightning",
+      "skill_name_zh": "電弧術",
+      "description": "A crackling bolt leaps from the duelist's fingertips.",
+      "description_zh": "劈啪作響的電弧從鬥士的指尖竄出。",
+      "kind": "attack_roll",
+      "ability": "int",
+      "damage_dice": "2d8",
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    },
+    {
+      "skill_name": "Force Wave",
+      "skill_name_zh": "力場波",
+      "description": "A shockwave of raw arcane force slams outward.",
+      "description_zh": "一股純粹的祕法力場如衝擊波般轟然炸開。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "con",
+      "damage_dice": "3d6",
+      "half_on_save": true,
+      "rp_cost": 2,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

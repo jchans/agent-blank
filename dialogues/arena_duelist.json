@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Arena Duelist",
+      "text": "A rapier flashes in a mock salute. \"Round one. Try to make it interesting.\"",
+      "text_zh": "一柄細劍閃現，做出模擬敬禮的動作。「第一回合。試著讓我覺得有趣一點。」",
+      "choices": [
+        { "text": "Begin!", "text_zh": "開始！", "next": "battle_start", "requires_not_flag": "coliseum_round1_won" },
+        { "text": "You already fought me.", "text_zh": "你已經跟我交手過了。", "next": "already_won", "requires_flag": "coliseum_round1_won" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Arena Duelist",
+      "text": "\"En garde.\"",
+      "text_zh": "「準備。」",
+      "start_battle": "arena_duelist",
+      "victory_flag": "coliseum_round1_won"
+    },
+    "already_won": {
+      "speaker": "Arena Duelist",
+      "text": "\"Go on, the gate's open for you. Try not to get cocky in there.\"",
+      "text_zh": "「去吧，門為你開了。到裡面別太得意忘形。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

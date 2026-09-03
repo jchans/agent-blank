@@ -1,0 +1,3 @@
+[
+  { "position": [180, 84], "enemy_id": "bound_tome", "glyph": "b", "color": [0.55, 0.4, 0.7, 1.0], "speed": 70, "chase_range": 130 }
+]

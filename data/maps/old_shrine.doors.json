@@ -1,4 +1,5 @@
 [
   { "position": [7, 0], "target_map": "crossroads", "target_spawn": [7, 7] },
-  { "position": [7, 8], "target_map": "cave_entrance", "target_spawn": [7, 1] }
+  { "position": [7, 8], "target_map": "cave_entrance", "target_spawn": [7, 1] },
+  { "position": [0, 4], "target_map": "sunken_archive_1", "target_spawn": [13, 4] }
 ]

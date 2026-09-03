@@ -1,0 +1,10 @@
+{
+  "id": "champions_plate",
+  "name": "Champion's Plate",
+  "name_zh": "王者之甲",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 4,
+  "description": "Ceremonial armor awarded only to a reigning champion. It fits like it was made for you.",
+  "description_zh": "只授予在位王者的儀式鎧甲。穿上時，彷彿本就是為你量身打造。"
+}

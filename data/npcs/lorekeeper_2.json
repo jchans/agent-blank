@@ -1,0 +1,9 @@
+{
+  "id": "lorekeeper_2",
+  "name": "Lorekeeper Spirit",
+  "glyph": "L",
+  "position": [180, 60],
+  "color": [0.7, 0.6, 0.9, 1],
+  "map": "sunken_archive_3",
+  "dialogue": "res://dialogues/lorekeeper_2.json"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "champions_blade",
+  "name": "Champion's Blade",
+  "name_zh": "王者之刃",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 2,
+  "damage_bonus": 2,
+  "weapon_dice": "1d10",
+  "weapon_name": "Champion's Blade",
+  "weapon_name_zh": "王者之刃",
+  "weapon_symbol": "冠",
+  "description": "The Twin-Crested Blade, undefeated for longer than anyone in the arena can remember — until now.",
+  "description_zh": "雙冠之刃，在鬥技場裡不敗的時間長到無人能記清——直到今天。"
+}

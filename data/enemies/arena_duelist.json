@@ -1,0 +1,36 @@
+{
+  "id": "arena_duelist",
+  "display_name": "Arena Duelist",
+  "display_name_zh": "鬥技場劍士",
+  "char_class": "Duelist",
+  "char_class_zh": "劍士",
+  "is_player": false,
+  "log_color": [0.85, 0.55, 0.3, 1.0],
+  "str_score": 14,
+  "dex_score": 16,
+  "con_score": 13,
+  "int_score": 10,
+  "wis_score": 11,
+  "cha_score": 12,
+  "armor_bonus": 3,
+  "max_hp_override": 16,
+  "weapon_name": "Rapier",
+  "weapon_name_zh": "細劍",
+  "weapon_symbol": "劍",
+  "weapon_dice": "1d8",
+  "weapon_ability": "dex",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Riposte",
+      "skill_name_zh": "還擊",
+      "description": "A precise counter-thrust aimed at the smallest opening.",
+      "description_zh": "瞄準最微小的破綻，精準地反手一刺。",
+      "kind": "attack_roll",
+      "ability": "dex",
+      "damage_dice": "2d6",
+      "rp_cost": 1,
+      "kaomoji_key": "attack_special"
+    }
+  ]
+}

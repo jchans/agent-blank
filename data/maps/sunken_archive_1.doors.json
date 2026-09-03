@@ -1,0 +1,4 @@
+[
+  { "position": [14, 4], "target_map": "old_shrine", "target_spawn": [1, 4] },
+  { "position": [0, 4], "target_map": "sunken_archive_2", "target_spawn": [13, 4], "requires_flag": "archive_riddle1_solved" }
+]

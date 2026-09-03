@@ -1,0 +1,10 @@
+{
+  "id": "coliseum_4_chest_1",
+  "map": "coliseum_4",
+  "position": [132, 60],
+  "glyph": "=",
+  "color": [0.85, 0.7, 0.2, 1.0],
+  "item_id": "champions_blade",
+  "quantity": 1,
+  "requires_flag": "coliseum_champion_defeated"
+}

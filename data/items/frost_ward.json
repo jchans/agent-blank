@@ -1,0 +1,10 @@
+{
+  "id": "frost_ward",
+  "name": "Frost Ward",
+  "name_zh": "寒霜守護",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 2,
+  "description": "A shard of unmelting ice, worn close as an amulet — it never warms, even against skin.",
+  "description_zh": "一塊永不融化的寒冰碎片，貼身佩戴時始終冰涼刺骨。"
+}

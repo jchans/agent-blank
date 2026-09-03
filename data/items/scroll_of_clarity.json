@@ -1,0 +1,11 @@
+{
+  "id": "scroll_of_clarity",
+  "name": "Scroll of Clarity",
+  "name_zh": "明澈卷軸",
+  "type": "consumable",
+  "effect": "restore_rp",
+  "amount": 2,
+  "target": "ally",
+  "description": "Reading it aloud clears the mind like a held breath finally released.",
+  "description_zh": "朗讀出聲後，思緒如屏息終於釋放般澄澈起來。"
+}

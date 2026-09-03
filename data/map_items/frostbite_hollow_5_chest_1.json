@@ -1,0 +1,10 @@
+{
+  "id": "frostbite_hollow_5_chest_1",
+  "map": "frostbite_hollow_5",
+  "position": [108, 60],
+  "glyph": "=",
+  "color": [0.55, 0.35, 0.15, 1.0],
+  "item_id": "rime_edge",
+  "quantity": 1,
+  "requires_flag": "rime_golem_defeated"
+}

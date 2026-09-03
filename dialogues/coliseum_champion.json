@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "The Champion",
+      "text": "The arena goes quiet. \"Three rounds, and you're still standing. Most stop before they get this far — the smart ones, usually.\"",
+      "text_zh": "整座競技場靜了下來。「三個回合，你居然還站著。大部分人到不了這裡就放棄了——通常是聰明人。」",
+      "choices": [
+        { "text": "Fight me.", "text_zh": "跟我打。", "next": "battle_start", "requires_not_flag": "coliseum_champion_defeated" },
+        { "text": "We already had our match.", "text_zh": "我們已經交過手了。", "next": "already_won", "requires_flag": "coliseum_champion_defeated" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "The Champion",
+      "text": "\"Let's see if you're one of the smart ones after all.\"",
+      "text_zh": "「看看你到底算不算聰明人。」",
+      "start_battle": "coliseum_champion",
+      "victory_flag": "coliseum_champion_defeated"
+    },
+    "already_won": {
+      "speaker": "The Champion",
+      "text": "Sitting against the arena wall, catching their breath, the Champion actually smiles. \"First time in longer than I'd like to admit. Truthfully? I'm glad someone finally did it. Take the gear — it's yours now, along with everything that comes with it.\"",
+      "text_zh": "王者靠著競技場牆邊坐著，喘著氣，臉上竟浮現笑容。「這是很久很久以來的第一次，久到我不太想承認。老實說？我很高興終於有人做到了。裝備拿去吧——現在是你的了，連同這一切帶來的一切。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}
