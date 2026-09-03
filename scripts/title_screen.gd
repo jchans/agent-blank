@@ -11,11 +11,9 @@ func _ready() -> void:
 	subtitle_label.text = Localization.t("title.subtitle")
 	continue_button.text = Localization.t("title.continue")
 	new_game_button.text = Localization.t("title.new_game")
-	if GameState.has_saved_position:
-		continue_button.grab_focus()
-	else:
+	if not GameState.has_saved_position:
 		continue_button.hide()
-		new_game_button.grab_focus()
+	new_game_button.grab_focus()
 
 
 func _on_continue_button_pressed() -> void:
