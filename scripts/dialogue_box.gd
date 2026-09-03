@@ -112,7 +112,7 @@ func _on_choice_pressed(next_id: String) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not visible or _current_choices.size() > 0:
+	if not visible or _current_choices.size() > 0 or Controls.is_help_open:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_Z:

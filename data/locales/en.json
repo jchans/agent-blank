@@ -1,7 +1,7 @@
 {
   "strings": {
     "help.title": "Controls",
-    "help.body": "Arrows      Move\nZ           Confirm / Talk / Attack\nX           Cancel / Run\nI           Items\nEsc         Pause menu\nH           Toggle this help",
+    "help.body": "Arrows      Move / Select\nZ           Confirm / Talk / Attack\nX           Cancel / Back\nI           Items\nEsc         Pause menu\nH           Toggle this help\n\nIn battle\nA / S / D   Attack / Skill / Defend\nR           Run",
     "help.close_hint": "H or Esc to close",
     "dialogue.continue": "▼ Press Z",
     "pause.title": "Paused",
