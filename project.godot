@@ -14,6 +14,10 @@ DialogueManager="*res://scripts/dialogue_manager.gd"
 Controls="*res://scripts/controls.gd"
 HelpOverlay="*res://scenes/HelpOverlay.tscn"
 
+[gui]
+
+theme/custom_font="res://assets/fonts/ui-cjk-tc.otf"
+
 [display]
 
 window/size/viewport_width=720
