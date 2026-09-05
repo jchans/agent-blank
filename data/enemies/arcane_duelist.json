@@ -6,6 +6,7 @@
   "char_class_zh": "戰鬥法師",
   "is_player": false,
   "xp": 60,
+  "loot": {"item_id": "fire_bomb", "chance": 0.12},
   "log_color": [
     0.6,
     0.4,

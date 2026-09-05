@@ -6,6 +6,7 @@
   "char_class_zh": "誓縛不死者",
   "is_player": false,
   "xp": 55,
+  "loot": {"item_id": "guard_tonic", "chance": 0.15},
   "log_color": [0.5, 0.55, 0.45, 1.0],
   "str_score": 12,
   "dex_score": 11,

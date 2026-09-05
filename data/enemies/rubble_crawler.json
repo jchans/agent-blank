@@ -6,6 +6,7 @@
   "char_class_zh": "巨型蜈蚣",
   "is_player": false,
   "xp": 35,
+  "loot": {"item_id": "potion", "chance": 0.15},
   "log_color": [0.55, 0.45, 0.3, 1.0],
   "str_score": 10,
   "dex_score": 13,

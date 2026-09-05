@@ -6,6 +6,7 @@
   "char_class_zh": "劍士",
   "is_player": false,
   "xp": 55,
+  "loot": {"item_id": "power_draught", "chance": 0.15},
   "log_color": [
     0.85,
     0.55,

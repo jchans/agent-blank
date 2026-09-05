@@ -6,6 +6,7 @@
   "char_class_zh": "靈光",
   "is_player": false,
   "xp": 40,
+  "loot": {"item_id": "ether", "chance": 0.15},
   "log_color": [
     0.6,
     0.85,

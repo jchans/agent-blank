@@ -6,6 +6,7 @@
   "char_class_zh": "守護造物",
   "is_player": false,
   "xp": 45,
+  "loot": {"item_id": "guard_tonic", "chance": 0.15},
   "log_color": [0.6, 0.6, 0.7, 1.0],
   "str_score": 13,
   "dex_score": 9,

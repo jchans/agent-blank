@@ -6,6 +6,7 @@
   "char_class_zh": "真菌生物",
   "is_player": false,
   "xp": 50,
+  "loot": {"item_id": "ether", "chance": 0.15},
   "log_color": [0.55, 0.4, 0.6, 1.0],
   "str_score": 11,
   "dex_score": 10,

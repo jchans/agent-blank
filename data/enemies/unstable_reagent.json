@@ -6,6 +6,7 @@
   "char_class_zh": "活化藥漬",
   "is_player": false,
   "xp": 40,
+  "loot": {"item_id": "fire_bomb", "chance": 0.15},
   "log_color": [0.6, 0.9, 0.4, 1.0],
   "str_score": 8,
   "dex_score": 12,
