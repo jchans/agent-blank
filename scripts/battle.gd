@@ -243,17 +243,41 @@ const FLEE_GRACE_SECONDS := 5.0
 
 ## Run used to always succeed instantly — user feedback: it should be a
 ## real agility contest, not a guaranteed escape. `actor` rolls d20+DEX
-## against the (single) enemy's own d20+DEX; ties favor the party since
-## it's their turn/initiative to act. A failed attempt just burns the
-## turn, same shape as a Defend or Attack that misses — the battle
+## against the single fastest living foe's own d20+DEX (highest DEX
+## modifier — the one hardest to actually outrun); ties favor the party
+## since it's their turn/initiative to act. A failed attempt just burns
+## the turn, same shape as a Defend or Attack that misses — the battle
 ## continues.
+##
+## This was originally written back when every battle had exactly one
+## enemy and picked `_living(enemies)[0]` unconditionally — silently
+## fine at the time, but arbitrary once multi-enemy encounters shipped
+## (see PROGRESS.md's 2026-09-05 entry): fleeing a two-wolf pack would
+## always roll against whichever wolf happened to load first, not
+## whichever one actually mattered. Picking the fastest one is the one
+## `foes[0]` accidentally got right by construction in the single-enemy
+## case (there was only ever one to be "fastest"), so this is a strict
+## generalization, not a behavior change for any existing single-enemy
+## trigger (dialogue bosses, RoamingMonster contact, single-entry tile
+## encounters).
+## Pulled out of _do_run as its own pure function so it's trivial to test
+## directly (no d20 rolls, no async timer) — see PROGRESS.md's dated
+## Notes entry for why this exists at all.
+func _fastest_foe(foes: Array[CombatantStats]) -> CombatantStats:
+	var foe: CombatantStats = foes[0]
+	for f in foes:
+		if f.get_modifier("dex") > foe.get_modifier("dex"):
+			foe = f
+	return foe
+
+
 func _do_run(actor: CombatantStats) -> void:
 	var foes := _living(enemies)
 	if foes.is_empty():
 		battle_over = true
 		_fled = true
 		return
-	var foe: CombatantStats = foes[0]
+	var foe: CombatantStats = _fastest_foe(foes)
 	var actor_mod := actor.get_modifier("dex")
 	var foe_mod := foe.get_modifier("dex")
 	var actor_roll := Dice.d20()
