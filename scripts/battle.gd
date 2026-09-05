@@ -10,10 +10,12 @@ extends Node2D
 ## restart/quit end screen).
 ##
 ## GameState.pending_battle_enemy names which data/enemies/*.json to load
-## as the single opposing combatant; GameState.pending_victory_flag (if
-## set) is applied on victory. Both are set by DialogueManager reading a
-## dialogue node's "start_battle"/"victory_flag" fields — unchanged from
-## before this port.
+## as the opposing combatant(s) — a single id for one enemy, or several
+## ids joined with "," to load them all as simultaneous opponents (see
+## main.gd._check_random_encounter, the only trigger that currently ever
+## sets more than one). GameState.pending_victory_flag (if set) is applied
+## on victory. Both are set by DialogueManager reading a dialogue node's
+## "start_battle"/"victory_flag" fields — unchanged from before this port.
 
 const ENEMY_DATA_DIR := "res://data/enemies/"
 const PARTY_DATA_DIR := "res://data/party/"
@@ -55,7 +57,9 @@ func _ready() -> void:
 	var enemy_id: String = GameState.pending_battle_enemy
 	if enemy_id == "":
 		enemy_id = "slime"
-	enemies = [_load_enemy(enemy_id)]
+	enemies = []
+	for id in enemy_id.split(","):
+		enemies.append(_load_enemy(id))
 
 	for s in party:
 		var view: CombatantView = CombatantViewScene.instantiate()
@@ -68,7 +72,10 @@ func _ready() -> void:
 		view.setup(s)
 		enemy_views[s] = view
 
-	_log(Localization.t("battle.appears") % _name_plain(enemies[0]))
+	if enemies.size() > 1:
+		_log(Localization.t("battle.appears_group") % _group_description(enemies))
+	else:
+		_log(Localization.t("battle.appears") % _name_plain(enemies[0]))
 	_log_separator()
 	_roll_initiative()
 	await _run_battle_loop()
@@ -414,6 +421,26 @@ func _name(c: CombatantStats) -> String:
 
 func _name_plain(c: CombatantStats) -> String:
 	return c.localized_name()
+
+## Groups same-named opponents together ("Forest Wolf x2") for a
+## multi-enemy encounter's opening log line — see the "appears"/
+## "appears_group" branch in _ready().
+func _group_description(list: Array[CombatantStats]) -> String:
+	var counts: Dictionary = {}
+	var order: Array = []
+	for c in list:
+		var n := _name_plain(c)
+		if not counts.has(n):
+			counts[n] = 0
+			order.append(n)
+		counts[n] += 1
+	var parts: PackedStringArray = PackedStringArray()
+	for n in order:
+		if counts[n] > 1:
+			parts.append("%s x%d" % [n, counts[n]])
+		else:
+			parts.append(n)
+	return ", ".join(parts)
 
 ## Colors an actor-owned term (weapon/skill name) in the actor's color.
 func _actor_text(actor: CombatantStats, text: String) -> String:

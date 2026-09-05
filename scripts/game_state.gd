@@ -59,6 +59,10 @@ var locale: String = "en"
 
 ## Set by whoever triggers a battle (e.g. DialogueManager on a "start_battle"
 ## node) right before changing to Battle.tscn; Battle reads it in _ready().
+## Normally a single data/enemies/*.json id; several ids joined with ","
+## loads them all as simultaneous opponents — see battle.gd's doc comment
+## and main.gd._check_random_encounter, the only trigger that currently
+## ever sets more than one id.
 var pending_battle_enemy: String = ""
 ## Optional flag name set via set_flag() when the upcoming battle is won —
 ## e.g. a dialogue node's "victory_flag" field (see dialogue_manager.gd).

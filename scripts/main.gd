@@ -128,6 +128,14 @@ func _check_door_crossing() -> void:
 ## to ambush into a random enemy from that room's pool. Distinct from
 ## Ember Hollow's RoamingMonster, which chases on sight instead of rolling
 ## per tile — see roaming_monster.gd.
+##
+## A pool entry is normally a plain enemy id string (one opponent). It can
+## also be a JSON array of ids ("group" ambush, e.g. a wolf pack) — picked
+## from the same pool with the same weight as any single-enemy entry, no
+## separate "group chance" concept needed. GameState.pending_battle_enemy
+## joins a group's ids with "," (see battle.gd's doc comment for why);
+## every pre-existing *.encounters.json file only ever contains single-id
+## strings, so this is purely additive and doesn't change their behavior.
 func _check_random_encounter() -> void:
 	if _encounter_config.is_empty() or _encounter_triggered:
 		return
@@ -148,7 +156,14 @@ func _check_random_encounter() -> void:
 	if enemy_pool.is_empty():
 		return
 	_encounter_triggered = true
-	GameState.pending_battle_enemy = enemy_pool[randi() % enemy_pool.size()]
+	var picked: Variant = enemy_pool[randi() % enemy_pool.size()]
+	if typeof(picked) == TYPE_ARRAY:
+		var ids: PackedStringArray = PackedStringArray()
+		for id in picked:
+			ids.append(str(id))
+		GameState.pending_battle_enemy = ",".join(ids)
+	else:
+		GameState.pending_battle_enemy = picked
 	GameState.pending_victory_flag = ""
 	GameState.pending_monster_id = ""
 	GameState.save_game()

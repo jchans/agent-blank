@@ -1,5 +1,5 @@
 {
   "glyphs": [","],
   "chance": 0.18,
-  "enemies": ["forest_wolf", "marsh_serpent"]
+  "enemies": ["forest_wolf", "marsh_serpent", ["forest_wolf", "forest_wolf"]]
 }
