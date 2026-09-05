@@ -19,6 +19,15 @@ var flags: Dictionary = {}
 var party_hp: Dictionary = {}
 var party_rp: Dictionary = {}
 
+## party_member_id -> total XP earned / current level (see
+## combatant_stats.gd's apply_level/level_for_xp and battle.gd's
+## _award_xp). Deliberately never surfaced in any UI — the user asked for
+## leveling to happen silently, so there's no "XP: N/300" label or
+## "LEVEL UP!" toast anywhere; a party member with no entry here yet is
+## level 1 / 0 XP, same default apply_level(1) already produces.
+var party_xp: Dictionary = {}
+var party_level: Dictionary = {}
+
 ## Shared party inventory: item_id (see data/items/*.json) -> count owned.
 ## Consumables and equipment both live here; equipping doesn't remove an
 ## item from this count (see equipment below) — a picked-up sword just
@@ -55,6 +64,28 @@ var pending_battle_enemy: String = ""
 ## e.g. a dialogue node's "victory_flag" field (see dialogue_manager.gd).
 ## Empty means no flag to set. Not persisted (transient, like the above).
 var pending_victory_flag: String = ""
+## Set only by a RoamingMonster's contact trigger (its synthesized "<map>_<
+## index>" id, see main.gd._spawn_monsters/roaming_monster.gd) right before
+## changing to Battle.tscn; every other battle trigger (dialogue, tile
+## encounter) explicitly clears this to "" so a stale id from an earlier
+## monster battle can't leak a defeat/flee record onto an unrelated fight.
+## Not persisted (transient, like the two fields above).
+var pending_monster_id: String = ""
+
+## monster_id -> Time.get_unix_time_from_system() when it was defeated.
+## Checked by main.gd._spawn_monsters to skip (re)spawning a monster for
+## MONSTER_RESPAWN_SECONDS after it falls — "defeated monsters should
+## disappear, and respawn after a delay" (user request). Persisted so the
+## despawn survives a save/quit/reload.
+var monster_defeats: Dictionary = {}
+## monster_id -> Time.get_unix_time_from_system() until which that specific
+## monster should stay idle instead of chasing/triggering again. Set on a
+## successful Run against a RoamingMonster-triggered battle so the same
+## monster doesn't immediately re-catch the player the instant Main.tscn
+## reloads (user report: fleeing "succeeds" but you can't actually get
+## away). Deliberately NOT persisted — it's a few-second anti-frustration
+## grace, not state worth surviving a save/quit.
+var monster_flee_grace: Dictionary = {}
 
 
 func _ready() -> void:
@@ -69,8 +100,12 @@ func reset_new_game() -> void:
 	flags = {}
 	party_hp = {}
 	party_rp = {}
+	party_xp = {}
+	party_level = {}
 	inventory = {}
 	equipment = {}
+	monster_defeats = {}
+	monster_flee_grace = {}
 	player_position = Vector2(300, 180)
 	has_saved_position = false
 	current_map = "village"
@@ -126,8 +161,11 @@ func save_game() -> void:
 		"flags": flags,
 		"party_hp": party_hp,
 		"party_rp": party_rp,
+		"party_xp": party_xp,
+		"party_level": party_level,
 		"inventory": inventory,
 		"equipment": equipment,
+		"monster_defeats": monster_defeats,
 		"player_position": [player_position.x, player_position.y],
 		"current_map": current_map,
 		"locale": locale,
@@ -154,8 +192,11 @@ func load_game() -> void:
 		flags = parsed.get("flags", {})
 		party_hp = parsed.get("party_hp", {})
 		party_rp = parsed.get("party_rp", {})
+		party_xp = parsed.get("party_xp", {})
+		party_level = parsed.get("party_level", {})
 		inventory = parsed.get("inventory", {})
 		equipment = parsed.get("equipment", {})
+		monster_defeats = parsed.get("monster_defeats", {})
 		var pos: Array = parsed.get("player_position", [])
 		if pos.size() == 2:
 			player_position = Vector2(pos[0], pos[1])

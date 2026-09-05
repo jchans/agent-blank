@@ -5,7 +5,13 @@
   "char_class": "Mimic",
   "char_class_zh": "擬態怪",
   "is_player": false,
-  "log_color": [0.5, 0.75, 0.85, 1.0],
+  "xp": 45,
+  "log_color": [
+    0.5,
+    0.75,
+    0.85,
+    1.0
+  ],
   "str_score": 15,
   "dex_score": 10,
   "con_score": 13,

@@ -1,0 +1,9 @@
+{
+  "id": "reliquary_warden",
+  "name": "The Reliquary Warden",
+  "glyph": "衛",
+  "position": [204, 108],
+  "color": [0.7, 0.65, 0.45, 1.0],
+  "map": "kvault_b3_5a",
+  "dialogue": "res://dialogues/reliquary_warden.json"
+}

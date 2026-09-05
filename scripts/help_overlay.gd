@@ -15,7 +15,7 @@ extends CanvasLayer
 @onready var panel: Control = $Panel
 @onready var box: Panel = $Panel/Box
 @onready var title_label: Label = $Panel/Box/MarginContainer/VBoxContainer/TitleLabel
-@onready var body_label: Label = $Panel/Box/MarginContainer/VBoxContainer/BodyLabel
+@onready var body_label: RichTextLabel = $Panel/Box/MarginContainer/VBoxContainer/BodyLabel
 @onready var close_label: Label = $Panel/Box/MarginContainer/VBoxContainer/CloseLabel
 
 

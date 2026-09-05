@@ -5,7 +5,13 @@
   "char_class": "Tome",
   "char_class_zh": "魔書",
   "is_player": false,
-  "log_color": [0.55, 0.4, 0.7, 1.0],
+  "xp": 40,
+  "log_color": [
+    0.55,
+    0.4,
+    0.7,
+    1.0
+  ],
   "str_score": 10,
   "dex_score": 13,
   "con_score": 11,

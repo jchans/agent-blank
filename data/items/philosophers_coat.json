@@ -1,0 +1,10 @@
+{
+  "id": "philosophers_coat",
+  "name": "Philosopher's Coat",
+  "name_zh": "賢者長袍",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 3,
+  "description": "Scorched and stained from a hundred experiments, but the stitching still holds.",
+  "description_zh": "歷經無數次實驗而燒痕斑斑、藥漬處處，但針線依舊牢固。"
+}

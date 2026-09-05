@@ -5,7 +5,13 @@
   "char_class": "Serpent",
   "char_class_zh": "巨蟒",
   "is_player": false,
-  "log_color": [0.3, 0.55, 0.35, 1.0],
+  "xp": 40,
+  "log_color": [
+    0.3,
+    0.55,
+    0.35,
+    1.0
+  ],
   "str_score": 14,
   "dex_score": 12,
   "con_score": 13,

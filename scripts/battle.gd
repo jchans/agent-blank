@@ -21,10 +21,10 @@ const CombatantViewScene := preload("res://scenes/CombatantView.tscn")
 
 @onready var panel: Panel = $UI/Panel
 @onready var hint_label: Label = $UI/Panel/MarginContainer/VBoxContainer/HintLabel
-@onready var enemy_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/EnemyRow
-@onready var party_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/PartyRow
-@onready var log_scroll: ScrollContainer = $UI/Panel/MarginContainer/VBoxContainer/LogScroll
-@onready var battle_log: RichTextLabel = $UI/Panel/MarginContainer/VBoxContainer/LogScroll/LogLabel
+@onready var enemy_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn/EnemyRow
+@onready var party_row: HBoxContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn/PartyRow
+@onready var log_scroll: ScrollContainer = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/LogScroll
+@onready var battle_log: RichTextLabel = $UI/Panel/MarginContainer/VBoxContainer/BattleRow/LogScroll/LogLabel
 @onready var action_menu: ActionMenu = $UI/Panel/MarginContainer/VBoxContainer/ActionMenu
 
 var party: Array[CombatantStats] = []
@@ -92,6 +92,7 @@ func _load_party() -> Array[CombatantStats]:
 			var c := _load_combatant(PARTY_DATA_DIR + file_name)
 			if c != null:
 				_apply_equipment(c)
+				c.apply_level(GameState.party_level.get(c.id, 1))
 				if GameState.party_hp.has(c.id):
 					c.current_hp = GameState.party_hp[c.id]
 					c.current_rp = GameState.party_rp.get(c.id, c.max_rp)
@@ -221,11 +222,45 @@ func _resolve_choice(actor: CombatantStats, choice: Dictionary) -> void:
 			_log(Localization.t("battle.defends") % _name(actor))
 			await _pause()
 		"run":
-			_log(Localization.t("battle.flees") % _name(actor))
-			battle_over = true
-			_fled = true
+			await _do_run(actor)
 	_log_separator()
 	_refresh_all()
+
+
+## Seconds a RoamingMonster stays put after the player successfully Runs
+## from a battle it triggered — see GameState.monster_flee_grace. Only
+## relevant when GameState.pending_monster_id is set (i.e. this battle
+## started from a RoamingMonster's contact, not a dialogue/tile-encounter
+## battle), applied in _end_battle.
+const FLEE_GRACE_SECONDS := 5.0
+
+## Run used to always succeed instantly — user feedback: it should be a
+## real agility contest, not a guaranteed escape. `actor` rolls d20+DEX
+## against the (single) enemy's own d20+DEX; ties favor the party since
+## it's their turn/initiative to act. A failed attempt just burns the
+## turn, same shape as a Defend or Attack that misses — the battle
+## continues.
+func _do_run(actor: CombatantStats) -> void:
+	var foes := _living(enemies)
+	if foes.is_empty():
+		battle_over = true
+		_fled = true
+		return
+	var foe: CombatantStats = foes[0]
+	var actor_mod := actor.get_modifier("dex")
+	var foe_mod := foe.get_modifier("dex")
+	var actor_roll := Dice.d20()
+	var foe_roll := Dice.d20()
+	var actor_total := actor_roll + actor_mod
+	var foe_total := foe_roll + foe_mod
+	_log(Localization.t("battle.flee_roll") % [_name(actor), actor_roll, actor_mod, actor_total, _name(foe), foe_roll, foe_mod, foe_total])
+	if actor_total >= foe_total:
+		_log(Localization.t("battle.flee_success") % _name(actor))
+		battle_over = true
+		_fled = true
+	else:
+		_log(Localization.t("battle.flee_failed") % _name(actor))
+		await _pause()
 
 
 func _do_attack(actor: CombatantStats, target: CombatantStats) -> void:
@@ -443,11 +478,48 @@ func _sync_party_to_game_state() -> void:
 		GameState.party_rp[c.id] = c.current_rp
 
 
+## Silent leveling (user request: no XP number or "level up" message ever
+## shown — see PROGRESS.md's Leveling entry) — every defeated enemy's
+## "xp" (data/enemies/*.json) is summed and given in full to every party
+## member (not divided by party size the way SRD 5.1 does for a fluid
+## adventuring party; this project's party is always exactly these same
+## 3 people, so full-XP-each reads as normal per-kill JRPG XP instead of
+## a fraction, and still uses the SRD's own level thresholds/pacing
+## unchanged). Called only on victory (not flee/defeat) — a loss already
+## fully heals the party for free, awarding XP for it too would be an
+## unearned double reward. A member who levels up also has their current
+## HP raised by the same amount their max HP just grew by, matching
+## SRD 5.1's own "leveling heals you" rule rather than silently making
+## them proportionally more hurt relative to a higher cap.
+func _award_xp() -> void:
+	var encounter_xp := 0
+	for e in enemies:
+		encounter_xp += e.xp
+	if encounter_xp <= 0:
+		return
+	for c in party:
+		var old_level: int = GameState.party_level.get(c.id, 1)
+		var new_xp: int = GameState.party_xp.get(c.id, 0) + encounter_xp
+		GameState.party_xp[c.id] = new_xp
+		var new_level: int = CombatantStats.level_for_xp(new_xp)
+		if new_level > old_level:
+			var hp_per_level := int(c.hit_die / 2.0) + 1 + c.get_modifier("con")
+			var hp_gain := hp_per_level * (new_level - old_level)
+			GameState.party_hp[c.id] = GameState.party_hp.get(c.id, c.current_hp) + hp_gain
+			GameState.party_level[c.id] = new_level
+
+
 func _end_battle() -> void:
 	action_menu.visible = false
 	if _fled:
 		_log(Localization.t("battle.end_fled"))
 		_sync_party_to_game_state()
+		# A RoamingMonster-triggered battle (see GameState.pending_monster_id)
+		# gets a short grace period so the same monster doesn't immediately
+		# re-catch the player the instant Main.tscn reloads — see
+		# roaming_monster.gd's _is_in_flee_grace.
+		if GameState.pending_monster_id != "":
+			GameState.monster_flee_grace[GameState.pending_monster_id] = Time.get_unix_time_from_system() + FLEE_GRACE_SECONDS
 	elif _living(party).is_empty():
 		for c in party:
 			_set_state(c, "defeat")
@@ -462,6 +534,12 @@ func _end_battle() -> void:
 		if GameState.pending_victory_flag != "":
 			GameState.set_flag(GameState.pending_victory_flag)
 			GameState.pending_victory_flag = ""
+		# Defeating a RoamingMonster marks it gone (main.gd._spawn_monsters
+		# skips it) until MONSTER_RESPAWN_SECONDS have passed — "a defeated
+		# monster should disappear, and take a while to respawn" (user
+		# request).
+		if GameState.pending_monster_id != "":
+			GameState.monster_defeats[GameState.pending_monster_id] = Time.get_unix_time_from_system()
 		for c in party:
 			if c.is_alive():
 				_set_state(c, "victory")
@@ -470,6 +548,8 @@ func _end_battle() -> void:
 					view.play_victory_dance()
 		_log(Localization.t("battle.end_victory"))
 		_sync_party_to_game_state()
+		_award_xp()
+	GameState.pending_monster_id = ""
 	_log_separator()
 	GameState.save_game()
 	await get_tree().create_timer(2.0, false).timeout

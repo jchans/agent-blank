@@ -1,0 +1,21 @@
+{
+  "start": "look",
+  "nodes": {
+    "look": {
+      "speaker": "Sealed Gate",
+      "text": "A colossal gate of dark, unmarked stone fills the far wall, warm to the touch despite the cold. No handle, no seam, no keyhole — nothing to press, pull, or pick. Whatever lies beyond it, it is not ready to be found.",
+      "text_zh": "一扇巨大的深色石門矗立在盡頭的牆面上，門上沒有任何刻痕。儘管四周寒冷，門面卻異常溫熱。沒有把手，沒有接縫，沒有鎖孔——沒有任何可以推、拉或撬動之處。無論門後藏著什麼，此刻都還不是被找到的時候。",
+      "choices": [
+        { "text": "Listen at the door.", "text_zh": "貼在門上聆聽。", "next": "listen" },
+        { "text": "Leave it be, for now.", "text_zh": "暫時就這樣吧。", "next": "end" }
+      ]
+    },
+    "listen": {
+      "speaker": "Sealed Gate",
+      "text": "Nothing. Not silence exactly — more like something on the other side is choosing not to be heard. You get the feeling Karneth knows you're here, and doesn't care.",
+      "text_zh": "什麼也沒有。並不完全是寂靜——更像是門另一側的某個存在，選擇不被聽見。你有種感覺，卡奈斯知道你在這裡，只是毫不在意。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

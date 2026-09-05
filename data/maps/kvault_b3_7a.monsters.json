@@ -1,0 +1,3 @@
+[
+  { "position": [204, 108], "enemy_id": "ward_sentinel", "glyph": "s", "color": [0.6, 0.6, 0.7, 1.0], "speed": 40, "chase_range": 100 }
+]

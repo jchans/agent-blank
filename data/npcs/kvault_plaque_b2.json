@@ -1,0 +1,9 @@
+{
+  "id": "kvault_plaque_b2",
+  "name": "Waterlogged Tablet",
+  "glyph": "碑",
+  "position": [132, 84],
+  "color": [0.5, 0.6, 0.65, 1.0],
+  "map": "kvault_b2_3b",
+  "dialogue": "res://dialogues/kvault_plaque_b2.json"
+}

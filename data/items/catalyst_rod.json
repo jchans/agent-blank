@@ -1,0 +1,15 @@
+{
+  "id": "catalyst_rod",
+  "name": "Catalyst Rod",
+  "name_zh": "催化法杖",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 2,
+  "damage_bonus": 1,
+  "weapon_dice": "1d8",
+  "weapon_name": "Catalyst Rod",
+  "weapon_name_zh": "催化法杖",
+  "weapon_symbol": "杖",
+  "description": "A brass rod inlaid with cracked crystal — it still hums faintly when gripped.",
+  "description_zh": "鑲嵌著裂紋水晶的黃銅法杖，握在手中仍能感受到微弱的嗡鳴。"
+}

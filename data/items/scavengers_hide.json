@@ -1,0 +1,10 @@
+{
+  "id": "scavengers_hide",
+  "name": "Scavenger's Hide",
+  "name_zh": "拾荒者皮甲",
+  "type": "equipment",
+  "slot": "armor",
+  "ac_bonus": 2,
+  "description": "Patchwork leather, stitched together from whatever the breach's opportunists could scrounge.",
+  "description_zh": "以缺口內盜掘者所能拼湊到的一切材料縫製而成的皮甲。"
+}

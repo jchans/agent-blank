@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "The Reliquary Warden",
+      "text": "A towering shape unfolds from an alcove of half-shattered wards, ancient runes flaring back to life along its frame. Its voice is a grinding echo of something long dead. \"You are not on the roster of those permitted here.\"",
+      "text_zh": "一道巨大的身影從半毀的結界壁龕中展開，古老的符文沿著它的軀體重新亮起。它的聲音如研磨般迴響，彷彿來自某個早已死去許久的存在：「你不在允許進入此處的名冊之上。」",
+      "choices": [
+        { "text": "Then add me the hard way.", "text_zh": "那就讓我用強硬的方式加入名冊。", "next": "battle_start", "requires_not_flag": "kvault_b3_boss_cleared" },
+        { "text": "The Warden no longer stirs.", "text_zh": "守衛者已不再動彈。", "next": "already_won", "requires_flag": "kvault_b3_boss_cleared" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "The Reliquary Warden",
+      "text": "\"As you wish. The wards remember every trespasser eventually — one way or another.\"",
+      "text_zh": "「隨你的意。結界終究會記住每一位闖入者——用某種方式。」",
+      "start_battle": "reliquary_warden",
+      "victory_flag": "kvault_b3_boss_cleared"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The runes along the alcove have gone dark. Whatever watched this floor is watching no longer — but somewhere far below, something else still is.",
+      "text_zh": "壁龕上的符文已經黯淡下去。曾經守望著這一層的存在，如今已不再守望——但在更深、更遠的地方，仍有其他東西在守望著。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

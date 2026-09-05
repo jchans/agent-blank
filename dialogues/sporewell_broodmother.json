@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Sporewell Broodmother",
+      "text": "The flooded chamber's stillness breaks as something enormous rises from beneath the black water, trailing pale fungal threads.",
+      "text_zh": "積水大廳原本靜止不動，此刻卻被某個從黑水下方升起的龐然巨物打破——身後拖曳著蒼白的菌絲。",
+      "choices": [
+        { "text": "Stand your ground!", "text_zh": "站穩腳步，迎戰！", "next": "battle_start", "requires_not_flag": "kvault_b2_boss_cleared" },
+        { "text": "The cistern is still again.", "text_zh": "水窖再次恢復平靜。", "next": "already_won", "requires_flag": "kvault_b2_boss_cleared" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Sporewell Broodmother",
+      "text": "Tendrils lash out across the flooded stone.",
+      "text_zh": "觸鬚在積水的石地上猛然揮動而出。",
+      "start_battle": "sporewell_broodmother",
+      "victory_flag": "kvault_b2_boss_cleared"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "The water has finally gone clear. Whatever grew here is gone.",
+      "text_zh": "積水終於變得清澈。曾在此處滋長的東西已經消失無蹤。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

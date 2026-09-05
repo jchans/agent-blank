@@ -1,0 +1,28 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Charnel Matriarch",
+      "text": "Something vast shifts in the dark above, wings folding open. Dozens of smaller shapes stir and wake at the sound.",
+      "text_zh": "黑暗中有龐然大物的身影微微移動，雙翼緩緩展開。聲響驚動了周圍數十個較小的身影，紛紛甦醒。",
+      "choices": [
+        { "text": "Fight through!", "text_zh": "殺出一條路！", "next": "battle_start", "requires_not_flag": "kvault_b1_boss_cleared" },
+        { "text": "The roost has gone quiet.", "text_zh": "巢穴已經安靜下來了。", "next": "already_won", "requires_flag": "kvault_b1_boss_cleared" }
+      ]
+    },
+    "battle_start": {
+      "speaker": "Charnel Matriarch",
+      "text": "It shrieks, and the swarm answers.",
+      "text_zh": "牠發出尖嘯，蝠群隨之回應。",
+      "start_battle": "charnel_matriarch",
+      "victory_flag": "kvault_b1_boss_cleared"
+    },
+    "already_won": {
+      "speaker": "",
+      "text": "Only scattered feathers and silence remain where the roost once was.",
+      "text_zh": "曾經的巢穴如今只剩散落的羽毛與一片寂靜。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

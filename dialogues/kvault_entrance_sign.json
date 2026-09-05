@@ -1,0 +1,12 @@
+{
+  "start": "greet",
+  "nodes": {
+    "greet": {
+      "speaker": "Signpost",
+      "text": "A crude marker, clearly added long after whatever this place originally was: \"THE SUNKEN VAULT OF KARNETH — TURN BACK.\" Someone has scratched out \"TURN BACK\" and written \"OR DON'T\" beneath it.",
+      "text_zh": "一塊粗糙的標記，明顯是在這地方原本的用途之後很久才被加上的：「卡奈斯沉沒寶庫——回頭吧。」有人把「回頭吧」劃掉，在下面又寫了「或者別回頭」。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

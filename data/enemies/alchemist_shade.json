@@ -1,0 +1,50 @@
+{
+  "id": "alchemist_shade",
+  "display_name": "The Alchemist's Shade",
+  "display_name_zh": "煉金術師之影",
+  "char_class": "Bound Spirit",
+  "char_class_zh": "束縛之靈",
+  "is_player": false,
+  "xp": 130,
+  "log_color": [0.55, 0.85, 0.65, 1.0],
+  "str_score": 10,
+  "dex_score": 14,
+  "con_score": 12,
+  "int_score": 16,
+  "wis_score": 14,
+  "cha_score": 10,
+  "armor_bonus": 3,
+  "max_hp_override": 36,
+  "weapon_name": "Spectral Touch",
+  "weapon_name_zh": "幽影之觸",
+  "weapon_symbol": "影",
+  "weapon_dice": "1d8",
+  "weapon_ability": "int",
+  "max_rp": 4,
+  "skills": [
+    {
+      "skill_name": "Grief-Bound Curse",
+      "skill_name_zh": "哀慟詛咒",
+      "description": "A wave of unbearable sorrow — the target's own will falters, and the wound cuts deeper for it.",
+      "description_zh": "難以承受的悲痛化作波動襲來，意志動搖者傷勢更為深重。",
+      "kind": "save",
+      "ability": "int",
+      "save_ability": "wis",
+      "damage_dice": "3d6",
+      "half_on_save": true,
+      "rp_cost": 2,
+      "kaomoji_key": "cast"
+    },
+    {
+      "skill_name": "Reagent Burst",
+      "skill_name_zh": "藥劑迸裂",
+      "description": "Shattered glassware and volatile reagents, still shelved after all these years, erupt at a gesture.",
+      "description_zh": "多年來仍擺在架上的藥劑與玻璃器皿，隨一個手勢應聲爆裂。",
+      "kind": "attack_roll",
+      "ability": "int",
+      "damage_dice": "2d8",
+      "rp_cost": 2,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

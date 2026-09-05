@@ -5,7 +5,13 @@
   "char_class": "Wolf",
   "char_class_zh": "野狼",
   "is_player": false,
-  "log_color": [0.55, 0.42, 0.3, 1.0],
+  "xp": 35,
+  "log_color": [
+    0.55,
+    0.42,
+    0.3,
+    1.0
+  ],
   "str_score": 13,
   "dex_score": 15,
   "con_score": 11,

@@ -1,0 +1,12 @@
+{
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "Faded Journal",
+      "text": "The ink has bled and faded, but a few lines are still legible: \"...the fever won't break. Every remedy I know has failed. I will not accept that. There must be a formula I haven't tried.\"",
+      "text_zh": "墨跡早已暈開褪色，僅剩幾行仍可辨識：「……高燒始終不退。我所知的每一種藥方都失敗了。我不接受這個結果。一定還有我沒試過的配方。」",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}

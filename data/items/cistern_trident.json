@@ -1,0 +1,15 @@
+{
+  "id": "cistern_trident",
+  "name": "Cistern-Forged Trident",
+  "name_zh": "水窖鑄三叉戟",
+  "type": "equipment",
+  "slot": "weapon",
+  "attack_bonus": 2,
+  "damage_bonus": 2,
+  "weapon_dice": "1d8",
+  "weapon_name": "Cistern-Forged Trident",
+  "weapon_name_zh": "水窖鑄三叉戟",
+  "weapon_symbol": "叉",
+  "description": "Corroded bronze tines, still hooked with strands of fungal fiber.",
+  "description_zh": "銅製尖齒已然鏽蝕，上頭仍纏著真菌纖維。"
+}

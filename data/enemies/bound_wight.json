@@ -1,0 +1,39 @@
+{
+  "id": "bound_wight",
+  "display_name": "Bound Wight",
+  "display_name_zh": "束縛怨屍",
+  "char_class": "Oathbound Undead",
+  "char_class_zh": "誓縛不死者",
+  "is_player": false,
+  "xp": 55,
+  "log_color": [0.5, 0.55, 0.45, 1.0],
+  "str_score": 12,
+  "dex_score": 11,
+  "con_score": 12,
+  "int_score": 8,
+  "wis_score": 13,
+  "cha_score": 6,
+  "armor_bonus": 2,
+  "max_hp_override": 19,
+  "weapon_name": "Rusted Blade",
+  "weapon_name_zh": "鏽蝕之刃",
+  "weapon_symbol": "刃",
+  "weapon_dice": "1d8",
+  "weapon_ability": "str",
+  "max_rp": 1,
+  "skills": [
+    {
+      "skill_name": "Chilling Grasp",
+      "skill_name_zh": "寒冷之握",
+      "description": "A withered hand closes around the target, draining warmth and will alike.",
+      "description_zh": "枯槁的手掌緊緊扣住目標，將溫暖與意志一併抽離。",
+      "kind": "save",
+      "ability": "wis",
+      "save_ability": "con",
+      "damage_dice": "2d6",
+      "half_on_save": true,
+      "rp_cost": 1,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+[
+  {
+    "position": [
+      8,
+      0
+    ],
+    "target_map": "kvault_b2_3",
+    "target_spawn": [
+      7,
+      7
+    ]
+  },
+  {
+    "position": [
+      8,
+      10
+    ],
+    "target_map": "kvault_b2_5",
+    "target_spawn": [
+      7,
+      1
+    ]
+  },
+  {
+    "position": [
+      0,
+      5
+    ],
+    "target_map": "kvault_b2_4a",
+    "target_spawn": [
+      9,
+      4
+    ]
+  }
+]

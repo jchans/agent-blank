@@ -1,0 +1,10 @@
+{
+  "id": "manor_attic_chest_2",
+  "map": "manor_attic",
+  "position": [228, 156],
+  "glyph": "=",
+  "color": [0.8, 0.7, 0.3, 1.0],
+  "item_id": "catalyst_rod",
+  "quantity": 1,
+  "requires_flag": "manor_cleared"
+}

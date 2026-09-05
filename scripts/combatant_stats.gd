@@ -18,6 +18,21 @@ var char_class_zh: String = ""
 var is_player: bool = true
 var log_color: Color = Color.WHITE ## used both for the kaomoji name label and log highlighting
 
+## Party-only leveling (see PROGRESS.md's Leveling entry). Enemies never
+## level — they're built fresh each battle and reset_for_battle() is the
+## only thing touched — so level stays at its default of 1 for them,
+## which is exactly the "no bonus" baseline apply_level(1) would also
+## produce; enemies simply never call apply_level at all.
+var level: int = 1
+## Which ability score benefits from the level-4/level-8 ASI bump (see
+## apply_level) — usually the class's spellcasting/attack stat. Defaults
+## to weapon_ability so a party member JSON that doesn't set this
+## explicitly still gets a sensible growth stat.
+var primary_ability: String = ""
+## XP this combatant is worth when defeated (enemies only — see
+## data/enemies/*.json's "xp" field and battle.gd's _award_xp).
+var xp: int = 0
+
 var str_score: int = 10
 var dex_score: int = 10
 var con_score: int = 10
@@ -83,6 +98,8 @@ static func from_dict(data: Dictionary) -> CombatantStats:
 	c.weapon_dice = data.get("weapon_dice", "1d4")
 	c.weapon_ability = data.get("weapon_ability", "str")
 	c.max_rp = data.get("max_rp", 0)
+	c.primary_ability = data.get("primary_ability", c.weapon_ability)
+	c.xp = data.get("xp", 0)
 	var skills_data: Array = data.get("skills", [])
 	for skill_dict in skills_data:
 		c.skills.append(Skill.from_dict(skill_dict))
@@ -119,16 +136,29 @@ func get_ability_score(ability: String) -> int:
 func get_modifier(ability: String) -> int:
 	return modifier(get_ability_score(ability))
 
-## Level is fixed at 1 throughout this game (no leveling system yet), so
-## proficiency bonus is always +2 — kept as a real formula rather than a
-## hardcoded 2 so it stays correct if leveling is ever added.
+## SRD 5.1's own proficiency-by-level progression (+2 at 1-4, +3 at 5-8,
+## +4 at 9-12 — matches exactly across this game's 1-10 level cap, see
+## PROGRESS.md's Leveling entry). Now that `level` is real (see
+## apply_level), this needed no change beyond swapping the hardcoded `2`
+## for the formula this comment already promised.
 func get_proficiency_bonus() -> int:
-	return 2
+	return 2 + int((level - 1) / 4.0)
 
 func get_max_hp() -> int:
 	if max_hp_override >= 0:
 		return max_hp_override
-	return hit_die + get_modifier("con")
+	return hit_die + get_modifier("con") + level_hp_bonus()
+
+## SRD 5.1's "fixed" (average, not rolled) HP-per-level rule: each level
+## past 1st grants floor(hit_die/2)+1 plus the current CON modifier.
+## Deliberately not additive/stateful — recomputed fresh from `level`
+## every time, since a CombatantStats instance is already rebuilt from
+## scratch each battle (see the equip_* fields' doc comment above for why
+## that pattern is safe here too).
+func level_hp_bonus() -> int:
+	if level <= 1:
+		return 0
+	return (level - 1) * (int(hit_die / 2.0) + 1 + get_modifier("con"))
 
 func get_attack_bonus(ability: String) -> int:
 	return get_modifier(ability) + get_proficiency_bonus() + equip_attack_bonus
@@ -175,3 +205,49 @@ func reset_for_battle() -> void:
 	current_hp = get_max_hp()
 	current_rp = max_rp
 	is_defending = false
+
+
+## SRD 5.1's own level-1-through-10 cumulative XP thresholds (levels
+## 11-20 omitted — this game caps at 10, see PROGRESS.md's Leveling entry
+## for why: raising the cap later is just extending this array).
+const XP_THRESHOLDS := [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000]
+const MAX_LEVEL := 10
+
+static func level_for_xp(total_xp: int) -> int:
+	var lvl := 1
+	for i in range(XP_THRESHOLDS.size()):
+		if total_xp >= XP_THRESHOLDS[i]:
+			lvl = i + 1
+	return lvl
+
+## Applies this combatant's current level as a deterministic function of
+## `new_level` alone (not an incremental mutation — see level_hp_bonus's
+## doc comment on why that's safe/correct given a fresh instance every
+## battle): the SRD 5.1 ASI bump (+1 to `primary_ability` at level 4, +1
+## more at level 8) and RP growth (+1 max_rp every 3 levels) are both
+## applied here, and skills whose "unlock_level" hasn't been reached yet
+## are filtered out of `skills` entirely (so they never show up in the
+## Skill menu or get picked by an enemy AI). Called once per fresh
+## CombatantStats, right after from_dict/equipment (see battle.gd's
+## _load_party and pause_menu.gd's _member_stats).
+func apply_level(new_level: int) -> void:
+	level = clampi(new_level, 1, MAX_LEVEL)
+	var asi := 0
+	if level >= 4:
+		asi += 1
+	if level >= 8:
+		asi += 1
+	if asi > 0:
+		match primary_ability:
+			"str": str_score += asi
+			"dex": dex_score += asi
+			"con": con_score += asi
+			"int": int_score += asi
+			"wis": wis_score += asi
+			"cha": cha_score += asi
+	max_rp += int(level / 3.0)
+	var unlocked: Array[Skill] = []
+	for s in skills:
+		if s.unlock_level <= level:
+			unlocked.append(s)
+	skills = unlocked

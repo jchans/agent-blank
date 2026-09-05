@@ -29,11 +29,18 @@ const TILE_COLORS := {
 	"R": Color(0.9, 0.8, 0.2),
 	",": Color(0.6, 0.75, 0.25),
 	"^": Color(0.75, 0.9, 0.95),
+	">": Color(0.85, 0.75, 0.4),
+	"<": Color(0.85, 0.75, 0.4),
 }
 const TILE_COLOR_DEFAULT := Color(0.6, 0.6, 0.6)
-## Solid/blocking glyphs. "+" (door) and "o"/"R" (shrine/relic decoration)
-## are deliberately not here — doors must be walkable to trigger, and the
-## decoration is just flavor.
+## Solid/blocking glyphs. "+" (door), ">"/"<" (stairs down/up), and "o"/"R"
+## (shrine/relic decoration) are deliberately not here — a stairway is
+## just another door tile (same data/maps/<id>.doors.json mechanism,
+## already generic — see below), reskinned so a multi-floor building
+## reads visually as "you're changing floors" rather than "you're
+## leaving the room." No new engine code needed: WALL_GLYPHS is the only
+## thing collision/rendering cares about, and stairs were never added to
+## it, same as any other walkable decoration glyph.
 const WALL_GLYPHS := ["#", "T"]
 
 @onready var player: CharacterBody2D = $Player
@@ -143,6 +150,7 @@ func _check_random_encounter() -> void:
 	_encounter_triggered = true
 	GameState.pending_battle_enemy = enemy_pool[randi() % enemy_pool.size()]
 	GameState.pending_victory_flag = ""
+	GameState.pending_monster_id = ""
 	GameState.save_game()
 	get_tree().change_scene_to_file.bind("res://scenes/Battle.tscn").call_deferred()
 
@@ -161,30 +169,88 @@ func _is_walkable(col: int, row: int) -> bool:
 	return glyph != "" and not (glyph in WALL_GLYPHS)
 
 
-## A saved player_position can land a few pixels inside a wall tile's
-## edge if it was captured at a bad moment — most notably a RoamingMonster
-## physically shoving the player mid-chase right as a battle triggers
-## (user report: coming back from battle sometimes left them wedged in a
-## wall, unable to move at all). Restoring that raw pixel position
-## verbatim risks resuming with the player's whole collision shape inside
-## a wall's, which move_and_slide has no way to resolve on its own since
-## nothing is ever pressed *into* the wall to trigger a push-out. Snap to
-## the nearest walkable tile's center instead — a wall tile's center is
-## never reachable through ordinary walking in the first place, so once
-## found this is always safe ground. Called for every saved-position
-## restore (battle return and resuming a save from the title screen
-## alike), not just the battle case, since it's strictly safer either way.
+## Half-extent of Player's actual CollisionShape2D (see Player.tscn — a
+## 16x16 RectangleShape2D), duplicated here for the same reason player.gd
+## duplicates TILE_SIZE: a stable, foundational number not worth a real
+## dependency for.
+const PLAYER_COLLISION_HALF := 8.0
+
+## A saved player_position can land inside a wall tile's edge, or
+## overlapping an NPC/RoamingMonster's own body, if it was captured at a
+## bad moment — a RoamingMonster physically shoving the player mid-chase
+## right as a battle triggers (the original wall case), or simply having
+## walked up close enough to an NPC to start a dialogue battle in the
+## first place (user report: winning an NPC-triggered battle can *also*
+## leave the player wedged against that same NPC — same underlying issue,
+## different solid body). Restoring that raw pixel position verbatim
+## risks resuming with the player's whole collision shape overlapping
+## another one, which move_and_slide has no way to resolve on its own
+## since nothing is ever pressed *into* the obstacle to trigger a
+## push-out.
+##
+## Only correct the position when it's actually unsafe (_position_is_unsafe
+## below, checked against the player's real collision box, not just the
+## tile the position's raw pixel falls in) — an earlier version of this
+## fix snapped to a tile center unconditionally on every restore, which
+## fixed the stuck case but introduced a new, more visible bug: the player
+## visibly hopped a few pixels on *every single* battle return, even when
+## standing on perfectly safe ground mid-stride between tiles (user
+## report: "leaving battle still jumps around"). Snapping only ever
+## happens now when genuinely needed; the common case returns raw
+## untouched. Called for every saved-position restore (battle return and
+## resuming a save from the title screen alike).
 func _safe_restore_position(raw: Vector2) -> Vector2:
+	if not _position_is_unsafe(raw):
+		return raw
 	var col := int(floor(raw.x / TILE_SIZE))
 	var row := int(floor(raw.y / TILE_SIZE))
-	if _is_walkable(col, row):
+	if _is_walkable(col, row) and not _collides_with_obstacle(tile_center(col, row)):
 		return tile_center(col, row)
-	var offsets := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
+	var offsets: Array[Vector2i] = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0),
 		Vector2i(-1, -1), Vector2i(1, -1), Vector2i(-1, 1), Vector2i(1, 1)]
 	for offset in offsets:
-		if _is_walkable(col + offset.x, row + offset.y):
-			return tile_center(col + offset.x, row + offset.y)
+		var c := col + offset.x
+		var r := row + offset.y
+		if _is_walkable(c, r) and not _collides_with_obstacle(tile_center(c, r)):
+			return tile_center(c, r)
 	return raw
+
+
+func _position_is_unsafe(pos: Vector2) -> bool:
+	return _collides_with_wall(pos) or _collides_with_obstacle(pos)
+
+
+## True if a player-sized collision box centered at `pos` overlaps any
+## wall tile — checked via its four corners, since a wall tile's own
+## bounding box is what _is_walkable/WALL_GLYPHS test against.
+func _collides_with_wall(pos: Vector2) -> bool:
+	var half := PLAYER_COLLISION_HALF
+	var corners := [
+		pos + Vector2(-half, -half), pos + Vector2(half, -half),
+		pos + Vector2(-half, half), pos + Vector2(half, half),
+	]
+	for corner in corners:
+		var col := int(floor(corner.x / TILE_SIZE))
+		var row := int(floor(corner.y / TILE_SIZE))
+		if not _is_walkable(col, row):
+			return true
+	return false
+
+
+## True if a player-sized (16x16) box centered at `pos` overlaps any
+## currently-spawned NPC or RoamingMonster — both use the same 16x16
+## CollisionShape2D as the player (see NPC.tscn/RoamingMonster.tscn), so
+## two AABBs of that size overlap whenever both axes' centers are within
+## PLAYER_COLLISION_HALF*2 (8+8) of each other. WorldItem/wall colliders
+## aren't CharacterBody2D so this only ever matches NPCs/monsters.
+func _collides_with_obstacle(pos: Vector2) -> bool:
+	for node in _spawned_nodes:
+		if not is_instance_valid(node) or not (node is CharacterBody2D):
+			continue
+		var delta: Vector2 = pos - node.position
+		if absf(delta.x) < PLAYER_COLLISION_HALF * 2.0 and absf(delta.y) < PLAYER_COLLISION_HALF * 2.0:
+			return true
+	return false
 
 
 func _render_map(path: String) -> void:
@@ -380,6 +446,11 @@ func _load_json_dict(path: String) -> Dictionary:
 	return parsed
 
 
+## How long a defeated RoamingMonster stays gone before respawning (user
+## request: "a defeated monster should disappear, and respawning should
+## take a while"). Checked against GameState.monster_defeats below.
+const MONSTER_RESPAWN_SECONDS := 60.0
+
 ## Ember Hollow's encounter type: data/maps/<id>.monsters.json is an
 ## optional sibling of the room's .txt (same convention as .doors.json/
 ## .encounters.json) listing fixed RoamingMonster spawns for that room.
@@ -396,8 +467,20 @@ func _spawn_monsters(map_id: String) -> void:
 	if typeof(parsed) != TYPE_ARRAY:
 		push_warning("Main: invalid monsters file: %s" % path)
 		return
-	for entry in parsed:
+	var now := Time.get_unix_time_from_system()
+	for i in range(parsed.size()):
+		var entry: Dictionary = parsed[i]
+		# Synthesized rather than read from the JSON entry — monsters.json
+		# never had an "id" field, and every entry's position in the array
+		# is stable (hand-authored, not reordered at runtime), so
+		# "<map>_<index>" is a stable per-monster key without needing to
+		# edit every existing data file.
+		var monster_id := "%s_%d" % [map_id, i]
+		var defeated_at: float = GameState.monster_defeats.get(monster_id, 0.0)
+		if defeated_at > 0.0 and now - defeated_at < MONSTER_RESPAWN_SECONDS:
+			continue
 		var monster := ROAMING_MONSTER_SCENE.instantiate()
+		monster.monster_id = monster_id
 		var pos: Array = entry.get("position", [0, 0])
 		monster.position = Vector2(pos[0], pos[1])
 		var col: Array = entry.get("color", [0.8, 0.2, 0.2, 1])

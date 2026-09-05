@@ -1,4 +1,5 @@
 [
   { "position": [7, 0], "target_map": "cave_entrance", "target_spawn": [7, 7] },
-  { "position": [7, 3], "target_map": "village", "target_spawn": [10, 7], "requires_flag": "relic_found" }
+  { "position": [7, 3], "target_map": "village", "target_spawn": [10, 7], "requires_flag": "relic_found" },
+  { "position": [7, 8], "target_map": "kvault_b1_1", "target_spawn": [7, 1] }
 ]

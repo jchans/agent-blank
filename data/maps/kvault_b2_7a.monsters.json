@@ -1,0 +1,3 @@
+[
+  { "position": [204, 108], "enemy_id": "bloat_toad", "glyph": "t", "color": [0.4, 0.6, 0.35, 1.0], "speed": 45, "chase_range": 100 }
+]

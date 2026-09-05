@@ -33,26 +33,18 @@ theme_override_font_sizes/font_size = 11
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 text = "Arrows: select  Z: confirm  X: cancel  A/S/D: shortcuts  Esc: pause"
 
-[node name="EnemyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
+[node name="BattleRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-alignment = 1
+size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="HSeparator1" type="HSeparator" parent="UI/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="PartyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-alignment = 1
-theme_override_constants/separation = 12
-
-[node name="LogScroll" type="ScrollContainer" parent="UI/Panel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 128)
+[node name="LogScroll" type="ScrollContainer" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow"]
+custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="LogLabel" type="RichTextLabel" parent="UI/Panel/MarginContainer/VBoxContainer/LogScroll"]
+[node name="LogLabel" type="RichTextLabel" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/LogScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 bbcode_enabled = true
@@ -60,6 +52,39 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 3
 theme_override_font_sizes/normal_font_size = 13
+
+[node name="VSeparator1" type="VSeparator" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow"]
+layout_mode = 2
+
+[node name="CombatantsColumn" type="VBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EnemyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="TopSpacer" type="Control" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HSeparator1" type="HSeparator" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+layout_mode = 2
+
+[node name="BottomSpacer" type="Control" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PartyRow" type="HBoxContainer" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="BottomMargin" type="Control" parent="UI/Panel/MarginContainer/VBoxContainer/BattleRow/CombatantsColumn"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
 
 [node name="ActionMenu" parent="UI/Panel/MarginContainer/VBoxContainer" instance=ExtResource("2")]
 layout_mode = 2

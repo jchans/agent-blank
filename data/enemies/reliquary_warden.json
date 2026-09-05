@@ -1,0 +1,50 @@
+{
+  "id": "reliquary_warden",
+  "display_name": "The Reliquary Warden",
+  "display_name_zh": "聖髑守衛者",
+  "char_class": "Ancient Guardian",
+  "char_class_zh": "遠古守衛",
+  "is_player": false,
+  "xp": 220,
+  "log_color": [0.7, 0.65, 0.45, 1.0],
+  "str_score": 16,
+  "dex_score": 11,
+  "con_score": 17,
+  "int_score": 9,
+  "wis_score": 14,
+  "cha_score": 5,
+  "armor_bonus": 5,
+  "max_hp_override": 52,
+  "weapon_name": "Warded Greatblade",
+  "weapon_name_zh": "結界巨劍",
+  "weapon_symbol": "劍",
+  "weapon_dice": "1d12",
+  "weapon_ability": "str",
+  "max_rp": 4,
+  "skills": [
+    {
+      "skill_name": "Seal-Breaker's Verdict",
+      "skill_name_zh": "破封之裁",
+      "description": "A judgment reserved for those who go where they were told not to.",
+      "description_zh": "專門保留給不聽勸阻、擅自闖入者的裁決。",
+      "kind": "attack_roll",
+      "ability": "str",
+      "damage_dice": "3d10",
+      "rp_cost": 2,
+      "kaomoji_key": "attack_special"
+    },
+    {
+      "skill_name": "Binding Ward",
+      "skill_name_zh": "束縛結界",
+      "description": "The same ancient magic that has held this floor together for centuries closes tight around a single target.",
+      "description_zh": "數百年來維繫著這一層結界的古老秘法，緊緊收束於單一目標之上。",
+      "kind": "save",
+      "ability": "wis",
+      "save_ability": "wis",
+      "damage_dice": "3d8",
+      "half_on_save": true,
+      "rp_cost": 3,
+      "kaomoji_key": "cast"
+    }
+  ]
+}

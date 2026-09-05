@@ -1,0 +1,18 @@
+{
+  "start": "read",
+  "nodes": {
+    "read": {
+      "speaker": "Sealed Inscription",
+      "text": "The runes here are still faintly warm to the touch: \"I, Karneth, sealed this vault with my own hands and will not leave it — not in death, not after. What sleeps at its heart must never wake.\"",
+      "text_zh": "這裡的符文摸起來仍帶著微弱的溫度：「吾，卡奈斯，親手封印此地，此生此死皆不離去。沉眠於此核心之物，絕不可甦醒。」",
+      "next": "cont"
+    },
+    "cont": {
+      "speaker": "Sealed Inscription",
+      "text": "You get the distinct feeling that whatever wrote this is still keeping that promise, somewhere below.",
+      "text_zh": "你有種強烈的預感——寫下這段話的存在，此刻仍在更深之處信守著這個誓言。",
+      "next": "end"
+    },
+    "end": { "speaker": "", "text": "", "end": true }
+  }
+}
