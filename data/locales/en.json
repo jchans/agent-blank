@@ -30,6 +30,7 @@
     "world.item_found_multi": "You found %d x %s!",
     "battle.appears": "A wild %s appears!",
     "battle.appears_group": "A pack of %s appears!",
+    "battle.loot": "You found 【%s】!",
     "battle.hint": "Arrows: select   Z: confirm   X: cancel   A/S/D/I/R: shortcuts   H: help",
     "battle.initiative_order": "Turn order: %s",
     "battle.turn_prompt": "— choose an action",

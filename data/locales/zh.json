@@ -30,6 +30,7 @@
     "world.item_found_multi": "你獲得了%d個%s！",
     "battle.appears": "一隻野生的 %s 出現了！",
     "battle.appears_group": "一群 %s 出現了！",
+    "battle.loot": "你獲得了【%s】！",
     "battle.hint": "方向鍵：選擇　Z：確認　X：取消　A/S/D/I/R：捷徑　H：說明",
     "battle.initiative_order": "先攻順序：%s",
     "battle.turn_prompt": "的回合，選擇行動",

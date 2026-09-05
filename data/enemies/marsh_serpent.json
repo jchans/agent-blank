@@ -6,6 +6,10 @@
   "char_class_zh": "巨蟒",
   "is_player": false,
   "xp": 40,
+  "loot": {
+    "item_id": "ether",
+    "chance": 0.2
+  },
   "log_color": [
     0.3,
     0.55,

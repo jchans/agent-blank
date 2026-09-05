@@ -6,6 +6,10 @@
   "char_class_zh": "巨鼠",
   "is_player": false,
   "xp": 25,
+  "loot": {
+    "item_id": "potion",
+    "chance": 0.2
+  },
   "log_color": [
     0.55,
     0.45,

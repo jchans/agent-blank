@@ -6,6 +6,10 @@
   "char_class_zh": "潛行者",
   "is_player": false,
   "xp": 45,
+  "loot": {
+    "item_id": "guard_tonic",
+    "chance": 0.15
+  },
   "log_color": [
     0.4,
     0.35,

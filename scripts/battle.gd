@@ -536,6 +536,26 @@ func _award_xp() -> void:
 			GameState.party_level[c.id] = new_level
 
 
+## Optional item drop per defeated enemy (data/enemies/*.json's "loot"
+## field — see CombatantStats.loot_item_id/loot_chance) — reuses the
+## existing shared inventory (GameState.add_item) rather than inventing a
+## gold/currency concept, since "reward on win" only ever needed *some*
+## kind of tangible reward beyond XP and this project already has a full
+## item system built (see PROGRESS.md's Item/Equipment entry); gold
+## specifically stays out of scope until there's an actual spend sink
+## (shop, etc.) for it to matter. Unlike XP (deliberately silent, see
+## _award_xp's doc comment), a drop is logged — an item silently
+## appearing in the inventory with zero on-screen acknowledgment would be
+## genuinely hard to ever notice, unlike an invisible level-up.
+func _award_loot() -> void:
+	for e in enemies:
+		if e.loot_item_id == "" or e.loot_chance <= 0.0:
+			continue
+		if randf() < e.loot_chance:
+			GameState.add_item(e.loot_item_id)
+			_log(Localization.t("battle.loot") % ItemDB.localized_name(e.loot_item_id))
+
+
 func _end_battle() -> void:
 	action_menu.visible = false
 	if _fled:
@@ -576,6 +596,7 @@ func _end_battle() -> void:
 		_log(Localization.t("battle.end_victory"))
 		_sync_party_to_game_state()
 		_award_xp()
+		_award_loot()
 	GameState.pending_monster_id = ""
 	_log_separator()
 	GameState.save_game()

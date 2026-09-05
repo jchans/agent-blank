@@ -33,6 +33,13 @@ var primary_ability: String = ""
 ## data/enemies/*.json's "xp" field and battle.gd's _award_xp).
 var xp: int = 0
 
+## Optional item drop on defeat (enemies only — see data/enemies/*.json's
+## "loot" field, {"item_id": ..., "chance": 0.0-1.0}, and battle.gd's
+## _award_loot). Empty id means "never drops" — most enemies have no
+## "loot" field at all and get these defaults.
+var loot_item_id: String = ""
+var loot_chance: float = 0.0
+
 var str_score: int = 10
 var dex_score: int = 10
 var con_score: int = 10
@@ -100,6 +107,9 @@ static func from_dict(data: Dictionary) -> CombatantStats:
 	c.max_rp = data.get("max_rp", 0)
 	c.primary_ability = data.get("primary_ability", c.weapon_ability)
 	c.xp = data.get("xp", 0)
+	var loot: Dictionary = data.get("loot", {})
+	c.loot_item_id = loot.get("item_id", "")
+	c.loot_chance = loot.get("chance", 0.0)
 	var skills_data: Array = data.get("skills", [])
 	for skill_dict in skills_data:
 		c.skills.append(Skill.from_dict(skill_dict))
